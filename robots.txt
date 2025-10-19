@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pulsgel.github.io/PulsGel/sitemap.xml
