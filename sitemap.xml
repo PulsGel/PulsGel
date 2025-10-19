@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+  <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- POČETNA STRANICA -->
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/</loc>
+    <loc>https://pulsgel.github.io/PulsGel/</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,100 +11,80 @@
 
   <!-- SEKCIJE NA POČETNOJ STRANICI -->
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#uvod</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#uvod</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#novi-nivo-povezanosti</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#novi-nivo-povezanosti</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#moc-prirode</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#moc-prirode</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#efekti-stimulacija</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#efekti-stimulacija</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#dugorocni-efekat</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#dugorocni-efekat</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#za-koga-je</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#za-koga-je</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#prednosti-formule</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#prednosti-formule</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#upotreba</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#upotreba</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#pakovanja-cena</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#pakovanja-cena</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#napomena-bezbednost</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#napomena-bezbednost</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
   <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#porudzbina</loc>
+    <loc>https://pulsgel.github.io/PulsGel/#porudzbina</loc>
     <lastmod>2025-10-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- DODAVANJE NOVIH STRANICA -->
-  <!-- Primer:
-  <url>
-    <loc>https://pulsgel.github.io/Pulsgel/nova-stranica.html</loc>
-    <lastmod>2025-10-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  -->
-
-  <!-- DODAVANJE NOVIH SEKCIJA NA POSTOJEĆOJ STRANICI -->
-  <!-- Primer:
-  <url>
-    <loc>https://pulsgel.github.io/Pulsgel/#nova-sekcija</loc>
-    <lastmod>2025-10-18</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
 
 </urlset>
