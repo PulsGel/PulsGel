@@ -199,60 +199,110 @@ forma.addEventListener('submit', function(e){
       console.error("EmailJS error:", error);
       alert("Greška pri slanju. Proveri EmailJS konfiguraciju.");
     });
-  <!-- Div koji prikazuje podatke i dugme za potvrdu -->
-<div id="porudzbina-potvrda" style="display:none; margin-top:20px; padding:15px; border:2px solid #4CAF50; background-color:#e8f5e9; color:#2e7d32;">
-  <p id="broj-porudzbine"></p>
-  <button id="potvrdi-porudzbinu">Potvrdi porudžbinu</button>
-</div>
+ 
+<script type="text/javascript">
+// Elementi forme
+const forma = document.getElementById('forma-porudzbine');
 
-<script>
-const potvrdaDiv = document.getElementById('porudzbina-potvrda');
-const brojPorudzbineEl = document.getElementById('broj-porudzbine');
-const potvrdiBtn = document.getElementById('potvrdi-porudzbinu');
+// Funkcija za preračun iznosa
+const pakovanjeEl = document.getElementById('pakovanje');
+const kolicinaEl = document.getElementById('kolicina');
+const iznosRsdEl = document.getElementById('iznos_rsd');
+const iznosEurEl = document.getElementById('iznos_eur');
 
-function generateOrderNumber() {
-  const randomNum = Math.floor(1000000000 + Math.random() * 9000000000);
-  return "#" + randomNum;
+function updateIznos() {
+  const kolicina = parseInt(kolicinaEl.value) || 1;
+  let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+  let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+  iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+  iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+}
+pakovanjeEl.addEventListener('change', updateIznos);
+kolicinaEl.addEventListener('input', updateIznos);
+updateIznos();
+
+// Div za prikaz potvrde pre slanja
+const previewDiv = document.createElement('div');
+previewDiv.id = "preview-porudzbine";
+previewDiv.style.padding = "10px";
+previewDiv.style.border = "1px solid #ccc";
+previewDiv.style.marginTop = "20px";
+forma.parentNode.insertBefore(previewDiv, forma.nextSibling);
+
+// Funkcija za prikaz porudžbine
+function prikaziPorudzbinu(formData) {
+  previewDiv.innerHTML = `
+    <h3>Proverite vašu porudžbinu:</h3>
+    <p><strong>Ime:</strong> ${formData.ime}</p>
+    <p><strong>Prezime:</strong> ${formData.prezime}</p>
+    <p><strong>Email:</strong> ${formData.email}</p>
+    <p><strong>Telefon:</strong> ${formData.telefon}</p>
+    <p><strong>Adresa:</strong> ${formData.adresa}</p>
+    <p><strong>Grad:</strong> ${formData.grad}</p>
+    <p><strong>Poštanski broj:</strong> ${formData.postanski_broj}</p>
+    <p><strong>Pakovanje:</strong> ${formData.pakovanje}</p>
+    <p><strong>Količina:</strong> ${formData.kolicina}</p>
+    <p><strong>Iznos:</strong> ${formData.iznos_rsd} / ${formData.iznos_eur}</p>
+    <p><strong>Način isporuke:</strong> ${formData.dostava}</p>
+    <p><strong>Način plaćanja:</strong> ${formData.placanje}</p>
+    <p><strong>Napomena:</strong> ${formData.napomena}</p>
+    <button id="potvrdi-btn">Potvrdi porudžbinu</button>
+  `;
 }
 
+// Slanje emaila preko EmailJS
+function posaljiEmail(formData) {
+  // Dodaj polje za email korisnika
+  const emailData = { ...formData, to_email: formData.email };
+
+  emailjs.send('service_rxj533m', 'template_5o6etkn', emailData)
+    .then(() => {
+      // Prikaz poruke "Hvala" 3 sekunde
+      const hvalaDiv = document.createElement('div');
+      hvalaDiv.textContent = "Hvala! Porudžbina je poslata.";
+      hvalaDiv.style.color = "green";
+      hvalaDiv.style.fontSize = "20px";
+      previewDiv.appendChild(hvalaDiv);
+      setTimeout(() => hvalaDiv.remove(), 3000);
+
+      // Reset forme
+      forma.reset();
+      updateIznos();
+      previewDiv.innerHTML = ""; // uklanja preview posle potvrde
+    }, (error) => {
+      console.error("EmailJS error:", error);
+      alert("Greška pri slanju. Proveri EmailJS konfiguraciju.");
+    });
+}
+
+// Prvi klik na "Pošalji porudžbinu"
 forma.addEventListener('submit', function(e){
   e.preventDefault();
 
-  const orderNumber = generateOrderNumber();
+  const formData = {
+    ime: this.ime.value,
+    prezime: this.prezime.value,
+    email: this.email.value,
+    telefon: this.telefon.value,
+    adresa: this.adresa.value,
+    grad: this.grad.value,
+    postanski_broj: this.postanski_broj.value,
+    pakovanje: this.pakovanje.value,
+    kolicina: this.kolicina.value,
+    iznos_rsd: this.iznos_rsd.value,
+    iznos_eur: this.iznos_eur.value,
+    dostava: this.dostava.value,
+    placanje: this.placanje.value,
+    napomena: this.napomena.value
+  };
 
-  // Popuni podatke za prikaz
-  brojPorudzbineEl.innerHTML = `
-    Vaša porudžbina <strong>${orderNumber}</strong> je uspešno poslata!<br>
-    Ime: ${this.ime.value}<br>
-    Prezime: ${this.prezime.value}<br>
-    Email: ${this.email.value}<br>
-    Telefon: ${this.telefon.value}<br>
-    Adresa: ${this.adresa.value}, ${this.grad.value} ${this.postanski_broj.value}<br>
-    Pakovanje: ${this.pakovanje.value}<br>
-    Količina: ${this.kolicina.value}<br>
-    Iznos: ${this.iznos_rsd.value} / ${this.iznos_eur.value}<br>
-    Dostava: ${this.dostava.value}<br>
-    Plaćanje: ${this.placanje.value}<br>
-    Napomena: ${this.napomena.value}
-  `;
+  prikaziPorudzbinu(formData);
 
-  potvrdaDiv.style.display = 'block';
-  forma.reset();
-  updateIznos();
-
-  // Slanje EmailJS
-  emailjs.send('service_rxj533m','template_5o6etkn',{
-    ...this, 
-    broj_porudzbine: orderNumber
+  // Dugme za potvrdu porudžbine
+  document.getElementById('potvrdi-btn').addEventListener('click', () => {
+    posaljiEmail(formData);
   });
 });
-
-// Dugme potvrde prikazuje "Hvala!" 3 sekunde
-potvrdiBtn.addEventListener('click', function() {
-  alert("Hvala! Porudžbina je potvrđena.");
-  potvrdaDiv.style.display = 'none';
-});
 </script>
-
 </body>
 </html>
