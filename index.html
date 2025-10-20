@@ -112,31 +112,7 @@ button:hover { background-color: #ff4c4c; }
 </ul>
 
 <h2>🔘 11️⃣ Porudžbina</h2>
-
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULS Gel - Porudžbina</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #fff; color: #000; }
-  input, select, textarea, button { display: block; margin: 10px 0; width: 100%; padding: 8px; }
-  #popup { 
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(0,0,0,0.6); justify-content: center; align-items: center; 
-  }
-  #popup-content {
-    background: #fff; padding: 20px; border-radius: 10px; width: 90%; max-width: 500px;
-  }
-  #thanks-msg { display: none; color: green; font-size: 20px; text-align: center; }
-</style>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  (function(){emailjs.init("WKV419-gz6OQWSgRJ");})();
-</script>
-</head>
-<body>
+<h2>🔘 11️⃣ Porudžbina</h2>
 
 <form id="forma-porudzbine">
   <input type="text" name="ime" placeholder="Ime" required>
@@ -175,67 +151,73 @@ button:hover { background-color: #ff4c4c; }
   <button type="submit">Pošalji porudžbinu</button>
 </form>
 
-<div id="popup">
-  <div id="popup-content">
-    <h2>Proverite vašu porudžbinu</h2>
+<div id="popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+  <div style="background:#fff; padding:20px; border-radius:10px; max-width:500px; width:90%;">
+    <h3>Proverite vašu porudžbinu</h3>
     <div id="popup-info"></div>
     <button id="confirm-btn">Potvrdi porudžbinu</button>
   </div>
 </div>
 
-<div id="thanks-msg">Hvala! Vaša porudžbina je primljena.</div>
+<div id="thanks-msg" style="display:none; text-align:center; color:green; font-size:18px; margin-top:20px;">
+  Hvala! Vaša porudžbina je primljena.
+</div>
 
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-const forma = document.getElementById('forma-porudzbine');
-const pakovanjeEl = document.getElementById('pakovanje');
-const kolicinaEl = document.getElementById('kolicina');
-const iznosRsdEl = document.getElementById('iznos_rsd');
-const iznosEurEl = document.getElementById('iznos_eur');
+  (function(){ emailjs.init("WKV419-gz6OQWSgRJ"); })();
 
-const popup = document.getElementById('popup');
-const popupInfo = document.getElementById('popup-info');
-const confirmBtn = document.getElementById('confirm-btn');
-const thanksMsg = document.getElementById('thanks-msg');
+  const forma = document.getElementById('forma-porudzbine');
+  const pakovanjeEl = document.getElementById('pakovanje');
+  const kolicinaEl = document.getElementById('kolicina');
+  const iznosRsdEl = document.getElementById('iznos_rsd');
+  const iznosEurEl = document.getElementById('iznos_eur');
+  const popup = document.getElementById('popup');
+  const popupInfo = document.getElementById('popup-info');
+  const confirmBtn = document.getElementById('confirm-btn');
+  const thanksMsg = document.getElementById('thanks-msg');
 
-// Preračunavanje
-function updateIznos() {
-  const kolicina = parseInt(kolicinaEl.value) || 1;
-  let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
-  let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
-  iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
-  iznosEurEl.value = (cenaEur * kolicina) + " EUR";
-}
-pakovanjeEl.addEventListener('change', updateIznos);
-kolicinaEl.addEventListener('input', updateIznos);
-updateIznos();
+  function updateIznos(){
+    const kolicina = parseInt(kolicinaEl.value) || 1;
+    let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+    let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+    iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+    iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+  }
 
-// Slanje porudžbine
-forma.addEventListener('submit', function(e){
-  e.preventDefault();
-  const formData = new FormData(forma);
-  let html = '';
-  formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
-  popupInfo.innerHTML = html;
-  popup.style.display = 'flex';
-});
+  pakovanjeEl.addEventListener('change', updateIznos);
+  kolicinaEl.addEventListener('input', updateIznos);
+  updateIznos();
 
-// Potvrda porudžbine
-confirmBtn.addEventListener('click', function(){
-  const data = {};
-  new FormData(forma).forEach((value,key)=>{ data[key]=value; });
-  
-  emailjs.send('service_rxj533m','template_5o6etkn', data)
-    .then(()=>{
-      popup.style.display='none';
-      thanksMsg.style.display='block';
-      setTimeout(()=>{ thanksMsg.style.display='none'; forma.reset(); updateIznos(); }, 5000);
-    }, (err)=>{
-      alert("Greška pri slanju. Proverite EmailJS.");
-      console.error(err);
-    });
-});
+  forma.addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(forma);
+    let html = '';
+    formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
+    popupInfo.innerHTML = html;
+    popup.style.display = 'flex';
+  });
+
+  confirmBtn.addEventListener('click', function(){
+    const data = {};
+    new FormData(forma).forEach((value,key)=>{ data[key]=value; });
+    
+    // Slanje korisniku
+    emailjs.send('service_rxj533m','template_5o6etkn', data)
+      .then(()=>{
+        // Slanje tebi (kopija)
+        const copyData = Object.assign({}, data, {email:"tvojemail@primer.com"});
+        return emailjs.send('service_rxj533m','template_5o6etkn', copyData);
+      })
+      .then(()=>{
+        popup.style.display='none';
+        thanksMsg.style.display='block';
+        setTimeout(()=>{ thanksMsg.style.display='none'; forma.reset(); updateIznos(); }, 5000);
+      })
+      .catch(err=>{
+        alert("Greška pri slanju. Proverite EmailJS.");
+        console.error(err);
+      });
+  });
 </script>
-
-</body>
-</html>
 </html>
