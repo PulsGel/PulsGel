@@ -116,6 +116,33 @@ button:hover { background-color: #ff4c4c; }
 
 <h2>🔘 11️⃣ Porudžbina</h2>
 
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PULS Gel – Porudžbina</title>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){ emailjs.init("WKV419-gz6OQWSgRJ"); })();
+</script>
+<style>
+body { font-family: Arial, sans-serif; background: #000; color: #fff; margin:0; padding:0; line-height:1.6; }
+h1 { text-align:center; color:#fff; margin-top:20px; }
+form { display:flex; flex-direction:column; max-width:500px; margin:20px auto; padding:20px; background-color:#111; border-radius:10px; border:1px solid #444; }
+input, select, textarea, button { margin:8px 0; padding:10px; border-radius:5px; border:1px solid #444; background-color:#222; color:#fff; font-size:16px; width:100%; }
+input[readonly] { background-color:#333; cursor:not-allowed; }
+button { background-color:#b22222; color:#fff; border:none; cursor:pointer; }
+button:hover { background-color:#ff4c4c; }
+#popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
+#popup-content { background:#fff; color:#000; padding:20px; border-radius:10px; width:90%; max-width:500px; }
+#thanks-msg { display:none; color:green; font-size:20px; text-align:center; margin-top:15px; }
+</style>
+</head>
+<body>
+
+<h1>🌙 PULS Gel – Porudžbina</h1>
+
 <form id="forma-porudzbine">
   <input type="text" name="ime" placeholder="Ime" required>
   <input type="text" name="prezime" placeholder="Prezime" required>
@@ -150,7 +177,7 @@ button:hover { background-color: #ff4c4c; }
   </select>
   
   <textarea name="napomena" placeholder="Napomena"></textarea>
-  <button type="submit">Pregled porudžbine</button>
+  <button type="submit">Pošalji porudžbinu</button>
 </form>
 
 <div id="popup">
@@ -174,7 +201,7 @@ const popupInfo = document.getElementById('popup-info');
 const confirmBtn = document.getElementById('confirm-btn');
 const thanksMsg = document.getElementById('thanks-msg');
 
-// Preračunavanje cena
+// Preračunavanje iznosa
 function updateIznos() {
   const kolicina = parseInt(kolicinaEl.value) || 1;
   let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
@@ -186,39 +213,71 @@ pakovanjeEl.addEventListener('change', updateIznos);
 kolicinaEl.addEventListener('input', updateIznos);
 updateIznos();
 
-// Prikaz popup-a
+// Prikaz popup sa podacima
 forma.addEventListener('submit', function(e){
   e.preventDefault();
-  const formData = new FormData(forma);
+  const data = {
+    ime: forma.ime.value,
+    prezime: forma.prezime.value,
+    email: forma.email.value,
+    telefon: forma.telefon.value,
+    adresa: forma.adresa.value,
+    grad: forma.grad.value,
+    postanski_broj: forma.postanski_broj.value,
+    pakovanje: forma.pakovanje.value,
+    kolicina: forma.kolicina.value,
+    iznos_rsd: iznosRsdEl.value,
+    iznos_eur: iznosEurEl.value,
+    dostava: forma.dostava.value,
+    placanje: forma.placanje.value,
+    napomena: forma.napomena.value
+  };
   let html = '';
-  formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
+  for (const key in data) {
+    html += `<b>${key}:</b> ${data[key]}<br>`;
+  }
   popupInfo.innerHTML = html;
   popup.style.display = 'flex';
 });
 
-// Slanje mejla i potvrda
+// Potvrda porudžbine
 confirmBtn.addEventListener('click', function(){
-  const data = {};
-  new FormData(forma).forEach((value,key)=>{ data[key]=value; });
-
-  // Mejl kupcu
+  const data = {
+    ime: forma.ime.value,
+    prezime: forma.prezime.value,
+    email: forma.email.value,
+    telefon: forma.telefon.value,
+    adresa: forma.adresa.value,
+    grad: forma.grad.value,
+    postanski_broj: forma.postanski_broj.value,
+    pakovanje: forma.pakovanje.value,
+    kolicina: forma.kolicina.value,
+    iznos_rsd: iznosRsdEl.value,
+    iznos_eur: iznosEurEl.value,
+    dostava: forma.dostava.value,
+    placanje: forma.placanje.value,
+    napomena: forma.napomena.value
+  };
+  
+  // Pošalji mejl putem EmailJS
   emailjs.send('service_rxj533m','template_5o6etkn', data)
     .then(()=>{
-      // Mejl adminu
-      const adminData = {...data, email: "tvoj-email@domena.com"}; // stavi svoj mejl
-      emailjs.send('service_rxj533m','template_5o6etkn', adminData)
-        .then(()=>{
-          popup.style.display='none';
-          thanksMsg.style.display='block';
-          setTimeout(()=>{
-            thanksMsg.style.display='none';
-            forma.reset();
-            updateIznos();
-          },5000);
-        }, err=>{ alert("Greška pri slanju admin mejla"); console.error(err); });
-    }, err=>{ alert("Greška pri slanju mejla kupcu"); console.error(err); });
+      popup.style.display='none';
+      thanksMsg.style.display='block';
+      setTimeout(()=>{
+        thanksMsg.style.display='none';
+        forma.reset();
+        updateIznos();
+      }, 5000);
+    }, (err)=>{
+      alert("Greška pri slanju. Proverite EmailJS.");
+      console.error(err);
+    });
 });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
