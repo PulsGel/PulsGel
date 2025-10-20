@@ -154,33 +154,74 @@ button:hover { background-color: #ff4c4c; }
 
 <div id="poruka-potvrde" style="display:none; color: green; font-weight: bold; margin-top: 15px;"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
-(function() {
-  emailjs.init("WKV419-gz6OQWSgRJ");
-})();
+  (function() {
+    emailjs.init("WKV419-gz6OQWSgRJ"); // Tvoj public key
+  })();
 
-document.getElementById("order-form").addEventListener("submit", function(event) {
-  event.preventDefault();
+  document.getElementById("forma-porudzbine").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const formData = {
-    from_name: document.getElementById("ime").value,
-    from_email: document.getElementById("email").value,
-    message: "Proizvod: " + document.getElementById("proizvod").value +
-             "\nKoličina: " + document.getElementById("kolicina").value +
-             "\nAdresa: " + document.getElementById("adresa").value +
-             "\nTelefon: " + document.getElementById("telefon").value
-  };
+    // prikaži formu za potvrdu pre slanja
+    const forma = e.target;
+    const formData = new FormData(forma);
+    const ime = formData.get("ime");
+    const prezime = formData.get("prezime");
+    const email = formData.get("email");
+    const adresa = formData.get("adresa");
+    const grad = formData.get("grad");
+    const kolicina = formData.get("kolicina");
+    const pakovanje = formData.get("pakovanje");
+    const dostava = formData.get("dostava");
+    const placanje = formData.get("placanje");
 
-  emailjs.send("service_rxj533m", "template_5o6etkn", formData)
-    .then(function(response) {
-      alert("Porudžbina uspešno poslata!");
-      console.log("SUCCESS!", response.status, response.text);
-    }, function(error) {
-      console.error("EmailJS greška:", error);
-      alert("Greška pri slanju porudžbine. Proverite EmailJS konzolu.");
+    const potvrda = document.createElement("div");
+    potvrda.style.position = "fixed";
+    potvrda.style.top = "0";
+    potvrda.style.left = "0";
+    potvrda.style.width = "100%";
+    potvrda.style.height = "100%";
+    potvrda.style.background = "rgba(0,0,0,0.8)";
+    potvrda.style.color = "#fff";
+    potvrda.style.display = "flex";
+    potvrda.style.flexDirection = "column";
+    potvrda.style.alignItems = "center";
+    potvrda.style.justifyContent = "center";
+    potvrda.style.zIndex = "9999";
+    potvrda.innerHTML = `
+      <div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
+        <h3>Potvrda porudžbine</h3>
+        <p><b>${ime} ${prezime}</b></p>
+        <p>${adresa}, ${grad}</p>
+        <p>Pakovanje: ${pakovanje} (${kolicina} kom)</p>
+        <p>Dostava: ${dostava}</p>
+        <p>Plaćanje: ${placanje}</p>
+        <p>Email: ${email}</p>
+        <button id="potvrdi" style="margin-top:15px;background:#0f0;color:#000;padding:8px 16px;border:none;border-radius:5px;cursor:pointer;">Potvrdi porudžbinu</button>
+      </div>
+    `;
+    document.body.appendChild(potvrda);
+
+    document.getElementById("potvrdi").addEventListener("click", function() {
+      emailjs.sendForm('service_rxj533m', 'template_5o6etkn', forma)
+        .then(function() {
+          potvrda.innerHTML = `<div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
+            <h3>Porudžbina uspešno poslata!</h3>
+            <p>Hvala vam na poverenju.</p>
+          </div>`;
+          setTimeout(() => potvrda.remove(), 5000);
+          forma.reset();
+        }, function(error) {
+          potvrda.innerHTML = `<div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
+            <h3>Greška pri slanju!</h3>
+            <p>Proverite EmailJS konzolu.</p>
+          </div>`;
+          console.log('Greška:', error);
+          setTimeout(() => potvrda.remove(), 5000);
+        });
     });
-});
+  });
 </script>
 </body>
 </html>
