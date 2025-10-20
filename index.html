@@ -259,59 +259,72 @@ form#forma-porudzbine button:hover {
 </form>
 
 <div id="thanks-msg">Hvala! Vaša porudžbina je primljena.</div>
-
 <script>
-const forma = document.getElementById('forma-porudzbine');
-const pakovanjeEl = document.getElementById('pakovanje');
-const kolicinaEl = document.getElementById('kolicina');
-const iznosRsdEl = document.getElementById('iznos_rsd');
-const iznosEurEl = document.getElementById('iznos_eur');
-const thanksMsg = document.getElementById('thanks-msg');
+  // Inicijalizacija EmailJS
+  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
 
-// Preračunavanje iznosa
-function updateIznos() {
-  const kolicina = parseInt(kolicinaEl.value) || 1;
-  let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
-  let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
-  iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
-  iznosEurEl.value = (cenaEur * kolicina) + " EUR";
-}
-pakovanjeEl.addEventListener('change', updateIznos);
-kolicinaEl.addEventListener('input', updateIznos);
-updateIznos();
+  const forma = document.getElementById('forma-porudzbine');
+  const pakovanjeEl = document.getElementById('pakovanje');
+  const kolicinaEl = document.getElementById('kolicina');
+  const iznosRsdEl = document.getElementById('iznos_rsd');
+  const iznosEurEl = document.getElementById('iznos_eur');
+  const popup = document.getElementById('popup');
+  const popupInfo = document.getElementById('popup-info');
+  const confirmBtn = document.getElementById('confirm-btn');
+  const thanksMsg = document.getElementById('thanks-msg');
 
-// Slanje porudžbine
-forma.addEventListener('submit', function(e){
-  e.preventDefault();
-  const data = {};
-  new FormData(forma).forEach((value,key)=>{ data[key]=value; });
+  // Preračunavanje cena
+  function updateIznos() {
+    const kolicina = parseInt(kolicinaEl.value) || 1;
+    let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+    let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+    iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+    iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+  }
+  pakovanjeEl.addEventListener('change', updateIznos);
+  kolicinaEl.addEventListener('input', updateIznos);
+  updateIznos();
 
-  // Slanje kupcu
-  const kupacData = {...data, to_email: data.email};
-  // Slanje sebi
-  const adminData = {...data, to_email: 'tvoj-email@domena.com'}; // stavi svoj mejl
+  // Prikaz popup-a za potvrdu
+  forma.addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(forma);
+    let html = '';
+    formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
+    popupInfo.innerHTML = html;
+    popup.style.display = 'flex';
+  });
 
-  const serviceID = 'service_rxj533m';
-  const templateID = 'template_5o6etkn';
-  const publicKey = 'WKV419-gz6OQWSgRJ';
+  // Potvrda porudžbine
+  confirmBtn.addEventListener('click', function(){
+    const data = {};
+    new FormData(forma).forEach((value,key)=>{ data[key]=value; });
 
-  emailjs.send(serviceID, templateID, kupacData, publicKey)
-    .then(()=>{
-      return emailjs.send(serviceID, templateID, adminData, publicKey);
+    // 1️⃣ Pošalji mejl sebi (admin)
+    emailjs.send('service_rxj533m','template_5o6etkn',{
+      ...data,
+      email: "acakacarevic73@gmail.com", // tvoj mejl u To
+      reply_to: data.email // mejl kupca za Reply-To
+    })
+    .then(()=>{ console.log("Admin email poslat"); })
+    .catch(err=>{ console.error("Admin email error:", err); alert("Greška admin email"); });
+
+    // 2️⃣ Pošalji mejl kupcu
+    emailjs.send('service_rxj533m','template_ex2i1cv',{
+      ...data,
+      to_email: data.email // ovde ide email kupca
     })
     .then(()=>{
+      popup.style.display='none';
       thanksMsg.style.display='block';
-      setTimeout(()=>{
-        thanksMsg.style.display='none';
-        forma.reset();
-        updateIznos();
-      }, 5000);
+      setTimeout(()=>{ thanksMsg.style.display='none'; forma.reset(); updateIznos(); }, 5000);
+      console.log("Kupac email poslat");
     })
     .catch(err=>{
-      alert("Greška pri slanju. Proveri EmailJS konzolu.");
-      console.error(err);
+      alert("Greška pri slanju mejla kupcu. Proveri konzolu.");
+      console.error("Kupac email error:", err);
     });
-});
+  });
 </script>
 
 </body>
