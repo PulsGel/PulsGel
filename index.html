@@ -113,30 +113,6 @@ button:hover { background-color: #ff4c4c; }
 
 <h2>🔘 11️⃣ Porudžbina</h2>
 
-<!DOCTYPE html>
-<html lang="sr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULS Gel Porudžbina</title>
-<style>
-  body { font-family: Arial, sans-serif; background: #000; color: #fff; padding: 20px; }
-  label { display: block; margin-top: 10px; color: #ff3333; }
-  input, select, textarea, button { display: block; margin-top: 5px; padding: 8px; width: 300px; max-width: 100%; }
-  button { background: #28a745; color: #fff; border: none; cursor: pointer; margin-top: 15px; }
-  #potvrda { display: none; background: #28a745; color: #fff; padding: 15px; margin-top: 15px; text-align: center; font-size: 18px; }
-</style>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-(function(){
-   emailjs.init("user_your_user_id"); // Ovdje stavi svoj EmailJS user ID
-})();
-</script>
-</head>
-<body>
-
-<h2>PULS Gel - Porudžbina</h2>
-
 <form id="forma-porudzbine">
   <input type="text" name="ime" placeholder="Ime" required>
   <input type="text" name="prezime" placeholder="Prezime" required>
@@ -174,65 +150,68 @@ button:hover { background-color: #ff4c4c; }
   <button type="submit">Pošalji porudžbinu</button>
 </form>
 
-<div id="potvrda">Hvala! Porudžbina je primljena.</div>
+<div id="poruka-potvrde" style="display:none; color: green; font-weight: bold; margin-top: 15px;"></div>
 
-<script>
-const forma = document.getElementById('forma-porudzbine');
-const pakovanjeEl = document.getElementById('pakovanje');
-const kolicinaEl = document.getElementById('kolicina');
-const iznosRsdEl = document.getElementById('iznos_rsd');
-const iznosEurEl = document.getElementById('iznos_eur');
-const potvrdaEl = document.getElementById('potvrda');
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+  // Inicijalizacija EmailJS
+  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
 
-// Automatski preračun iznosa
-function updateIznos() {
-  const kolicina = parseInt(kolicinaEl.value) || 1;
-  const cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
-  const cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
-  iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
-  iznosEurEl.value = (cenaEur * kolicina) + " EUR";
-}
-pakovanjeEl.addEventListener('change', updateIznos);
-kolicinaEl.addEventListener('input', updateIznos);
-updateIznos();
+  const forma = document.getElementById('forma-porudzbine');
+  const pakovanjeEl = document.getElementById('pakovanje');
+  const kolicinaEl = document.getElementById('kolicina');
+  const iznosRsdEl = document.getElementById('iznos_rsd');
+  const iznosEurEl = document.getElementById('iznos_eur');
+  const porukaDiv = document.getElementById('poruka-potvrde');
 
-// Slanje forme preko EmailJS
-forma.addEventListener('submit', function(e){
-  e.preventDefault();
+  function updateIznos() {
+    const kolicina = parseInt(kolicinaEl.value) || 1;
+    let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+    let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+    iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+    iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+  }
 
-  const formData = {
-    ime: this.ime.value,
-    prezime: this.prezime.value,
-    email: this.email.value,
-    telefon: this.telefon.value,
-    adresa: this.adresa.value,
-    grad: this.grad.value,
-    postanski_broj: this.postanski_broj.value,
-    pakovanje: this.pakovanje.value,
-    kolicina: this.kolicina.value,
-    iznos_rsd: this.iznos_rsd.value,
-    iznos_eur: this.iznos_eur.value,
-    dostava: this.dostava.value,
-    placanje: this.placanje.value,
-    napomena: this.napomena.value
-  };
+  pakovanjeEl.addEventListener('change', updateIznos);
+  kolicinaEl.addEventListener('input', updateIznos);
+  updateIznos();
 
-  // Prikaz potvrde na ekranu
-  potvrdaEl.style.display = 'block';
-  setTimeout(() => { potvrdaEl.style.display = 'none'; }, 5000); // 5 sekundi
+  forma.addEventListener('submit', function(e){
+    e.preventDefault();
 
-  // Slanje mejla
-  emailjs.send('service_rxj533m','template_5o6etkn', formData)
-    .then(() => {
-      console.log("Porudžbina poslata!");
-      forma.reset();
-      updateIznos();
-    }, (error) => {
-      console.error("EmailJS error:", error);
-      alert("Greška pri slanju. Proveri EmailJS konfiguraciju.");
-    });
-});
-</script>
+    const formData = {
+      ime: this.ime.value,
+      prezime: this.prezime.value,
+      email: this.email.value,
+      telefon: this.telefon.value,
+      adresa: this.adresa.value,
+      grad: this.grad.value,
+      postanski_broj: this.postanski_broj.value,
+      pakovanje: this.pakovanje.value,
+      kolicina: this.kolicina.value,
+      iznos_rsd: this.iznos_rsd.value,
+      iznos_eur: this.iznos_eur.value,
+      dostava: this.dostava.value,
+      placanje: this.placanje.value,
+      napomena: this.napomena.value
+    };
 
-</body>
+    // Pošalji mejl kupcu
+    emailjs.send('service_rxj533m', 'template_5o6etkn', formData)
+      .then(() => {}, (error) => { console.error("Kupac email error:", error); });
+
+    // Pošalji mejl sebi (administrator)
+    const adminData = {...formData, email: "tvoj-email@domena.com"}; // stavi svoj mejl ovde
+    emailjs.send('service_rxj533m', 'template_5o6etkn', adminData)
+      .then(() => {}, (error) => { console.error("Admin email error:", error); });
+
+    // Prikaz potvrde
+    porukaDiv.innerText = "Hvala! Porudžbina je uspešno poslata.";
+    porukaDiv.style.display = "block";
+    setTimeout(() => { porukaDiv.style.display = "none"; }, 5000);
+
+    forma.reset();
+    updateIznos();
+  });
+      </script>
 </html>
