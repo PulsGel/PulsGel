@@ -123,31 +123,31 @@ button:hover { background-color: #ff4c4c; }
   <input type="text" name="adresa" placeholder="Adresa" required>
   <input type="text" name="grad" placeholder="Grad" required>
   <input type="text" name="postanski_broj" placeholder="Poštanski broj" required>
-
+  
   <label for="pakovanje">Pakovanje:</label>
   <select name="pakovanje" id="pakovanje">
     <option value="30 ml">30 ml</option>
     <option value="50 ml">50 ml</option>
   </select>
-
+  
   <label for="kolicina">Količina:</label>
   <input type="number" name="kolicina" id="kolicina" value="1" min="1">
-
+  
   <input type="text" name="iznos_rsd" id="iznos_rsd" placeholder="Iznos RSD" readonly>
   <input type="text" name="iznos_eur" id="iznos_eur" placeholder="Iznos EUR" readonly>
-
+  
   <label for="dostava">Način isporuke:</label>
   <select name="dostava">
     <option value="Lično preuzimanje">Lično preuzimanje</option>
     <option value="Kurirska služba">Kurirska služba</option>
   </select>
-
+  
   <label for="placanje">Način plaćanja:</label>
   <select name="placanje">
     <option value="Pouzećem">Pouzećem</option>
     <option value="Račun">Račun</option>
   </select>
-
+  
   <textarea name="napomena" placeholder="Napomena"></textarea>
   <button type="submit">Pošalji porudžbinu</button>
 </form>
@@ -155,8 +155,8 @@ button:hover { background-color: #ff4c4c; }
 <div id="poruka-potvrde" style="display:none; color: green; font-weight: bold; margin-top: 15px;"></div>
 
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
+<script>
+  emailjs.init("WKV419-gz6OQWSgRJ");
 
   const forma = document.getElementById('forma-porudzbine');
   const pakovanjeEl = document.getElementById('pakovanje');
@@ -179,7 +179,6 @@ button:hover { background-color: #ff4c4c; }
 
   forma.addEventListener('submit', function(e){
     e.preventDefault();
-
     const formData = {
       ime: this.ime.value,
       prezime: this.prezime.value,
@@ -197,18 +196,16 @@ button:hover { background-color: #ff4c4c; }
       napomena: this.napomena.value
     };
 
-    // Pošalji mejl sebi (administrator)
-    const adminData = {...formData, email: "acakacarevic73@gmail.com"}; // tvoj mejl
+    // Pošalji mejl samo sebi
+    const adminData = {...formData, email: "acakacarevic73@gmail.com"};
     emailjs.send('service_rxj533m', 'template_5o6etkn', adminData)
-      .then(()=>{
+      .then(() => {
         porukaDiv.innerText = "Hvala! Porudžbina je uspešno poslata.";
         porukaDiv.style.display = "block";
-        setTimeout(()=>{ porukaDiv.style.display = "none"; forma.reset(); updateIznos(); }, 5000);
-      }, (error)=>{
-        console.error("Greška pri slanju:", error);
-        alert("Greška pri slanju. Proverite EmailJS konzolu.");
-      });
+        setTimeout(() => { porukaDiv.style.display = "none"; forma.reset(); updateIznos(); }, 5000);
+      }, (error) => { console.error("Admin email error:", error); });
+
   });
-      </script>
+</script>
 </body>
 </html>
