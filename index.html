@@ -211,7 +211,7 @@ const kolicinaEl = document.getElementById('kolicina');
 const iznosRsdEl = document.getElementById('iznos_rsd');
 const iznosEurEl = document.getElementById('iznos_eur');
 
-// NOVI ELEMENTI
+// Elementi modala
 const pregledModal = document.getElementById('pregledModal');
 const detaljiIsporuke = document.getElementById('detaljiIsporuke');
 const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
@@ -219,6 +219,11 @@ const dugmeIzmeni = document.getElementById('izmijeniPodatke');
 
 // Čuva podatke iz forme privremeno
 let globalFormData = {}; 
+
+// Vaši ID-ovi za EmailJS
+const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; // Vaš ID za notifikaciju (Adminu)
+const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; // Novi ID za potvrdu (Kupcu)
+const SERVICE_ID = 'service_rxj533m';      // Vaš Service ID
 
 // Funkcija za automatski preračun iznosa (ostaje ista)
 function updateIznos() {
@@ -233,26 +238,43 @@ pakovanjeEl.addEventListener('change', updateIznos);
 kolicinaEl.addEventListener('input', updateIznos);
 updateIznos();
 
-// **FUNKCIJA ZA KONAČNO SLANJE (EmailJS)**
+// **FUNKCIJA ZA KONAČNO SLANJE (EmailJS sa dvostrukim slanjem)**
 function sendMail() {
-    // Koristi globalFormData, koji je popunjen u prikaziPregled()
-    emailjs.send('service_rxj533m','template_5o6etkn', globalFormData)
+    // 1. SLANJE VAMA (ADMINISTRATORU)
+    const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
+
+    // 2. SLANJE KUPCU (POTVRDA)
+    // Ovi podaci se šalju u šablon KUPAC_TEMPLATE_ID
+    const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
+        
+    // Čekamo da se oba slanja završe
+    Promise.all([slanjeVama, slanjeKupcu])
         .then(() => {
-            alert("Porudžbina uspešno potvrđena i poslata!");
+            alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
             forma.reset();
-            updateIznos(); // Resetuje i iznose
-            pregledModal.style.display = 'none'; // Sakrij modal
-        }, (error) => {
-            console.error("EmailJS error:", error);
-            alert("Greška pri slanju. Proveri EmailJS konfiguraciju ili internet vezu.");
-            pregledModal.style.display = 'none'; // Sakrij modal čak i pri grešci
+            updateIznos(); 
+            pregledModal.style.display = 'none';
+        })
+        .catch((error) => {
+            console.error("Greška pri slanju jedne ili obe poruke:", error);
+            alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+            pregledModal.style.display = 'none';
         });
+
 }
 
 
-// **FUNKCIJA ZA PRIKAZ PREGLEDA** (Novi Prvi Korak)
+// **FUNKCIJA ZA PRIKAZ PREGLEDA** (Prvi Korak: Sakupljanje podataka i prikaz modala)
 forma.addEventListener('submit', function(e){
-    e.preventDefault(); // *** KLJUČNO: SPREČAVA MOMENTALNO SLANJE ***
+    e.preventDefault(); 
+    
+    // Provera da li su sva obavezna polja popunjena pre nego što se prikaže modal (HTML5 validacija ovo obično rešava)
+    if (!forma.checkValidity()) {
+        alert("Molimo popunite sva obavezna polja!");
+        // Opcionalno, pokrenite submit da bi brauzer prikazao standardne poruke za greške
+        forma.reportValidity(); 
+        return; 
+    }
 
     // Prikupljanje podataka u globalnu varijablu
     globalFormData = {
@@ -272,7 +294,7 @@ forma.addEventListener('submit', function(e){
         napomena: this.napomena.value || 'Nema napomene'
     };
 
-    // Generisanje HTML prikaza u modalu
+    // Generisanje HTML prikaza u modalu (Ostaje isto kao pre)
     detaljiIsporuke.innerHTML = `
         <p><strong>Ime i Prezime:</strong> ${globalFormData.ime} ${globalFormData.prezime}</p>
         <p><strong>Email:</strong> ${globalFormData.email}</p>
