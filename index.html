@@ -115,7 +115,7 @@ button:hover { background-color: #ff4c4c; }
 </ul>
 
 <h2>🔘 11️⃣ Porudžbina</h2>
-<form id="order-form">
+<form id="forma-porudzbine">
   <input type="text" name="ime" placeholder="Ime" required>
   <input type="text" name="prezime" placeholder="Prezime" required>
   <input type="email" name="email" placeholder="Email" required>
@@ -154,74 +154,61 @@ button:hover { background-color: #ff4c4c; }
 
 <div id="poruka-potvrde" style="display:none; color: green; font-weight: bold; margin-top: 15px;"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script>
-  (function() {
-    emailjs.init("WKV419-gz6OQWSgRJ"); // Tvoj public key
-  })();
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
 
-  document.getElementById("forma-porudzbine").addEventListener("submit", function(e) {
+  const forma = document.getElementById('forma-porudzbine');
+  const pakovanjeEl = document.getElementById('pakovanje');
+  const kolicinaEl = document.getElementById('kolicina');
+  const iznosRsdEl = document.getElementById('iznos_rsd');
+  const iznosEurEl = document.getElementById('iznos_eur');
+  const porukaDiv = document.getElementById('poruka-potvrde');
+
+  function updateIznos() {
+    const kolicina = parseInt(kolicinaEl.value) || 1;
+    let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+    let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+    iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+    iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+  }
+
+  pakovanjeEl.addEventListener('change', updateIznos);
+  kolicinaEl.addEventListener('input', updateIznos);
+  updateIznos();
+
+  forma.addEventListener('submit', function(e){
     e.preventDefault();
 
-    // prikaži formu za potvrdu pre slanja
-    const forma = e.target;
-    const formData = new FormData(forma);
-    const ime = formData.get("ime");
-    const prezime = formData.get("prezime");
-    const email = formData.get("email");
-    const adresa = formData.get("adresa");
-    const grad = formData.get("grad");
-    const kolicina = formData.get("kolicina");
-    const pakovanje = formData.get("pakovanje");
-    const dostava = formData.get("dostava");
-    const placanje = formData.get("placanje");
+    const formData = {
+      ime: this.ime.value,
+      prezime: this.prezime.value,
+      email: this.email.value,
+      telefon: this.telefon.value,
+      adresa: this.adresa.value,
+      grad: this.grad.value,
+      postanski_broj: this.postanski_broj.value,
+      pakovanje: this.pakovanje.value,
+      kolicina: this.kolicina.value,
+      iznos_rsd: this.iznos_rsd.value,
+      iznos_eur: this.iznos_eur.value,
+      dostava: this.dostava.value,
+      placanje: this.placanje.value,
+      napomena: this.napomena.value
+    };
 
-    const potvrda = document.createElement("div");
-    potvrda.style.position = "fixed";
-    potvrda.style.top = "0";
-    potvrda.style.left = "0";
-    potvrda.style.width = "100%";
-    potvrda.style.height = "100%";
-    potvrda.style.background = "rgba(0,0,0,0.8)";
-    potvrda.style.color = "#fff";
-    potvrda.style.display = "flex";
-    potvrda.style.flexDirection = "column";
-    potvrda.style.alignItems = "center";
-    potvrda.style.justifyContent = "center";
-    potvrda.style.zIndex = "9999";
-    potvrda.innerHTML = `
-      <div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
-        <h3>Potvrda porudžbine</h3>
-        <p><b>${ime} ${prezime}</b></p>
-        <p>${adresa}, ${grad}</p>
-        <p>Pakovanje: ${pakovanje} (${kolicina} kom)</p>
-        <p>Dostava: ${dostava}</p>
-        <p>Plaćanje: ${placanje}</p>
-        <p>Email: ${email}</p>
-        <button id="potvrdi" style="margin-top:15px;background:#0f0;color:#000;padding:8px 16px;border:none;border-radius:5px;cursor:pointer;">Potvrdi porudžbinu</button>
-      </div>
-    `;
-    document.body.appendChild(potvrda);
-
-    document.getElementById("potvrdi").addEventListener("click", function() {
-      emailjs.sendForm('service_rxj533m', 'template_5o6etkn', forma)
-        .then(function() {
-          potvrda.innerHTML = `<div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
-            <h3>Porudžbina uspešno poslata!</h3>
-            <p>Hvala vam na poverenju.</p>
-          </div>`;
-          setTimeout(() => potvrda.remove(), 5000);
-          forma.reset();
-        }, function(error) {
-          potvrda.innerHTML = `<div style="background:#222;padding:20px;border-radius:10px;max-width:400px;text-align:center;">
-            <h3>Greška pri slanju!</h3>
-            <p>Proverite EmailJS konzolu.</p>
-          </div>`;
-          console.log('Greška:', error);
-          setTimeout(() => potvrda.remove(), 5000);
-        });
-    });
+    // Pošalji mejl sebi (administrator)
+    const adminData = {...formData, email: "acakacarevic73@gmail.com"}; // tvoj mejl
+    emailjs.send('service_rxj533m', 'template_5o6etkn', adminData)
+      .then(()=>{
+        porukaDiv.innerText = "Hvala! Porudžbina je uspešno poslata.";
+        porukaDiv.style.display = "block";
+        setTimeout(()=>{ porukaDiv.style.display = "none"; forma.reset(); updateIznos(); }, 5000);
+      }, (error)=>{
+        console.error("Greška pri slanju:", error);
+        alert("Greška pri slanju. Proverite EmailJS konzolu.");
+      });
   });
-</script>
+      </script>
 </body>
 </html>
