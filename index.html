@@ -115,111 +115,31 @@ button:hover { background-color: #ff4c4c; }
 </ul>
 
 <h2>🔘 11️⃣ Porudžbina</h2>
-
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULS Gel – Porudžbina</title>
+<title>PULS Gel - Porudžbina</title>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
+  (function(){ emailjs.init("WKV419-gz6OQWSgRJ"); })();
 </script>
 <style>
-/* Popup crna tema */
-#popup {
-  display: none; 
-  position: fixed; 
-  top: 0; left: 0; 
-  width: 100%; height: 100%; 
-  background: rgba(0,0,0,0.8); 
-  justify-content: center; 
-  align-items: center; 
-  z-index: 9999;
-}
-
-#popup-content {
-  background: #111; 
-  color: #fff; 
-  padding: 25px; 
-  border-radius: 15px; 
-  width: 90%; 
-  max-width: 500px;
-  box-shadow: 0 0 15px #b22222;
-}
-
-#popup h2 {
-  color: #ff4c4c;
-  margin-top: 0;
-  text-align: center;
-}
-
-#popup-info {
-  margin: 15px 0;
-  line-height: 1.4;
-}
-
-#confirm-btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  background-color: #b22222;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#confirm-btn:hover {
-  background-color: #ff4c4c;
-}
-
-/* Forma na crnoj temi */
-form#forma-porudzbine input,
-form#forma-porudzbine select,
-form#forma-porudzbine textarea,
-form#forma-porudzbine button {
-  background-color: #222;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-form#forma-porudzbine input[readonly] {
-  background-color: #333;
-  cursor: not-allowed;
-}
-
-form#forma-porudzbine button {
-  background-color: #b22222;
-  color: #fff;
-  cursor: pointer;
-}
-
-form#forma-porudzbine button:hover {
-  background-color: #ff4c4c;
-}
-
-/* Poruka potvrde */
-#thanks-msg {
-  display: none;
-  color: #00ff7f;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 15px;
-}
+body { font-family: Arial, sans-serif; background: #111; color: #fff; margin: 0; padding: 0; }
+form { display: flex; flex-direction: column; max-width: 500px; margin: 20px auto; padding: 20px; background-color: #222; border-radius: 10px; }
+input, select, textarea, button { margin: 8px 0; padding: 10px; border-radius: 5px; border: 1px solid #444; background-color: #333; color: #fff; font-size: 16px; }
+input[readonly] { background-color: #444; cursor: not-allowed; }
+button { background-color: #b22222; color: #fff; border: none; cursor: pointer; }
+button:hover { background-color: #ff4c4c; }
+#popup { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); justify-content:center; align-items:center; }
+#popup-content { background:#fff; color:#000; padding:20px; border-radius:10px; width:90%; max-width:500px; }
+#thanks-msg { display:none; color: green; font-size: 20px; text-align: center; margin-top:20px; }
 </style>
 </head>
 <body>
 
-<h1>🌙 PULS – Kada telo pamti dodir</h1>
+<h1 style="text-align:center;">PULS Gel – Porudžbina</h1>
 
 <form id="forma-porudzbine">
   <input type="text" name="ime" placeholder="Ime" required>
@@ -229,103 +149,103 @@ form#forma-porudzbine button:hover {
   <input type="text" name="adresa" placeholder="Adresa" required>
   <input type="text" name="grad" placeholder="Grad" required>
   <input type="text" name="postanski_broj" placeholder="Poštanski broj" required>
-
+  
   <label for="pakovanje">Pakovanje:</label>
   <select name="pakovanje" id="pakovanje">
     <option value="30 ml">30 ml</option>
     <option value="50 ml">50 ml</option>
   </select>
-
+  
   <label for="kolicina">Količina:</label>
   <input type="number" name="kolicina" id="kolicina" value="1" min="1">
-
+  
   <input type="text" name="iznos_rsd" id="iznos_rsd" placeholder="Iznos RSD" readonly>
   <input type="text" name="iznos_eur" id="iznos_eur" placeholder="Iznos EUR" readonly>
-
+  
   <label for="dostava">Način isporuke:</label>
   <select name="dostava">
     <option value="Lično preuzimanje">Lično preuzimanje</option>
     <option value="Kurirska služba">Kurirska služba</option>
   </select>
-
+  
   <label for="placanje">Način plaćanja:</label>
   <select name="placanje">
     <option value="Pouzećem">Pouzećem</option>
     <option value="Račun">Račun</option>
   </select>
-
+  
   <textarea name="napomena" placeholder="Napomena"></textarea>
-  <button type="submit">Pošalji porudžbinu</button>
+  <button type="submit">Pregledaj porudžbinu</button>
 </form>
 
+<div id="popup">
+  <div id="popup-content">
+    <h2>Proverite vašu porudžbinu</h2>
+    <div id="popup-info"></div>
+    <button id="confirm-btn">Potvrdi porudžbinu</button>
+  </div>
+</div>
+
 <div id="thanks-msg">Hvala! Vaša porudžbina je primljena.</div>
+
 <script>
-  // Inicijalizacija EmailJS
-  emailjs.init("WKV419-gz6OQWSgRJ"); // tvoj Public Key
+const forma = document.getElementById('forma-porudzbine');
+const pakovanjeEl = document.getElementById('pakovanje');
+const kolicinaEl = document.getElementById('kolicina');
+const iznosRsdEl = document.getElementById('iznos_rsd');
+const iznosEurEl = document.getElementById('iznos_eur');
+const popup = document.getElementById('popup');
+const popupInfo = document.getElementById('popup-info');
+const confirmBtn = document.getElementById('confirm-btn');
+const thanksMsg = document.getElementById('thanks-msg');
 
-  const forma = document.getElementById('forma-porudzbine');
-  const pakovanjeEl = document.getElementById('pakovanje');
-  const kolicinaEl = document.getElementById('kolicina');
-  const iznosRsdEl = document.getElementById('iznos_rsd');
-  const iznosEurEl = document.getElementById('iznos_eur');
-  const popup = document.getElementById('popup');
-  const popupInfo = document.getElementById('popup-info');
-  const confirmBtn = document.getElementById('confirm-btn');
-  const thanksMsg = document.getElementById('thanks-msg');
+// Preračunavanje iznosa
+function updateIznos() {
+  const kolicina = parseInt(kolicinaEl.value) || 1;
+  let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
+  let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
+  iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
+  iznosEurEl.value = (cenaEur * kolicina) + " EUR";
+}
+pakovanjeEl.addEventListener('change', updateIznos);
+kolicinaEl.addEventListener('input', updateIznos);
+updateIznos();
 
-  // Preračunavanje cena
-  function updateIznos() {
-    const kolicina = parseInt(kolicinaEl.value) || 1;
-    let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
-    let cenaEur = pakovanjeEl.value === "30 ml" ? 12 : 18;
-    iznosRsdEl.value = (cenaRsd * kolicina) + " RSD";
-    iznosEurEl.value = (cenaEur * kolicina) + " EUR";
-  }
-  pakovanjeEl.addEventListener('change', updateIznos);
-  kolicinaEl.addEventListener('input', updateIznos);
-  updateIznos();
+// Otvaranje popup-a
+forma.addEventListener('submit', function(e){
+  e.preventDefault();
+  const formData = new FormData(forma);
+  let html = '';
+  formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
+  popupInfo.innerHTML = html;
+  popup.style.display = 'flex';
+});
 
-  // Prikaz popup-a za potvrdu
-  forma.addEventListener('submit', function(e){
-    e.preventDefault();
-    const formData = new FormData(forma);
-    let html = '';
-    formData.forEach((value,key)=>{ html += `<b>${key}:</b> ${value}<br>`; });
-    popupInfo.innerHTML = html;
-    popup.style.display = 'flex';
+// Potvrda porudžbine
+confirmBtn.addEventListener('click', function(){
+  const data = {};
+  new FormData(forma).forEach((value,key)=>{ data[key]=value; });
+
+  // Slanje mejla preko EmailJS na tvoj mejl, Reply-To kupac
+  emailjs.send('service_rxj533m','template_ex2i1cv',{
+    ...data,
+    to_email: 'acakacarevic73@gmail.com',
+    reply_to: data.email
+  })
+  .then(()=>{
+    popup.style.display='none';
+    thanksMsg.style.display='block';
+    setTimeout(()=>{ thanksMsg.style.display='none'; forma.reset(); updateIznos(); }, 5000);
+  }, (err)=>{
+    alert("Greška pri slanju. Proverite EmailJS konzolu.");
+    console.error(err);
   });
-
-  // Potvrda porudžbine
-  confirmBtn.addEventListener('click', function(){
-    const data = {};
-    new FormData(forma).forEach((value,key)=>{ data[key]=value; });
-
-    // 1️⃣ Pošalji mejl sebi (admin)
-    emailjs.send('service_rxj533m','template_5o6etkn',{
-      ...data,
-      email: "acakacarevic73@gmail.com", // tvoj mejl u To
-      reply_to: data.email // mejl kupca za Reply-To
-    })
-    .then(()=>{ console.log("Admin email poslat"); })
-    .catch(err=>{ console.error("Admin email error:", err); alert("Greška admin email"); });
-
-    // 2️⃣ Pošalji mejl kupcu
-    emailjs.send('service_rxj533m','template_ex2i1cv',{
-      ...data,
-      to_email: data.email // ovde ide email kupca
-    })
-    .then(()=>{
-      popup.style.display='none';
-      thanksMsg.style.display='block';
-      setTimeout(()=>{ thanksMsg.style.display='none'; forma.reset(); updateIznos(); }, 5000);
-      console.log("Kupac email poslat");
-    })
-    .catch(err=>{
-      alert("Greška pri slanju mejla kupcu. Proveri konzolu.");
-      console.error("Kupac email error:", err);
-    });
-  });
+});
 </script>
+
+</body>
+</html>
+  
 
 </body>
 </html>
