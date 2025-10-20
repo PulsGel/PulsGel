@@ -23,6 +23,51 @@ input, select, textarea, button { margin: 8px 0; padding: 10px; border-radius: 5
 input[readonly] { background-color: #333; cursor: not-allowed; }
 button { background-color: #b22222; color: #fff; border: none; cursor: pointer; }
 button:hover { background-color: #ff4c4c; }
+
+/* **NOVI STILOVI ZA MODAL** */
+#pregledModal {
+    display: none; /* Inicijalno sakriveno */
+    position: fixed;
+    z-index: 101; /* Iznad svega ostalog */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8); /* Zatamnjenje pozadine */
+}
+.modal-sadrzaj {
+    background-color: #111;
+    margin: 15% auto; /* 15% odozgo i centrirano */
+    padding: 20px;
+    border: 1px solid #b22222;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+}
+.modal-sadrzaj h2 {
+    color: #ff4c4c;
+    text-align: center;
+}
+.modal-sadrzaj p {
+    color: #ccc;
+    margin-bottom: 5px;
+}
+.modal-sadrzaj strong {
+    color: #fff;
+    display: inline-block;
+    width: 120px; /* Poravnanje radi čitljivosti */
+}
+#potvrdiPorudzbinu {
+    background-color: #b22222;
+    margin-top: 20px;
+}
+#izmijeniPodatke {
+    background-color: #444;
+}
+#izmijeniPodatke:hover {
+    background-color: #666;
+}
 </style>
 </head>
 <body>
@@ -31,8 +76,6 @@ button:hover { background-color: #ff4c4c; }
 <p>Jedan Puls. Hiljadu načina da ga osetiš.</p>
 
 <h2>🔥 1️⃣ Uvod</h2>
-<p>Puls je prirodna, snažna formula koja pojačava erekciju, cirkulaciju, stimulaciju i osećaj užitka u svim erogenim zonama. Idealan je za muškarce i žene koji žele intenzivniji i dugotrajan kontakt sa partnerom.</p>
-
 <article class="puls-card">
   <h3>Za muškarce</h3>
   <p>Brza, snažna i postojana erekcija — efekat uporediv sa tabletama, uz pojačan užitak i dublji, intenzivniji seksualni doživljaj.</p>
@@ -149,6 +192,18 @@ button:hover { background-color: #ff4c4c; }
   <button type="submit">Pošalji porudžbinu</button>
 </form>
 
+<div id="pregledModal">
+    <div class="modal-sadrzaj">
+        <h2>Pregled Porudžbine</h2>
+        <div id="detaljiIsporuke">
+            </div>
+        <p style="text-align: center; color: #ff4c4c;">Proverite podatke pre konačne potvrde!</p>
+
+        <button type="button" id="potvrdiPorudzbinu">Potvrdi Porudžbinu</button>
+        
+        <button type="button" id="izmijeniPodatke">Izmeni Podatke</button>
+    </div>
+</div>
 <script type="text/javascript">
 const forma = document.getElementById('forma-porudzbine');
 const pakovanjeEl = document.getElementById('pakovanje');
@@ -156,7 +211,16 @@ const kolicinaEl = document.getElementById('kolicina');
 const iznosRsdEl = document.getElementById('iznos_rsd');
 const iznosEurEl = document.getElementById('iznos_eur');
 
-// Funkcija za automatski preračun iznosa
+// NOVI ELEMENTI
+const pregledModal = document.getElementById('pregledModal');
+const detaljiIsporuke = document.getElementById('detaljiIsporuke');
+const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
+const dugmeIzmeni = document.getElementById('izmijeniPodatke');
+
+// Čuva podatke iz forme privremeno
+let globalFormData = {}; 
+
+// Funkcija za automatski preračun iznosa (ostaje ista)
 function updateIznos() {
   const kolicina = parseInt(kolicinaEl.value) || 1;
   let cenaRsd = pakovanjeEl.value === "30 ml" ? 1500 : 2200;
@@ -169,36 +233,72 @@ pakovanjeEl.addEventListener('change', updateIznos);
 kolicinaEl.addEventListener('input', updateIznos);
 updateIznos();
 
-// Slanje forme preko EmailJS
+// **FUNKCIJA ZA KONAČNO SLANJE (EmailJS)**
+function sendMail() {
+    // Koristi globalFormData, koji je popunjen u prikaziPregled()
+    emailjs.send('service_rxj533m','template_5o6etkn', globalFormData)
+        .then(() => {
+            alert("Porudžbina uspešno potvrđena i poslata!");
+            forma.reset();
+            updateIznos(); // Resetuje i iznose
+            pregledModal.style.display = 'none'; // Sakrij modal
+        }, (error) => {
+            console.error("EmailJS error:", error);
+            alert("Greška pri slanju. Proveri EmailJS konfiguraciju ili internet vezu.");
+            pregledModal.style.display = 'none'; // Sakrij modal čak i pri grešci
+        });
+}
+
+
+// **FUNKCIJA ZA PRIKAZ PREGLEDA** (Novi Prvi Korak)
 forma.addEventListener('submit', function(e){
-  e.preventDefault();
+    e.preventDefault(); // *** KLJUČNO: SPREČAVA MOMENTALNO SLANJE ***
 
-  const formData = {
-    ime: this.ime.value,
-    prezime: this.prezime.value,
-    email: this.email.value,
-    telefon: this.telefon.value,
-    adresa: this.adresa.value,
-    grad: this.grad.value,
-    postanski_broj: this.postanski_broj.value,
-    pakovanje: this.pakovanje.value,
-    kolicina: this.kolicina.value,
-    iznos_rsd: this.iznos_rsd.value,
-    iznos_eur: this.iznos_eur.value,
-    dostava: this.dostava.value,
-    placanje: this.placanje.value,
-    napomena: this.napomena.value
-  };
+    // Prikupljanje podataka u globalnu varijablu
+    globalFormData = {
+        ime: this.ime.value,
+        prezime: this.prezime.value,
+        email: this.email.value,
+        telefon: this.telefon.value,
+        adresa: this.adresa.value,
+        grad: this.grad.value,
+        postanski_broj: this.postanski_broj.value,
+        pakovanje: this.pakovanje.value,
+        kolicina: this.kolicina.value,
+        iznos_rsd: this.iznos_rsd.value,
+        iznos_eur: this.iznos_eur.value,
+        dostava: this.dostava.value,
+        placanje: this.placanje.value,
+        napomena: this.napomena.value || 'Nema napomene'
+    };
 
-  emailjs.send('service_rxj533m','template_5o6etkn', formData)
-    .then(() => {
-      alert("Porudžbina poslata!");
-      forma.reset();
-      updateIznos();
-    }, (error) => {
-      console.error("EmailJS error:", error);
-      alert("Greška pri slanju. Proveri EmailJS konfiguraciju.");
-    });
+    // Generisanje HTML prikaza u modalu
+    detaljiIsporuke.innerHTML = `
+        <p><strong>Ime i Prezime:</strong> ${globalFormData.ime} ${globalFormData.prezime}</p>
+        <p><strong>Email:</strong> ${globalFormData.email}</p>
+        <p><strong>Telefon:</strong> ${globalFormData.telefon || 'Nije navedeno'}</p>
+        <hr style="border-color:#444;">
+        <p><strong>Adresa:</strong> ${globalFormData.adresa}, ${globalFormData.postanski_broj} ${globalFormData.grad}</p>
+        <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
+        <p><strong>Plaćanje:</strong> ${globalFormData.placanje}</p>
+        <hr style="border-color:#444;">
+        <p><strong>Proizvod:</strong> PULS Gel ${globalFormData.pakovanje}</p>
+        <p><strong>Količina:</strong> ${globalFormData.kolicina}</p>
+        <p><strong>Ukupan Iznos:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.iznos_rsd}</span> (${globalFormData.iznos_eur})</p>
+        <hr style="border-color:#444;">
+        <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
+    `;
+
+    // Prikaz Modala
+    pregledModal.style.display = 'block';
+});
+
+// **FUNKCIJA ZA POTVRDU** (Drugi i konačni Korak)
+dugmePotvrdi.addEventListener('click', sendMail);
+
+// **FUNKCIJA ZA IZMENU (Zatvaranje Modala)**
+dugmeIzmeni.addEventListener('click', function() {
+    pregledModal.style.display = 'none';
 });
 </script>
 
