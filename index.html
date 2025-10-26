@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
@@ -12,8 +12,8 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
   (function(){
-    // Inicijalizacija ostaje ista. Promenite ovaj ključ ako koristite drugi EmailJS nalog!
-    emailjs.init("WKV419-gz6OQWSgRJ"); // Public Key (User ID)
+    // PROVERITE DA LI JE OVAJ KLJUČ I DALJE VAŽEĆI ZA VAŠ EmailJS NALOG
+    emailjs.init("WKV419-gz6OQWSgRJ"); 
   })();
 </script>
 <style>
@@ -127,25 +127,21 @@ button:hover { background-color: #ff4c4c; }
 
 <h2>🔥 2. Za žene</h2>
 <article class="puls-card">
-  <h3>Za žene</h3>
   <p>Vidljivo podržava prirodnu vlažnost i punoću, budi želju i oživljava intimne zone.</p>
 </article>
 
 <h2>🔥 3. Za oralni sex</h2>
 <article class="puls-card">
-  <h3>Za oralni sex</h3>
   <p>Prijatan miris i ukus. Nežan, siguran i potpuno prijatan u kontaktu sa usnama i jezikom.</p>
 </article>
 
 <h2>🔥 4. Za analni sex</h2>
 <article class="puls-card">
-  <h3>Za analni sex</h3>
   <p>Omogućava lakšu penetraciju, dugotrajan klizak osećaj i nadražaj koji obuhvata celu zonu užitka.</p>
 </article>
 
 <h2>🔥 5. Za solo trenutke</h2>
 <article class="puls-card">
-  <h3>Za solo trenutke</h3>
   <p>Savršen saputnik za istraživanje sopstvenih želja. Kompatibilan sa svim seksualnim igračkama — za maksimalan, prirodan užitak.</p>
 </article>
 
@@ -242,7 +238,7 @@ button:hover { background-color: #ff4c4c; }
   </select>
 
   <input type="text" name="popust_prikaz" id="popust_prikaz_polje" placeholder="Popust (RSD)" readonly>
-  <p id="popust_prikaz"></p> <div id="ukupno_za_placanje"></div>
+  <p id="popust_prikaz"></p> <div id="ukupno_za_placanje">Ukupno za plaćanje: ...</div>
   
   <label for="placanje">Način plaćanja:</label>
   <select name="placanje">
@@ -287,14 +283,14 @@ const KUPAC_TEMPLATE_ID = 'template_u8dh76a';
 const SERVICE_ID = 'service_rxj533m';      
 const BREND_NAZIV = 'PulsGel';
 
-// NOVE KONSTANTE ZA PRAG
+// KONSTANTE ZA PRAG (4000 RSD dostava, 9000 RSD popust)
 const CENA_KURIRSKE_SLUZBE = 400; 
 const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
 const PRAG_ZA_POPUST = 9000; 
 const PROCENT_POPUSTA = 0.10; 
 // =====================
 
-// FUNKCIJA ZA AUTOMATSKI PRERAČUN (Ažurirana logika za 4000/9000)
+// FUNKCIJA ZA AUTOMATSKI PRERAČUN
 function updateIznos() {
   const kolicina = parseInt(kolicinaEl.value) || 1;
   
@@ -326,7 +322,6 @@ function updateIznos() {
   
   // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
   if (iznosPrePopusta >= PRAG_ZA_POPUST) {
-      // Popust se računa na iznos sa dostavom (ako nije besplatna)
       popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
       popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
   }
@@ -362,11 +357,11 @@ function updateIznos() {
 pakovanjeEl.addEventListener('change', updateIznos);
 kolicinaEl.addEventListener('input', updateIznos);
 dostavaEl.addEventListener('change', updateIznos);
+// Odmah pozivanje updateIznos() na startu da se popune polja
 updateIznos(); 
 
 
-// **FUNKCIJA ZA KONAČNO SLANJE**
-function sendMail() {
+// **FUNKCIJA ZA KONAČNO SLANJE** function sendMail() {
     dugmePotvrdi.disabled = true;
     dugmePotvrdi.textContent = 'Šaljem...';
 
@@ -460,6 +455,11 @@ function sendMail() {
 });
 
 // **FUNKCIJA ZA POTVRDU**
+const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
+const dugmeIzmeni = document.getElementById('izmijeniPodatke');
+const pregledModal = document.getElementById('pregledModal');
+const detaljiIsporuke = document.getElementById('detaljiIsporuke');
+
 dugmePotvrdi.addEventListener('click', sendMail);
 
 // **FUNKCIJA ZA IZMENU (Zatvaranje Modala)**
