@@ -10,11 +10,6 @@
 <meta property="og:description" content="PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak.">
 <meta property="og:type" content="product">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function(){
-    emailjs.init("WKV419-gz6OQWSgRJ"); 
-  })();
-</script>
 <style>
 /* STILOVI OSTALI ISTI KAO PRETHODNO */
 body { background-color: #000; color: #fff; font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
@@ -188,8 +183,8 @@ button:hover { background-color: #ff4c4c; }
 
 <h2>💧 13. Pakovanja i cena</h2>
 <ul>
-  <li>30 ml — 1500 RSD / 12 EUR</li>
-  <li>50 ml — 2200 RSD / 18 EUR</li>
+  <li>30 ml — 1500 RSD</li>
+  <li>50 ml — 2200 RSD</li>
 </ul>
 
 <h2>⚠️ 14. Napomena / Bezbednost</h2>
@@ -220,15 +215,14 @@ button:hover { background-color: #ff4c4c; }
   
   <label for="pakovanje">Pakovanje:</label>
   <select name="pakovanje" id="pakovanje">
-    <option value="30 ml" data-cena-rsd="1500" data-cena-eur="12">30 ml (1500 RSD)</option>
-    <option value="50 ml" data-cena-rsd="2200" data-cena-eur="18">50 ml (2200 RSD)</option>
+    <option value="30 ml" data-cena-rsd="1500">30 ml (1500 RSD)</option>
+    <option value="50 ml" data-cena-rsd="2200">50 ml (2200 RSD)</option>
   </select>
   
   <label for="kolicina">Količina:</label>
   <input type="number" name="kolicina" id="kolicina" value="1" min="1">
   
   <input type="text" name="iznos_rsd" id="iznos_rsd" placeholder="Iznos Proizvoda (RSD)" readonly>
-  <input type="text" name="iznos_eur" id="iznos_eur" placeholder="Iznos Proizvoda (EUR)" readonly>
   
   <label for="dostava">Način isporuke:</label>
   <select name="dostava" id="dostava">
@@ -261,6 +255,7 @@ button:hover { background-color: #ff4c4c; }
         <button type="button" id="izmijeniPodatke">Izmeni Podatke</button>
     </div>
 </div>
+
 <script type="text/javascript">
 
 // Inicijalizacija EmailJS (Može ostati izvan DOMContentLoaded)
@@ -278,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dostavaEl = document.getElementById('dostava');
 
     const iznosRsdEl = document.getElementById('iznos_rsd');
-    const iznosEurEl = document.getElementById('iznos_eur');
+    // const iznosEurEl = document.getElementById('iznos_eur'); // UKLONJENO
     const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
     const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
     const popustPrikazTekstEl = document.getElementById('popust_prikaz');
@@ -305,17 +300,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // FUNKCIJA ZA AUTOMATSKI PRERAČUN
     function updateIznos() {
-      // Provera da li kolicina postoji i parsiranje
-      // Proveravamo da li je vrednost validna pre parsiranja
+      
       const kolicinaValue = parseInt(kolicinaEl.value);
       const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
       
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
-      const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')); 
-      const cenaEur = parseInt(selectedPakovanje.getAttribute('data-cena-eur')); 
+      // UKLONJENO PARSIRANJE EUR
+      const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
       let medjuzbirRSD = cenaRsd * kolicina;
-      const medjuzbirEUR = cenaEur * kolicina;
+      // const medjuzbirEUR = cenaEur * kolicina; // UKLONJENO
       
       let postarinaRSD = 0;
       let popustIznos = 0;
@@ -350,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Prikaz cena proizvoda
       iznosRsdEl.value = medjuzbirRSD + " RSD";
-      iznosEurEl.value = medjuzbirEUR + " EUR";
+      // iznosEurEl.value = medjuzbirEUR + " EUR"; // UKLONJENO
       
       // Prikaz popusta (polje i tekst)
       if (popustIznos > 0) {
@@ -365,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Prikaz ukupne cene sa dostavom i popustom
       ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
       
+      // UKLONJENO vraćanje EUR valute
       return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip };
     }
 
@@ -376,16 +371,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // *** KRITIČNA INICIJALIZACIJA ZA POKRETANJE PRORAČUNA ***
     
-    // 1. Ručno postavljamo Količinu na minimalnu vrednost (1) ako je polje prazno, 
-    // kako bi proračun krenuo ispravno, bez obzira na keširanje brauzera.
     if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
         kolicinaEl.value = '1';
     }
 
-    // 2. Osiguravamo da se proračun pokrene odmah po učitavanju DOM-a.
     updateIznos(); 
 
-    // 3. Ručno forsiramo događaj 'input' na Količini (najsigurniji način da se osveži forma)
     kolicinaEl.dispatchEvent(new Event('input'));
 
     // ***************************************************************
@@ -425,7 +416,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return; 
         }
 
-        // Pozivamo updateIznos() ponovo pre slanja, za najnovije finansijske podatke
         const finanse = updateIznos(); 
 
         // --- PRIPREMA PODATAKA ZA EMAILJS ---
