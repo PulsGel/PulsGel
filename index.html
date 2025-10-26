@@ -9,6 +9,7 @@
 <meta property="og:title" content="PULS Gel – Prirodni Stimulans za Muškarce i Žene">
 <meta property="og:description" content="PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak.">
 <meta property="og:type" content="product">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 /* STILOVI OSTALI ISTI KAO PRETHODNO */
 body { background-color: #000; color: #fff; font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
@@ -254,11 +255,10 @@ button:hover { background-color: #ff4c4c; }
         <button type="button" id="izmijeniPodatke">Izmeni Podatke</button>
     </div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
 
-// Inicijalizacija EmailJS se dešava ovde jednom
+// Inicijalizacija EmailJS (Može ostati izvan DOMContentLoaded)
 (function(){
   emailjs.init("WKV419-gz6OQWSgRJ"); 
 })();
@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dostavaEl = document.getElementById('dostava');
 
     const iznosRsdEl = document.getElementById('iznos_rsd');
+    // const iznosEurEl = document.getElementById('iznos_eur'); // UKLONJENO
     const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
     const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
     const popustPrikazTekstEl = document.getElementById('popust_prikaz');
@@ -304,9 +305,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
       
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
+      // UKLONJENO PARSIRANJE EUR
       const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
       let medjuzbirRSD = cenaRsd * kolicina;
+      // const medjuzbirEUR = cenaEur * kolicina; // UKLONJENO
       
       let postarinaRSD = 0;
       let popustIznos = 0;
@@ -341,6 +344,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       // Prikaz cena proizvoda
       iznosRsdEl.value = medjuzbirRSD + " RSD";
+      // iznosEurEl.value = medjuzbirEUR + " EUR"; // UKLONJENO
       
       // Prikaz popusta (polje i tekst)
       if (popustIznos > 0) {
@@ -355,6 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Prikaz ukupne cene sa dostavom i popustom
       ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
       
+      // UKLONJENO vraćanje EUR valute
       return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip };
     }
 
@@ -495,3 +500,4 @@ document.addEventListener('DOMContentLoaded', function() {
 }); // Kraj DOMContentLoaded
 </script>
 </body>
+</html>
