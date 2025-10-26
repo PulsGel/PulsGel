@@ -205,7 +205,7 @@ button:hover { background-color: #ff4c4c; }
         <button type="button" id="izmijeniPodatke">Izmeni Podatke</button>
     </div>
 </div>
-<script type="text/javascript">
+        <script type="text/javascript">
 const forma = document.getElementById('forma-porudzbine');
 const pakovanjeEl = document.getElementById('pakovanje');
 const kolicinaEl = document.getElementById('kolicina');
@@ -283,6 +283,12 @@ forma.addEventListener('submit', function(e){
         prezime: this.prezime.value,
         email: this.email.value,
         telefon: this.telefon.value,
+        
+        // **********************************************
+        // NOVI ELEMENT: NAZIV PROIZVODA ZA EMAILJS ŠABLON
+        naziv_proizvoda: 'PULS Gel', 
+        // **********************************************
+        
         adresa: this.adresa.value,
         grad: this.grad.value,
         postanski_broj: this.postanski_broj.value,
@@ -305,7 +311,7 @@ forma.addEventListener('submit', function(e){
         <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
         <p><strong>Plaćanje:</strong> ${globalFormData.placanje}</p>
         <hr style="border-color:#444;">
-        <p><strong>Proizvod:</strong> PULS Gel ${globalFormData.pakovanje}</p>
+        <p><strong>Proizvod:</strong> ${globalFormData.naziv_proizvoda} ${globalFormData.pakovanje}</p>
         <p><strong>Količina:</strong> ${globalFormData.kolicina}</p>
         <p><strong>Ukupan Iznos:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.iznos_rsd}</span> (${globalFormData.iznos_eur})</p>
         <hr style="border-color:#444;">
@@ -324,6 +330,5 @@ dugmeIzmeni.addEventListener('click', function() {
     pregledModal.style.display = 'none';
 });
 </script>
-
 </body>
 </html>
