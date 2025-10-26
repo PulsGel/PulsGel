@@ -1,13 +1,18 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULS Gel – Kada telo pamti dodir</title>
+<title>PULS Gel – Prirodni Stimulans za Muškarce i Žene (100% Zadovoljstvo) | Official</title>
+<meta name="description" content="PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak. Poručite danas i osetite razliku!">
+<meta name="keywords" content="Puls gel, gel za potenciju, prirodni stimulans, intimni gel, gel za parove, jačanje erekcije, vlažnost vagine">
+<meta property="og:title" content="PULS Gel – Prirodni Stimulans za Muškarce i Žene">
+<meta property="og:description" content="PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak.">
+<meta property="og:type" content="product">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
   (function(){
-    // Inicijalizacija ostaje ista
+    // Inicijalizacija ostaje ista. Promenite ovaj ključ ako koristite drugi EmailJS nalog!
     emailjs.init("WKV419-gz6OQWSgRJ"); // Public Key (User ID)
   })();
 </script>
@@ -28,19 +33,19 @@ button:hover { background-color: #ff4c4c; }
 
 /* NOVI STILOVI ZA MODAL */
 #pregledModal {
-    display: none; /* Inicijalno sakriveno */
+    display: none; 
     position: fixed;
-    z-index: 101; /* Iznad svega ostalog */
+    z-index: 101; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.8); /* Zatamnjenje pozadine */
+    background-color: rgba(0,0,0,0.8); 
 }
 .modal-sadrzaj {
     background-color: #111;
-    margin: 15% auto; /* 15% odozgo i centrirano */
+    margin: 15% auto; 
     padding: 20px;
     border: 1px solid #b22222;
     width: 90%;
@@ -58,7 +63,7 @@ button:hover { background-color: #ff4c4c; }
 .modal-sadrzaj strong {
     color: #fff;
     display: inline-block;
-    width: 120px; /* Poravnanje radi čitljivosti */
+    width: 120px; 
 }
 #potvrdiPorudzbinu {
     background-color: #b22222;
@@ -69,6 +74,42 @@ button:hover { background-color: #ff4c4c; }
 }
 #izmijeniPodatke:hover {
     background-color: #666;
+}
+
+/* STILOVI ZA PRIKAZ UKUPNE CENE SA DOSTAVOM */
+#ukupno_za_placanje {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff4c4c;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 15px;
+    border-top: 1px dashed #444;
+    border-bottom: 1px dashed #444;
+}
+/* STILOVI ZA POPUST */
+#popust_prikaz_polje {
+    background-color: #283328; 
+    color: #00ff00; 
+}
+#popust_prikaz {
+    color: #00ff00; 
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+/* STIL ZA INFORMATIVNI TEKST */
+.info-box {
+    background-color: #330000;
+    border: 1px solid #b22222;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.info-box span {
+    color: #00ff00;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -165,31 +206,43 @@ button:hover { background-color: #ff4c4c; }
 
 <h2>🔘 15. Porudžbina</h2>
 <form id="forma-porudzbine">
-  <input type="text" name="ime" placeholder="Ime" required>
-  <input type="text" name="prezime" placeholder="Prezime" required>
-  <input type="email" name="email" placeholder="Email" required>
-  <input type="tel" name="telefon" placeholder="Telefon">
-  <input type="text" name="adresa" placeholder="Adresa">
-  <input type="text" name="grad" placeholder="Grad">
-  <input type="text" name="postanski_broj" placeholder="Poštanski broj">
+  
+  <div class="info-box">
+      <p style="margin: 0; color: #fff;">
+          🚚 Porudžbine preko <span>4000 RSD</span> ostvaruju **BESPLATNU POŠTARINU**.
+      </p>
+      <p style="margin: 5px 0 0 0; color: #fff;">
+          🎁 Porudžbine preko <span>9000 RSD</span> ostvaruju **DODATNIH 10% POPUSTA**.
+      </p>
+  </div>
+  <input type="text" name="ime" placeholder="Ime" required aria-label="Ime">
+  <input type="text" name="prezime" placeholder="Prezime" required aria-label="Prezime">
+  <input type="email" name="email" placeholder="Email" required aria-label="Email adresa">
+  <input type="tel" name="telefon" placeholder="Telefon" aria-label="Telefon">
+  <input type="text" name="adresa" placeholder="Adresa" aria-label="Adresa za dostavu">
+  <input type="text" name="grad" placeholder="Grad" aria-label="Grad">
+  <input type="text" name="postanski_broj" placeholder="Poštanski broj" aria-label="Poštanski broj">
   
   <label for="pakovanje">Pakovanje:</label>
   <select name="pakovanje" id="pakovanje">
-    <option value="30 ml" data-cena-rsd="1500">30 ml (1500 RSD)</option>
-    <option value="50 ml" data-cena-rsd="2200">50 ml (2200 RSD)</option>
+    <option value="30 ml" data-cena-rsd="1500" data-cena-eur="12">30 ml (1500 RSD)</option>
+    <option value="50 ml" data-cena-rsd="2200" data-cena-eur="18">50 ml (2200 RSD)</option>
   </select>
   
   <label for="kolicina">Količina:</label>
   <input type="number" name="kolicina" id="kolicina" value="1" min="1">
   
-  <input type="text" name="iznos_rsd" id="iznos_rsd" placeholder="Ukupan Iznos Proizvoda" readonly>
-  <input type="text" name="iznos_eur" id="iznos_eur" placeholder="Ukupan Iznos Proizvoda (EUR)" readonly>
+  <input type="text" name="iznos_rsd" id="iznos_rsd" placeholder="Iznos Proizvoda (RSD)" readonly>
+  <input type="text" name="iznos_eur" id="iznos_eur" placeholder="Iznos Proizvoda (EUR)" readonly>
   
   <label for="dostava">Način isporuke:</label>
   <select name="dostava" id="dostava">
-    <option value="Lično preuzimanje">Lično preuzimanje (0 RSD)</option>
+    <option value="Lično preuzimanje" data-cena-dostave="0">Lično preuzimanje (0 RSD)</option>
     <option value="Kurirska služba" data-cena-dostave="400">Kurirska služba (400 RSD)</option>
   </select>
+
+  <input type="text" name="popust_prikaz" id="popust_prikaz_polje" placeholder="Popust (RSD)" readonly>
+  <p id="popust_prikaz"></p> <div id="ukupno_za_placanje"></div>
   
   <label for="placanje">Način plaćanja:</label>
   <select name="placanje">
@@ -197,7 +250,7 @@ button:hover { background-color: #ff4c4c; }
     <option value="Račun">Račun</option>
   </select>
   
-  <textarea name="napomena" placeholder="Napomena"></textarea>
+  <textarea name="napomena" placeholder="Napomena" aria-label="Napomena za porudžbinu"></textarea>
   <button type="submit">Pošalji porudžbinu</button>
 </form>
 
@@ -222,78 +275,104 @@ const dostavaEl = document.getElementById('dostava');
 
 const iznosRsdEl = document.getElementById('iznos_rsd');
 const iznosEurEl = document.getElementById('iznos_eur');
+const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
+const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
+const popustPrikazTekstEl = document.getElementById('popust_prikaz');
 
-// Elementi modala
-const pregledModal = document.getElementById('pregledModal');
-const detaljiIsporuke = document.getElementById('detaljiIsporuke');
-const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
-const dugmeIzmeni = document.getElementById('izmijeniPodatke');
-
-// Čuva podatke iz forme privremeno (Sada sa ključevima za EmailJS)
 let globalFormData = {}; 
 
-// Vaši ID-ovi za EmailJS
+// === KONFIGURACIJA ===
 const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
 const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
 const SERVICE_ID = 'service_rxj533m';      
 const BREND_NAZIV = 'PulsGel';
-const CENA_EUR_30ML = 12;
-const CENA_EUR_50ML = 18;
-const CENA_DOSTAVE_RSD = 400; // Fiksna cena kurirske službe
 
-// Funkcija za automatski preračun iznosa (Sada uključuje izračun dostave)
+// NOVE KONSTANTE ZA PRAG
+const CENA_KURIRSKE_SLUZBE = 400; 
+const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
+const PRAG_ZA_POPUST = 9000; 
+const PROCENT_POPUSTA = 0.10; 
+// =====================
+
+// FUNKCIJA ZA AUTOMATSKI PRERAČUN (Ažurirana logika za 4000/9000)
 function updateIznos() {
   const kolicina = parseInt(kolicinaEl.value) || 1;
   
-  // Dohvat cene iz data atributa
-  const selectedOption = pakovanjeEl.options[pakovanjeEl.selectedIndex];
-  const cenaRsd = parseInt(selectedOption.getAttribute('data-cena-rsd')); 
+  const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
+  const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')); 
+  const cenaEur = parseInt(selectedPakovanje.getAttribute('data-cena-eur')); 
   
-  const medjuzbirRSD = cenaRsd * kolicina;
-  let cenaEur = selectedOption.value === "30 ml" ? CENA_EUR_30ML : CENA_EUR_50ML;
+  let medjuzbirRSD = cenaRsd * kolicina;
   const medjuzbirEUR = cenaEur * kolicina;
   
+  let postarinaRSD = 0;
+  let popustIznos = 0;
+  let popustPoruka = '';
+  
+  const dostavaTip = dostavaEl.value;
+
+  // 1. LOGIKA ZA BESPLATNU DOSTAVU (4000 RSD)
+  if (dostavaTip === 'Kurirska služba') {
+    if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
+      postarinaRSD = 0;
+      popustPoruka = "✅ Besplatna poštarina!";
+    } else {
+      postarinaRSD = CENA_KURIRSKE_SLUZBE;
+    }
+  } 
+  
+  // Ukupan iznos PRE popusta
+  let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
+  
+  // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
+  if (iznosPrePopusta >= PRAG_ZA_POPUST) {
+      // Popust se računa na iznos sa dostavom (ako nije besplatna)
+      popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
+      popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
+  }
+
+  // Konačni iznos za plaćanje
+  const ukupnoRSD = iznosPrePopusta - popustIznos;
+
+
+  // AŽURIRANJE PRIKAZA NA FORMI
+  
+  // Prikaz cena proizvoda
   iznosRsdEl.value = medjuzbirRSD + " RSD";
   iznosEurEl.value = medjuzbirEUR + " EUR";
+  
+  // Prikaz popusta (polje i tekst)
+  if (popustIznos > 0) {
+    popustPrikazPoljeEl.value = `- ${popustIznos} RSD (10%)`;
+  } else {
+    popustPrikazPoljeEl.value = `0 RSD`;
+  }
+  
+  // Prikaz poruka o pogodnostima
+  popustPrikazTekstEl.textContent = popustPoruka;
+  
+  // Prikaz ukupne cene sa dostavom i popustom
+  ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
+  
+  // Vraćamo ključne vrednosti za sledeću fazu (submit)
+  return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip };
 }
 
-// Funkcija za generisanje HTML liste proizvoda za EmailJS šablon
-function formatPulsGelForEmail(data) {
-    const pakovanje = data.pakovanje;
-    const kolicina = data.kolicina;
-    const medjuzbir = data.medjuzbir;
-    
-    // Generiše HTML format koji očekuje {{{lista_proizvoda}}} u EmailJS šablonu
-    return `
-        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9;">
-            <div style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;">
-                <p style="font-size: 16px; font-weight: bold; color: #121212; margin: 0 0 5px 0;">PULS Gel ${pakovanje}</p>
-                <p style="font-size: 14px; margin: 0;">Količina: <strong>${kolicina} kom.</strong></p>
-                <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #D4AF37;">Ukupno za stavku: ${medjuzbir}</p>
-            </div>
-        </div>
-    `;
-}
-
+// Event listeneri
 pakovanjeEl.addEventListener('change', updateIznos);
 kolicinaEl.addEventListener('input', updateIznos);
-updateIznos();
+dostavaEl.addEventListener('change', updateIznos);
+updateIznos(); 
 
 
-// **FUNKCIJA ZA KONAČNO SLANJE (EmailJS sa dvostrukim slanjem)**
+// **FUNKCIJA ZA KONAČNO SLANJE**
 function sendMail() {
-    
-    // Onemogućavanje dugmeta za sprečavanje duplog slanja
     dugmePotvrdi.disabled = true;
     dugmePotvrdi.textContent = 'Šaljem...';
 
-    // 1. SLANJE VAMA (ADMINISTRATORU)
     const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
-
-    // 2. SLANJE KUPCU (POTVRDA)
     const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
         
-    // Čekamo da se oba slanja završe
     Promise.all([slanjeVama, slanjeKupcu])
         .then(() => {
             alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
@@ -306,7 +385,6 @@ function sendMail() {
             alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
         })
         .finally(() => {
-             // Resetovanje dugmeta
             dugmePotvrdi.disabled = false;
             dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
             pregledModal.style.display = 'none';
@@ -314,8 +392,7 @@ function sendMail() {
 }
 
 
-// **FUNKCIJA ZA PRIKAZ PREGLEDA** (Prvi Korak: Sakupljanje podataka i prikaz modala)
-forma.addEventListener('submit', function(e){
+// **FUNKCIJA ZA PRIKAZ PREGLEDA** forma.addEventListener('submit', function(e){
     e.preventDefault(); 
     
     if (!forma.checkValidity()) {
@@ -323,48 +400,42 @@ forma.addEventListener('submit', function(e){
         return; 
     }
 
-    // --- PRIPREMA PODATAKA ZA EMAILJS (Usklađivanje sa AresNyX i Šablonima) ---
-    const medjuzbirRSD = parseInt(iznosRsdEl.value.replace(' RSD', ''));
-    const dostavaTip = this.dostava.value;
-    const postarinaRSD = dostavaTip === 'Kurirska služba' ? CENA_DOSTAVE_RSD : 0;
-    const ukupnoRSD = medjuzbirRSD + postarinaRSD;
+    const finanse = updateIznos(); 
+
+    // --- PRIPREMA PODATAKA ZA EMAILJS ---
     
-    // Prikupljanje podataka u globalnu varijablu sa ispravnim ključevima
     globalFormData = {
-        // Podaci o kupcu (ključevi kao u EmailJS šablonima)
+        // Podaci o kupcu 
         ime_kupca: this.ime.value,
         prezime_kupca: this.prezime.value,
         email_kupca: this.email.value,
-        poslati_kupcu: this.email.value, // KLJUČNO ZA SLANJE KUPCU
+        poslati_kupcu: this.email.value, 
         telefon_kupca: this.telefon.value,
-        
-        // Adresa (objedinjena za EmailJS)
         adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
         
-        // Finansije (ključevi kao u EmailJS šablonima)
-        medjuzbir: medjuzbirRSD + ' RSD',
-        postarina: postarinaRSD + ' RSD',
-        popust: '0 RSD', // Nema popusta u ovoj formi
-        ukupno: ukupnoRSD + ' RSD',
+        // Finansije (formatirano za EmailJS)
+        medjuzbir: finanse.medjuzbirRSD + ' RSD',
+        postarina: finanse.postarinaRSD + ' RSD',
+        popust: finanse.popustIznos + ' RSD', 
+        ukupno: finanse.ukupnoRSD + ' RSD', 
         
         // Ostalo
-        broj_porudzbine: 'PULS-' + Date.now(), // Generisanje ID-a
+        broj_porudzbine: 'PULS-' + Date.now(), 
         nacin_placanja: this.placanje.value,
         napomena: this.napomena.value || 'Nema napomene',
-        brend_naziv: BREND_NAZIV, // Dinamički naziv brenda
+        brend_naziv: BREND_NAZIV, 
         
-        // KLJUČNO: HTML lista proizvoda za {{{lista_proizvoda}}}
+        // HTML lista proizvoda 
         lista_proizvoda: formatPulsGelForEmail({
             pakovanje: this.pakovanje.value,
             kolicina: this.kolicina.value,
-            medjuzbir: medjuzbirRSD + ' RSD'
+            medjuzbir: finanse.medjuzbirRSD + ' RSD'
         }),
 
-        // Pomoćna polja (ako se koriste za prikaz u emailu)
-        dostava: dostavaTip
+        dostava: finanse.dostavaTip
     };
 
-    // --- GENERISANJE HTML prikaza u modalu (Sada koristi nove ključeve) ---
+    // --- GENERISANJE HTML prikaza u modalu ---
     detaljiIsporuke.innerHTML = `
         <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
         <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -378,6 +449,7 @@ forma.addEventListener('submit', function(e){
         <p><strong>Količina:</strong> ${this.kolicina.value}</p>
         <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
         <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
+        <p><strong>Popust (10%):</strong> <span style="color: ${finanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
         <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
         <hr style="border-color:#444;">
         <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
@@ -387,13 +459,30 @@ forma.addEventListener('submit', function(e){
     pregledModal.style.display = 'block';
 });
 
-// **FUNKCIJA ZA POTVRDU** (Drugi i konačni Korak)
+// **FUNKCIJA ZA POTVRDU**
 dugmePotvrdi.addEventListener('click', sendMail);
 
 // **FUNKCIJA ZA IZMENU (Zatvaranje Modala)**
 dugmeIzmeni.addEventListener('click', function() {
     pregledModal.style.display = 'none';
 });
+
+// Funkcija za generisanje HTML liste proizvoda za EmailJS šablon
+function formatPulsGelForEmail(data) {
+    const pakovanje = data.pakovanje;
+    const kolicina = data.kolicina;
+    const medjuzbir = data.medjuzbir;
+    
+    return `
+        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9;">
+            <div style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;">
+                <p style="font-size: 16px; font-weight: bold; color: #121212; margin: 0 0 5px 0;">PULS Gel ${pakovanje}</p>
+                <p style="font-size: 14px; margin: 0;">Količina: <strong>${kolicina} kom.</strong></p>
+                <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #D4AF37;">Ukupno za stavku: ${medjuzbir}</p>
+            </div>
+        </div>
+    `;
+}
 </script>
 </body>
 </html>
