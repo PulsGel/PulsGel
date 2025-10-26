@@ -263,189 +263,180 @@ button:hover { background-color: #ff4c4c; }
 </div>
         <script type="text/javascript">
 
-const forma = document.getElementById('forma-porudzbine');
-const pakovanjeEl = document.getElementById('pakovanje');
-const kolicinaEl = document.getElementById('kolicina');
-const dostavaEl = document.getElementById('dostava');
+// Inicijalizacija EmailJS (Može ostati izvan DOMContentLoaded)
+(function(){
+  emailjs.init("WKV419-gz6OQWSgRJ"); 
+})();
 
-const iznosRsdEl = document.getElementById('iznos_rsd');
-const iznosEurEl = document.getElementById('iznos_eur');
-const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
-const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
-const popustPrikazTekstEl = document.getElementById('popust_prikaz');
+// Čekamo da se kompletan DOM učita
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Dohvatanje DOM elemenata
+    const forma = document.getElementById('forma-porudzbine');
+    const pakovanjeEl = document.getElementById('pakovanje');
+    const kolicinaEl = document.getElementById('kolicina');
+    const dostavaEl = document.getElementById('dostava');
 
-// Provera postojanja modal elemenata pre dodeljivanja
-const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
-const dugmeIzmeni = document.getElementById('izmijeniPodatke');
-const pregledModal = document.getElementById('pregledModal');
-const detaljiIsporuke = document.getElementById('detaljiIsporuke');
+    const iznosRsdEl = document.getElementById('iznos_rsd');
+    const iznosEurEl = document.getElementById('iznos_eur');
+    const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
+    const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
+    const popustPrikazTekstEl = document.getElementById('popust_prikaz');
 
-let globalFormData = {}; 
+    const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
+    const dugmeIzmeni = document.getElementById('izmijeniPodatke');
+    const pregledModal = document.getElementById('pregledModal');
+    const detaljiIsporuke = document.getElementById('detaljiIsporuke');
 
-// === KONFIGURACIJA ===
-const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
-const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
-const SERVICE_ID = 'service_rxj533m';      
-const BREND_NAZIV = 'PulsGel';
+    let globalFormData = {}; 
 
-// KONSTANTE ZA PRAG (4000 RSD dostava, 9000 RSD popust)
-const CENA_KURIRSKE_SLUZBE = 400; 
-const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
-const PRAG_ZA_POPUST = 9000; 
-const PROCENT_POPUSTA = 0.10; 
-// =====================
+    // === KONFIGURACIJA ===
+    const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
+    const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
+    const SERVICE_ID = 'service_rxj533m';      
+    const BREND_NAZIV = 'PulsGel';
 
-// FUNKCIJA ZA AUTOMATSKI PRERAČUN
-function updateIznos() {
-  const kolicina = parseInt(kolicinaEl.value) || 1;
-  
-  const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
-  const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')); 
-  const cenaEur = parseInt(selectedPakovanje.getAttribute('data-cena-eur')); 
-  
-  let medjuzbirRSD = cenaRsd * kolicina;
-  const medjuzbirEUR = cenaEur * kolicina;
-  
-  let postarinaRSD = 0;
-  let popustIznos = 0;
-  let popustPoruka = '';
-  
-  const dostavaTip = dostavaEl.value;
+    // KONSTANTE ZA PRAG (4000 RSD dostava, 9000 RSD popust)
+    const CENA_KURIRSKE_SLUZBE = 400; 
+    const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
+    const PRAG_ZA_POPUST = 9000; 
+    const PROCENT_POPUSTA = 0.10; 
+    // =====================
 
-  // 1. LOGIKA ZA BESPLATNU DOSTAVU (4000 RSD)
-  if (dostavaTip === 'Kurirska služba') {
-    if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
-      postarinaRSD = 0;
-      popustPoruka = "✅ Besplatna poštarina!";
-    } else {
-      postarinaRSD = CENA_KURIRSKE_SLUZBE;
-    }
-  } 
-  
-  // Ukupan iznos PRE popusta
-  let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
-  
-  // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
-  if (iznosPrePopusta >= PRAG_ZA_POPUST) {
-      popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
-      popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
-  }
+    // FUNKCIJA ZA AUTOMATSKI PRERAČUN
+    function updateIznos() {
+      // Provera da li kolicina postoji i parsiranje
+      const kolicina = parseInt(kolicinaEl.value) || 1;
+      
+      const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
+      const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')); 
+      const cenaEur = parseInt(selectedPakovanje.getAttribute('data-cena-eur')); 
+      
+      let medjuzbirRSD = cenaRsd * kolicina;
+      const medjuzbirEUR = cenaEur * kolicina;
+      
+      let postarinaRSD = 0;
+      let popustIznos = 0;
+      let popustPoruka = '';
+      
+      const dostavaTip = dostavaEl.value;
 
-  // Konačni iznos za plaćanje
-  const ukupnoRSD = iznosPrePopusta - popustIznos;
+      // 1. LOGIKA ZA BESPLATNU DOSTAVU (4000 RSD)
+      if (dostavaTip === 'Kurirska služba') {
+        if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
+          postarinaRSD = 0;
+          popustPoruka = "✅ Besplatna poštarina!";
+        } else {
+          postarinaRSD = CENA_KURIRSKE_SLUZBE;
+        }
+      } 
+      
+      // Ukupan iznos PRE popusta
+      let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
+      
+      // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
+      if (iznosPrePopusta >= PRAG_ZA_POPUST) {
+          popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
+          popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
+      }
+
+      // Konačni iznos za plaćanje
+      const ukupnoRSD = iznosPrePopusta - popustIznos;
 
 
-  // AŽURIRANJE PRIKAZA NA FORMI
-  
-  // Prikaz cena proizvoda - KLJUČNO ZA REŠAVANJE PROBLEMA
-  if (iznosRsdEl) iznosRsdEl.value = medjuzbirRSD + " RSD";
-  if (iznosEurEl) iznosEurEl.value = medjuzbirEUR + " EUR";
-  
-  // Prikaz popusta (polje i tekst)
-  if (popustPrikazPoljeEl) {
+      // AŽURIRANJE PRIKAZA NA FORMI
+      
+      // Prikaz cena proizvoda
+      iznosRsdEl.value = medjuzbirRSD + " RSD";
+      iznosEurEl.value = medjuzbirEUR + " EUR";
+      
+      // Prikaz popusta (polje i tekst)
       if (popustIznos > 0) {
         popustPrikazPoljeEl.value = `- ${popustIznos} RSD (10%)`;
       } else {
         popustPrikazPoljeEl.value = `0 RSD`;
       }
-  }
-  
-  // Prikaz poruka o pogodnostima
-  if (popustPrikazTekstEl) popustPrikazTekstEl.textContent = popustPoruka;
-  
-  // Prikaz ukupne cene sa dostavom i popustom
-  if (ukupnoZaPlacanjeEl) ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
-  
-  // Vraćamo ključne vrednosti za sledeću fazu (submit)
-  return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip };
-}
+      
+      // Prikaz poruka o pogodnostima
+      popustPrikazTekstEl.textContent = popustPoruka;
+      
+      // Prikaz ukupne cene sa dostavom i popustom
+      ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
+      
+      return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip };
+    }
 
-// Event listeneri
-pakovanjeEl.addEventListener('change', updateIznos);
-kolicinaEl.addEventListener('input', updateIznos);
-dostavaEl.addEventListener('change', updateIznos);
+    // Event listeneri se sada dodaju unutar DOMContentLoaded
+    pakovanjeEl.addEventListener('change', updateIznos);
+    kolicinaEl.addEventListener('input', updateIznos);
+    dostavaEl.addEventListener('change', updateIznos);
 
-// *** KRITIČNO REŠENJE ZA SINHRONIZACIJU ***
-// Koristimo setTimeout da bismo osigurali da se DOM potpuno učita pre prvog proračuna.
-setTimeout(updateIznos, 50); 
-// *****************************************
+    // Prvi poziv funkcije nakon što su svi elementi dohvaćeni
+    updateIznos(); 
 
 
-// **FUNKCIJA ZA KONAČNO SLANJE** function sendMail() {
-    if (dugmePotvrdi) {
+    // **FUNKCIJA ZA KONAČNO SLANJE** function sendMail() {
         dugmePotvrdi.disabled = true;
         dugmePotvrdi.textContent = 'Šaljem...';
-    }
 
-    const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
-    const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
-        
-    Promise.all([slanjeVama, slanjeKupcu])
-        .then(() => {
-            alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
-            forma.reset();
-            updateIznos(); 
-            if (pregledModal) pregledModal.style.display = 'none';
-        })
-        .catch((error) => {
-            console.error("Greška pri slanju jedne ili obe poruke:", error);
-            alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
-        })
-        .finally(() => {
-            if (dugmePotvrdi) {
+        const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
+        const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
+            
+        Promise.all([slanjeVama, slanjeKupcu])
+            .then(() => {
+                alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
+                forma.reset();
+                updateIznos(); 
+                pregledModal.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error("Greška pri slanju jedne ili obe poruke:", error);
+                alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+            })
+            .finally(() => {
                 dugmePotvrdi.disabled = false;
                 dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
-            }
-            if (pregledModal) pregledModal.style.display = 'none';
-        });
-}
-
-
-// **FUNKCIJA ZA PRIKAZ PREGLEDA** forma.addEventListener('submit', function(e){
-    e.preventDefault(); 
-    
-    if (!forma.checkValidity()) {
-        forma.reportValidity(); 
-        return; 
+                pregledModal.style.display = 'none';
+            });
     }
 
-    const finanse = updateIznos(); 
 
-    // --- PRIPREMA PODATAKA ZA EMAILJS ---
-    
-    globalFormData = {
-        // Podaci o kupcu 
-        ime_kupca: this.ime.value,
-        prezime_kupca: this.prezime.value,
-        email_kupca: this.email.value,
-        poslati_kupcu: this.email.value, 
-        telefon_kupca: this.telefon.value,
-        adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
+    // **FUNKCIJA ZA PRIKAZ PREGLEDA** forma.addEventListener('submit', function(e){
+        e.preventDefault(); 
         
-        // Finansije (formatirano za EmailJS)
-        medjuzbir: finanse.medjuzbirRSD + ' RSD',
-        postarina: finanse.postarinaRSD + ' RSD',
-        popust: finanse.popustIznos + ' RSD', 
-        ukupno: finanse.ukupnoRSD + ' RSD', 
-        
-        // Ostalo
-        broj_porudzbine: 'PULS-' + Date.now(), 
-        nacin_placanja: this.placanje.value,
-        napomena: this.napomena.value || 'Nema napomene',
-        brend_naziv: BREND_NAZIV, 
-        
-        // HTML lista proizvoda 
-        lista_proizvoda: formatPulsGelForEmail({
-            pakovanje: this.pakovanje.value,
-            kolicina: this.kolicina.value,
-            medjuzbir: finanse.medjuzbirRSD + ' RSD'
-        }),
+        if (!forma.checkValidity()) {
+            forma.reportValidity(); 
+            return; 
+        }
 
-        dostava: finanse.dostavaTip
-    };
+        const finanse = updateIznos(); 
 
-    // --- GENERISANJE HTML prikaza u modalu ---
-    if (detaljiIsporuke) {
+        // --- PRIPREMA PODATAKA ZA EMAILJS ---
+        
+        globalFormData = {
+            ime_kupca: this.ime.value,
+            prezime_kupca: this.prezime.value,
+            email_kupca: this.email.value,
+            poslati_kupcu: this.email.value, 
+            telefon_kupca: this.telefon.value,
+            adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
+            medjuzbir: finanse.medjuzbirRSD + ' RSD',
+            postarina: finanse.postarinaRSD + ' RSD',
+            popust: finanse.popustIznos + ' RSD', 
+            ukupno: finanse.ukupnoRSD + ' RSD', 
+            broj_porudzbine: 'PULS-' + Date.now(), 
+            nacin_placanja: this.placanje.value,
+            napomena: this.napomena.value || 'Nema napomene',
+            brend_naziv: BREND_NAZIV, 
+            lista_proizvoda: formatPulsGelForEmail({
+                pakovanje: this.pakovanje.value,
+                kolicina: this.kolicina.value,
+                medjuzbir: finanse.medjuzbirRSD + ' RSD'
+            }),
+            dostava: finanse.dostavaTip
+        };
+
+        // --- GENERISANJE HTML prikaza u modalu ---
         detaljiIsporuke.innerHTML = `
             <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
             <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -464,34 +455,36 @@ setTimeout(updateIznos, 50);
             <hr style="border-color:#444;">
             <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
         `;
+
+        // Prikaz Modala
+        pregledModal.style.display = 'block';
+    });
+
+    // **FUNKCIJA ZA POTVRDU I IZMENU**
+    dugmePotvrdi.addEventListener('click', sendMail);
+    dugmeIzmeni.addEventListener('click', function() {
+        pregledModal.style.display = 'none';
+    });
+    
+    // Funkcija za generisanje HTML liste proizvoda za EmailJS šablon
+    function formatPulsGelForEmail(data) {
+        const pakovanje = data.pakovanje;
+        const kolicina = data.kolicina;
+        const medjuzbir = data.medjuzbir;
+        
+        return `
+            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9;">
+                <div style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;">
+                    <p style="font-size: 16px; font-weight: bold; color: #121212; margin: 0 0 5px 0;">PULS Gel ${pakovanje}</p>
+                    <p style="font-size: 14px; margin: 0;">Količina: <strong>${kolicina} kom.</strong></p>
+                    <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #D4AF37;">Ukupno za stavku: ${medjuzbir}</p>
+                </div>
+            </div>
+        `;
     }
 
-    // Prikaz Modala
-    if (pregledModal) pregledModal.style.display = 'block';
-});
-
-// **FUNKCIJA ZA POTVRDU I IZMENU**
-if (dugmePotvrdi) dugmePotvrdi.addEventListener('click', sendMail);
-if (dugmeIzmeni) dugmeIzmeni.addEventListener('click', function() {
-    if (pregledModal) pregledModal.style.display = 'none';
-});
-
-// Funkcija za generisanje HTML liste proizvoda za EmailJS šablon
-function formatPulsGelForEmail(data) {
-    const pakovanje = data.pakovanje;
-    const kolicina = data.kolicina;
-    const medjuzbir = data.medjuzbir;
-    
-    return `
-        <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9;">
-            <div style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;">
-                <p style="font-size: 16px; font-weight: bold; color: #121212; margin: 0 0 5px 0;">PULS Gel ${pakovanje}</p>
-                <p style="font-size: 14px; margin: 0;">Količina: <strong>${kolicina} kom.</strong></p>
-                <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #D4AF37;">Ukupno za stavku: ${medjuzbir}</p>
-            </div>
-        </div>
-    `;
-}
+}); // Kraj DOMContentLoaded
 </script>
+
 </body>
 </html>
