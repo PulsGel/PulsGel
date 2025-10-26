@@ -404,12 +404,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // **FUNKCIJA ZA PRIKAZ PREGLEDA** forma.addEventListener('submit', function(e){
         e.preventDefault(); 
         
-        if (!forma.checkValidity()) {
-            forma.reportValidity(); 
-            return; 
-        }
+        // ... Sva logika i funkcije updateIznos i sendMail su ovde ...
 
-        const finanse = updateIznos(); 
+// Event listeneri se sada dodaju unutar DOMContentLoaded
+pakovanjeEl.addEventListener('change', updateIznos);
+// Koristimo 'change' za količinu umesto 'input' da izbegnemo prečesto računanje
+kolicinaEl.addEventListener('change', updateIznos); 
+dostavaEl.addEventListener('change', updateIznos);
+
+
+// *** KRITIČNA INICIJALIZACIJA (REŠAVA PROBLEM PRAZNIH POLJA) ***
+// 1. Osiguravamo da Količina ima ispravnu numeričku vrednost (npr. 1) na startu,
+// ako je pretraživač sačuvao staru vrednost.
+if (!kolicinaEl.value || kolicinaEl.value === '0') {
+    kolicinaEl.value = '1';
+}
+
+// 2. Ručno pokrećemo 'change' događaj na elementu 'kolicina'
+// Ovo garantuje da će se updateIznos() pokrenuti sa ispravnim podacima.
+kolicinaEl.dispatchEvent(new Event('change'));
+
+// ***************************************************************
+
+       const finanse = updateIznos(); 
 
         // --- PRIPREMA PODATAKA ZA EMAILJS ---
         
