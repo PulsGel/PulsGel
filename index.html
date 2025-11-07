@@ -535,5 +535,63 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }); // Kraj DOMContentLoaded
 </script>
+  <footer class="main-footer">
+    <div class="footer-links">
+        <a href="uslovi.html" target="_blank">Uslovi korišćenja</a>
+        <a href="privatnost.html" target="_blank">Politika privatnosti</a>
+        <a href="reklamacije.html" target="_blank">Reklamacije i Povrat</a>
+    </div>
+    <p class="copyright">&copy; <span id="currentYear"></span> AresNyX Shop. Sva prava zadržana.</p>
+</footer>
+
+<style>
+.main-footer {
+    background-color: #222; /* Tamna pozadina */
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 50px; /* Prostor iznad footera */
+    width: 100%;
+    box-sizing: border-box; /* Osigurava da padding ne prelazi širinu */
+}
+.footer-links {
+    margin-bottom: 15px;
+}
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 5px 0; /* Olakšava kliktanje */
+    transition: color 0.3s;
+    /* Prilagođeno za mobilne: */
+    display: inline-block; 
+}
+.footer-links a:hover {
+    color: var(--primary-color, #e74c3c); /* Koristi primarnu boju ili podrazumevanu crvenu */
+    text-decoration: underline;
+}
+.copyright {
+    margin: 0;
+}
+
+/* Osigurajte da mobilni uređaji prikazuju linkove dobro */
+@media (max-width: 600px) {
+    .footer-links a {
+        display: block; /* Svaki link u novom redu na malim ekranima */
+        margin: 5px 0;
+    }
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const yearElement = document.getElementById('currentYear');
+        if (yearElement) {
+            yearElement.textContent = new Date().getFullYear();
+        }
+    });
+</script>
+
 </body>
 </html>
