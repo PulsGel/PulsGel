@@ -286,8 +286,119 @@ button:hover { background-color: #ff4c4c; }
     </footer>
 
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+ = 'Šaljem...';
 
+        const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
+        const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
+            
+        Promise.all([slanjeVama, slanjeKupcu])
+            .then(() => {
+                alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
+                forma.reset();
+                updateIznos(); 
+                pregledModal.style.display = 'none';
+            })
+            .catch((error) => {
+                console.error("Greška pri slanju jedne ili obe poruke:", error);
+                alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+            })
+            .finally(() => {
+                dugmePotvrdi.disabled = false;
+                dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
+                pregledModal.style.display = 'none';
+                if (lastActiveElement) {
+                   lastActiveElement.focus(); // Vraćanje fokusa
+                }
+            });
+    }
+
+    // **FUNKCIJA ZA PRIKAZ PREGLEDA**
+    forma.addEventListener('submit', function(e){
+        e.preventDefault(); 
+        
+        if (!forma.checkValidity()) {
+            forma.reportValidity(); 
+            return; 
+        }
+
+        // --- UPRAVLJANJE FOKUSOM ZA PRISTUPAČNOST MODALA ---
+        lastActiveElement = document.activeElement; // Čuvanje elementa koji je bio fokusiran
+        
+        const finanse = updateIznos(); 
+
+        // --- PRIPREMA PODATAKA ZA EMAILJS (Isto) ---
+        globalFormData = {
+            ime_kupca: this.ime.value,
+            prezime_kupca: this.prezime.value,
+            email_kupca: this.email.value,
+            poslati_kupcu: this.email.value, 
+            telefon_kupca: this.telefon.value,
+            adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
+            
+            medjuzbir: finanse.medjuzbirRSD + ' RSD',
+            postarina: finanse.postarinaRSD + ' RSD',
+            popust: finanse.popustIznos + ' RSD', 
+            ukupno: finanse.ukupnoRSD + ' RSD', 
+            
+            broj_porudzbine: 'PULS-' + Date.now(), 
+            nacin_placanja: this.placanje.value,
+            napomena: this.napomena.value || 'Nema napomene',
+            brend_naziv: BREND_NAZIV, 
+            
+            lista_proizvoda: formatPulsGelForEmail({
+                pakovanje: this.pakovanje.value,
+                kolicina: this.kolicina.value,
+                medjuzbir: finanse.medjuzbirRSD + ' RSD'
+            }),
+
+            dostava: finanse.dostavaTip
+        };
+
+        // --- GENERISANJE HTML prikaza u modalu (Isto) ---
+        detaljiIsporuke.innerHTML = `
+            <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
+            <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
+            <p><strong>Telefon:</strong> ${globalFormData.telefon_kupca || 'Nije navedeno'}</p>
+            <hr style="border-color:#444;">
+            <p><strong>Adresa:</strong> ${globalFormData.adresa_dostave}</p>
+            <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
+            <p><strong>Plaćanje:</strong> ${globalFormData.nacin_placanja}</p>
+            <hr style="border-color:#444;">
+            <p><strong>Proizvod:</strong> PULS Gel ${this.pakovanje.value}</p>
+            <p><strong>Količina:</strong> ${this.kolicina.value}</p>
+            <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
+            <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
+            <p><strong>Popust (10%):</strong> <span style="color: ${finanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
+            <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
+            <hr style="border-color:#444;">
+            <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
+        `;
+
+        // Prikaz Modala
+        pregledModal.style.display = 'block';
+        document.getElementById('potvrdiPorudzbinu').focus(); // Postavljanje fokusa na prvi interaktivni element u modalu
+
+        // Dodavanje Event listenera za zatvaranje ESC dugmetom (samo jednom)
+        document.addEventListener('keydown', handleEscKey, { once: true });
+    });
+
+    // **FUNKCIJA ZA POTVRDU I IZMENU**
+    dugmePotvrdi.addEventListener('click', sendMail);
+    
+    dugmeIzmeni.addEventListener('click', function() {
+        pregledModal.style.display = 'none';
+        document.removeEventListener('keydown', handleEscKey);
+        if (lastActiveElement) {
+           lastActiveElement.focus(); // Vraćanje fokusa
+        }
+    });
+    
+    // Funkcija za zatvaranje modala pritiskom na ESC
+    function handleEscKey(e) {
+        if (e.key === 'Escape') {
+            dugmeIzmeni.click(); // Koristi se klik na dugme Izmeni
+        }
+    }
 <script type="text/javascript">
 
 // Inicijalizacija EmailJS 
@@ -322,6 +433,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
     const SERVICE_ID = 'service_rxj533m';      
     const BREND_NAZIV = 'PulsGel';
+    
+    // --- NOVE LINIJE ZA DINAMIKU (PULS GEL) ---
+    const ADMIN_MAIL = 'puls.gel@gmail.com'; // <--- EMAIL ADRESA ZA PULSGEL!
+    const SENDER_NAME = 'PulsGel Porudžbina';  // <--- NAZIV POŠILJAOCA ZA PULSGEL!
+    // ------------------------------------
 
     // KONSTANTE ZA PRAG 
     const CENA_KURIRSKE_SLUZBE = 400; 
@@ -442,8 +558,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const finanse = updateIznos(); 
 
-        // --- PRIPREMA PODATAKA ZA EMAILJS (Isto) ---
+        // --- PRIPREMA PODATAKA ZA EMAILJS ---
         globalFormData = {
+            sender_name: SENDER_NAME, // <--- PROSLEĐENO
+            admin_email: ADMIN_MAIL,   // <--- PROSLEĐENO
+            
             ime_kupca: this.ime.value,
             prezime_kupca: this.prezime.value,
             email_kupca: this.email.value,
@@ -535,6 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }); // Kraj DOMContentLoaded
 </script>
+
   <footer class="main-footer">
     <div class="footer-links">
         <a href="uslovi.html" target="_blank">Uslovi korišćenja</a>
