@@ -107,6 +107,43 @@ button:hover { background-color: #ff4c4c; }
     color: #00ff00;
     font-weight: bold;
 }
+
+/* FOOTER STILOVI */
+.main-footer {
+    background-color: #222; 
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 50px; 
+    width: 100%;
+    box-sizing: border-box; 
+}
+.footer-links {
+    margin-bottom: 15px;
+}
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 5px 0; 
+    transition: color 0.3s;
+    display: inline-block; 
+}
+.footer-links a:hover {
+    color: var(--primary-color, #ff4c4c); 
+    text-decoration: underline;
+}
+.copyright {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .footer-links a {
+        display: block; 
+        margin: 5px 0;
+    }
+}
 </style>
 </head>
 <body>
@@ -282,123 +319,17 @@ button:hover { background-color: #ff4c4c; }
     </div>
 </div>
 
-<footer>
-    </footer>
+<footer class="main-footer">
+    <div class="footer-links">
+        <a href="uslovi.html" target="_blank">Uslovi korišćenja</a>
+        <a href="privatnost.html" target="_blank">Politika privatnosti</a>
+        <a href="reklamacije.html" target="_blank">Reklamacije i Povrat</a>
+    </div>
+    <p class="copyright">&copy; <span id="currentYear"></span> PulsGel Shop. Sva prava zadržana.</p>
+</footer>
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
- = 'Šaljem...';
-
-        const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
-        const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
-            
-        Promise.all([slanjeVama, slanjeKupcu])
-            .then(() => {
-                alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
-                forma.reset();
-                updateIznos(); 
-                pregledModal.style.display = 'none';
-            })
-            .catch((error) => {
-                console.error("Greška pri slanju jedne ili obe poruke:", error);
-                alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
-            })
-            .finally(() => {
-                dugmePotvrdi.disabled = false;
-                dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
-                pregledModal.style.display = 'none';
-                if (lastActiveElement) {
-                   lastActiveElement.focus(); // Vraćanje fokusa
-                }
-            });
-    }
-
-    // **FUNKCIJA ZA PRIKAZ PREGLEDA**
-    forma.addEventListener('submit', function(e){
-        e.preventDefault(); 
-        
-        if (!forma.checkValidity()) {
-            forma.reportValidity(); 
-            return; 
-        }
-
-        // --- UPRAVLJANJE FOKUSOM ZA PRISTUPAČNOST MODALA ---
-        lastActiveElement = document.activeElement; // Čuvanje elementa koji je bio fokusiran
-        
-        const finanse = updateIznos(); 
-
-        // --- PRIPREMA PODATAKA ZA EMAILJS (Isto) ---
-        globalFormData = {
-            ime_kupca: this.ime.value,
-            prezime_kupca: this.prezime.value,
-            email_kupca: this.email.value,
-            poslati_kupcu: this.email.value, 
-            telefon_kupca: this.telefon.value,
-            adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
-            
-            medjuzbir: finanse.medjuzbirRSD + ' RSD',
-            postarina: finanse.postarinaRSD + ' RSD',
-            popust: finanse.popustIznos + ' RSD', 
-            ukupno: finanse.ukupnoRSD + ' RSD', 
-            
-            broj_porudzbine: 'PULS-' + Date.now(), 
-            nacin_placanja: this.placanje.value,
-            napomena: this.napomena.value || 'Nema napomene',
-            brend_naziv: BREND_NAZIV, 
-            
-            lista_proizvoda: formatPulsGelForEmail({
-                pakovanje: this.pakovanje.value,
-                kolicina: this.kolicina.value,
-                medjuzbir: finanse.medjuzbirRSD + ' RSD'
-            }),
-
-            dostava: finanse.dostavaTip
-        };
-
-        // --- GENERISANJE HTML prikaza u modalu (Isto) ---
-        detaljiIsporuke.innerHTML = `
-            <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
-            <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
-            <p><strong>Telefon:</strong> ${globalFormData.telefon_kupca || 'Nije navedeno'}</p>
-            <hr style="border-color:#444;">
-            <p><strong>Adresa:</strong> ${globalFormData.adresa_dostave}</p>
-            <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
-            <p><strong>Plaćanje:</strong> ${globalFormData.nacin_placanja}</p>
-            <hr style="border-color:#444;">
-            <p><strong>Proizvod:</strong> PULS Gel ${this.pakovanje.value}</p>
-            <p><strong>Količina:</strong> ${this.kolicina.value}</p>
-            <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
-            <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
-            <p><strong>Popust (10%):</strong> <span style="color: ${finanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
-            <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
-            <hr style="border-color:#444;">
-            <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
-        `;
-
-        // Prikaz Modala
-        pregledModal.style.display = 'block';
-        document.getElementById('potvrdiPorudzbinu').focus(); // Postavljanje fokusa na prvi interaktivni element u modalu
-
-        // Dodavanje Event listenera za zatvaranje ESC dugmetom (samo jednom)
-        document.addEventListener('keydown', handleEscKey, { once: true });
-    });
-
-    // **FUNKCIJA ZA POTVRDU I IZMENU**
-    dugmePotvrdi.addEventListener('click', sendMail);
-    
-    dugmeIzmeni.addEventListener('click', function() {
-        pregledModal.style.display = 'none';
-        document.removeEventListener('keydown', handleEscKey);
-        if (lastActiveElement) {
-           lastActiveElement.focus(); // Vraćanje fokusa
-        }
-    });
-    
-    // Funkcija za zatvaranje modala pritiskom na ESC
-    function handleEscKey(e) {
-        if (e.key === 'Escape') {
-            dugmeIzmeni.click(); // Koristi se klik na dugme Izmeni
-        }
-    }
 <script type="text/javascript">
 
 // Inicijalizacija EmailJS 
@@ -409,6 +340,12 @@ button:hover { background-color: #ff4c4c; }
 // Čekamo da se kompletan DOM učita
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Inicijalizacija Godine u Futeru
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+
     // Dohvatanje DOM elemenata
     const forma = document.getElementById('forma-porudzbine');
     const pakovanjeEl = document.getElementById('pakovanje');
@@ -428,25 +365,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let globalFormData = {}; 
     let lastActiveElement = null; // Dodata promenljiva za praćenje fokusa
 
-    // === KONFIGURACIJA ===
+    // === KONFIGURACIJA PULSGEL I EMAILJS ===
     const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
     const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
     const SERVICE_ID = 'service_rxj533m';      
     const BREND_NAZIV = 'PulsGel';
     
-    // --- NOVE LINIJE ZA DINAMIKU (PULS GEL) ---
+    // --- KONSTANTE ZA EMAIL ADRESE ---
     const ADMIN_MAIL = 'puls.gel@gmail.com'; // <--- EMAIL ADRESA ZA PULSGEL!
     const SENDER_NAME = 'PulsGel Porudžbina';  // <--- NAZIV POŠILJAOCA ZA PULSGEL!
-    // ------------------------------------
+    // ---------------------------------
 
-    // KONSTANTE ZA PRAG 
+    // KONSTANTE ZA PRAG POPUSTA/DOSTAVE
     const CENA_KURIRSKE_SLUZBE = 400; 
     const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
     const PRAG_ZA_POPUST = 9000; 
     const PROCENT_POPUSTA = 0.10; 
-    // =====================
+    // ===================================
 
-    // FUNKCIJA ZA AUTOMATSKI PRERAČUN (Ista, funkcionalna)
+    // FUNKCIJA ZA AUTOMATSKI PRERAČUN (Revidirana logika)
     function updateIznos() {
       
       const kolicinaValue = parseInt(kolicinaEl.value);
@@ -455,6 +392,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
       const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
+      // Iznos samih proizvoda
       let medjuzbirRSD = cenaRsd * kolicina;
       
       let postarinaRSD = 0;
@@ -462,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let popustPoruka = '';
       
       const dostavaTip = dostavaEl.value;
-
+      
       // 1. LOGIKA ZA BESPLATNU DOSTAVU (4000 RSD)
       if (dostavaTip === 'Kurirska služba') {
         if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
@@ -473,7 +411,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } 
       
-      // Ukupan iznos PRE popusta
+      // Ukupan iznos pre popusta
       let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
       
       // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
@@ -526,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Promise.all([slanjeVama, slanjeKupcu])
             .then(() => {
                 alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
+                // Resetovanje forme
                 forma.reset();
                 updateIznos(); 
                 pregledModal.style.display = 'none';
@@ -558,10 +497,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const finanse = updateIznos(); 
 
-        // --- PRIPREMA PODATAKA ZA EMAILJS ---
+        // --- PRIPREMA PODATAKA ZA EMAILJS (Uključuje ADMIN i SENDER) ---
         globalFormData = {
-            sender_name: SENDER_NAME, // <--- PROSLEĐENO
-            admin_email: ADMIN_MAIL,   // <--- PROSLEĐENO
+            sender_name: SENDER_NAME, // Ime Pošiljaoca za Kupca
+            admin_email: ADMIN_MAIL,   // Email Adresa za Admina
             
             ime_kupca: this.ime.value,
             prezime_kupca: this.prezime.value,
@@ -580,16 +519,18 @@ document.addEventListener('DOMContentLoaded', function() {
             napomena: this.napomena.value || 'Nema napomene',
             brend_naziv: BREND_NAZIV, 
             
+            // Formatiranje liste proizvoda bez kompleksnog HTML-a
             lista_proizvoda: formatPulsGelForEmail({
                 pakovanje: this.pakovanje.value,
                 kolicina: this.kolicina.value,
+                cena: (finanse.medjuzbirRSD / parseInt(this.kolicina.value)) + ' RSD',
                 medjuzbir: finanse.medjuzbirRSD + ' RSD'
             }),
 
             dostava: finanse.dostavaTip
         };
 
-        // --- GENERISANJE HTML prikaza u modalu (Isto) ---
+        // --- GENERISANJE HTML prikaza u modalu ---
         detaljiIsporuke.innerHTML = `
             <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
             <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -611,9 +552,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Prikaz Modala
         pregledModal.style.display = 'block';
-        document.getElementById('potvrdiPorudzbinu').focus(); // Postavljanje fokusa na prvi interaktivni element u modalu
+        document.getElementById('potvrdiPorudzbinu').focus(); // Postavljanje fokusa
 
-        // Dodavanje Event listenera za zatvaranje ESC dugmetom (samo jednom)
+        // Dodavanje Event listenera za zatvaranje ESC dugmetom
         document.addEventListener('keydown', handleEscKey, { once: true });
     });
 
@@ -635,83 +576,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Funkcija za generisanje HTML liste proizvoda za EmailJS šablon (Ista)
+    // Funkcija za generisanje TEKSTUALNE liste proizvoda za EmailJS šablon (Pojednostavljena)
     function formatPulsGelForEmail(data) {
         const pakovanje = data.pakovanje;
         const kolicina = data.kolicina;
+        const cena = data.cena;
         const medjuzbir = data.medjuzbir;
         
+        // Vraćamo jednostavan HTML tekst, mnogo pouzdaniji za email šablone
+        // Napomena: Šablon mora biti podešen da koristi <pre> tag ili sličan za formatiranje teksta
         return `
-            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #f9f9f9;">
-                <div style="margin-bottom: 10px; padding: 10px; border-bottom: 1px solid #eee;">
-                    <p style="font-size: 16px; font-weight: bold; color: #121212; margin: 0 0 5px 0;">PULS Gel ${pakovanje}</p>
-                    <p style="font-size: 14px; margin: 0;">Količina: <strong>${kolicina} kom.</strong></p>
-                    <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; color: #D4AF37;">Ukupno za stavku: ${medjuzbir}</p>
-                </div>
-            </div>
+Proizvod: PULS Gel ${pakovanje}
+Cena po komadu: ${cena}
+Količina: ${kolicina} kom.
+Ukupno za stavku: ${medjuzbir}
+--------------------------------
         `;
     }
 
 }); // Kraj DOMContentLoaded
 </script>
 
-  <footer class="main-footer">
-    <div class="footer-links">
-        <a href="uslovi.html" target="_blank">Uslovi korišćenja</a>
-        <a href="privatnost.html" target="_blank">Politika privatnosti</a>
-        <a href="reklamacije.html" target="_blank">Reklamacije i Povrat</a>
-    </div>
-    <p class="copyright">&copy; <span id="currentYear"></span> PulsGel Shop. Sva prava zadržana.</p>
-</footer>
-
-<style>
-.main-footer {
-    background-color: #222; /* Tamna pozadina */
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 0.9rem;
-    margin-top: 50px; /* Prostor iznad footera */
-    width: 100%;
-    box-sizing: border-box; /* Osigurava da padding ne prelazi širinu */
-}
-.footer-links {
-    margin-bottom: 15px;
-}
-.footer-links a {
-    color: #ccc;
-    text-decoration: none;
-    margin: 0 15px;
-    padding: 5px 0; /* Olakšava kliktanje */
-    transition: color 0.3s;
-    /* Prilagođeno za mobilne: */
-    display: inline-block; 
-}
-.footer-links a:hover {
-    color: var(--primary-color, #e74c3c); /* Koristi primarnu boju ili podrazumevanu crvenu */
-    text-decoration: underline;
-}
-.copyright {
-    margin: 0;
-}
-
-/* Osigurajte da mobilni uređaji prikazuju linkove dobro */
-@media (max-width: 600px) {
-    .footer-links a {
-        display: block; /* Svaki link u novom redu na malim ekranima */
-        margin: 5px 0;
-    }
-}
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const yearElement = document.getElementById('currentYear');
-        if (yearElement) {
-            yearElement.textContent = new Date().getFullYear();
-        }
-    });
-</script>
-
 </body>
 </html>
+                      
+      
