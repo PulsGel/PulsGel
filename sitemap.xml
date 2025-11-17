@@ -3,26 +3,33 @@
 
   <url>
     <loc>https://pulsgel.github.io/PulsGel/</loc>
-    <lastmod>2025-10-18</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-11-17</lastmod> <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  <url>
+    <loc>https://pulsgel.github.io/PulsGel/nauka.html</loc>
+    <lastmod>2025-11-17</lastmod> 
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <url>
     <loc>https://pulsgel.github.io/PulsGel/uslovi.html</loc>
     <lastmod>2025-11-07</lastmod> 
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
-</url>
-<url>
+  </url>
+  <url>
     <loc>https://pulsgel.github.io/PulsGel/privatnost.html</loc>
     <lastmod>2025-11-07</lastmod> 
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
-</url>
-<url>
+  </url>
+  <url>
     <loc>https://pulsgel.github.io/PulsGel/reklamacije.html</loc>
     <lastmod>2025-11-07</lastmod> 
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-</url>
+  </url>
 </urlset>
