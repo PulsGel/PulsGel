@@ -507,26 +507,34 @@ document.addEventListener('DOMContentLoaded', function() {
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
       const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
-      let medjuzbirRSD = cenaRsd * kolicina;
+            let medjuzbirRSD = cenaRsd * kolicina;
       let postarinaRSD = 0;
       let popustIznos = 0;
-      let popustPoruka = '';
+      let popustPoruka = ''; // Počinjemo sa praznom porukom
       
       const dostavaTip = dostavaEl.value;
       
+      // LOGIKA ZA POŠTARINU
       if (dostavaTip === 'Kurirska služba') {
         if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
+          // Besplatna dostava
           postarinaRSD = 0;
           popustPoruka = "✅ Besplatna poštarina!";
         } else {
+          // Plaćena dostava (400 RSD)
           postarinaRSD = CENA_KURIRSKE_SLUZBE;
+          popustPoruka = ""; // Nema poruke o dostavi, samo ako je primenljiv popust
         }
       } 
-      
+
       let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
       
+      // LOGIKA ZA POPUST
       if (iznosPrePopusta >= PRAG_ZA_POPUST) {
           popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
+          
+          // Ako već postoji poruka (o Besplatnoj dostavi), dodajte popust na nju.
+          // Ako ne postoji poruka (dostava je plaćena), poruka je samo o popustu.
           popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
       }
 
