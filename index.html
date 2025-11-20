@@ -437,29 +437,42 @@ button:hover { background-color: #ff4c4c; }
 <button class="sticky-cta" id="stickyCtaButton" aria-label="Naručite Puls Gel odmah">
     Naručite odmah
 </button>
-
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
 
 // Inicijalizacija EmailJS 
 (function(){
+  // PAŽNJA: Proverite da li je ovaj ID Vaš pravi Public Key za EmailJS
   emailjs.init("WKV419-gz6OQWSgRJ"); 
 })();
 
-// Deklaracija finanse van bloka, da bude dostupna sendMail funkciji
-let finanse = {}; 
+// Deklaracija varijabli
+let globalFormData = {}; 
+let lastActiveElement = null; 
+
+// --- KONFIGURACIJA PULSGEL I EMAILJS ---
+const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
+const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
+const SERVICE_ID = 'service_rxj533m';      
+const BREND_NAZIV = 'PulsGel';
+const ADMIN_MAIL = 'info.pulsgel@gmail.com'; 
+const SENDER_NAME = 'PulsGel Porudžbina';  
+// --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE ---
+const CENA_KURIRSKE_SLUZBE = 400; 
+const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
+const PRAG_ZA_POPUST = 9000; 
+const PROCENT_POPUSTA = 0.10; 
 
 // Čekamo da se kompletan DOM učita
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Inicijalizacija Godine u Futeru
+    // Dohvatanje DOM elemenata
     const yearElement = document.getElementById('currentYear');
     if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
     }
 
-    // Dohvatanje DOM elemenata
     const forma = document.getElementById('forma-porudzbine');
     const pakovanjeEl = document.getElementById('pakovanje');
     const kolicinaEl = document.getElementById('kolicina');
@@ -475,40 +488,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const pregledModal = document.getElementById('pregledModal');
     const detaljiIsporuke = document.getElementById('detaljiIsporuke');
 
-    let globalFormData = {}; 
-    let lastActiveElement = null; 
-
-    // === NOVI KOD ZA STICKY CTA ===
     const stickyCtaButton = document.getElementById('stickyCtaButton');
     const formaSekcija = document.getElementById('forma-porudzbine');
-    
-    if (stickyCtaButton && formaSekcija) {
-        stickyCtaButton.addEventListener('click', function() {
-            // Skrolovanje do forme za porudžbinu
-            formaSekcija.scrollIntoView({ behavior: 'smooth' });
-        });
+
+    // === INICIJALIZACIJA ===
+    if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
+        kolicinaEl.value = '1';
     }
-    // =============================
-
-    // === KONFIGURACIJA PULSGEL I EMAILJS ===
-    const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
-    const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
-    const SERVICE_ID = 'service_rxj533m';      
-    const BREND_NAZIV = 'PulsGel';
+    updateIznos(); 
+    kolicinaEl.dispatchEvent(new Event('input')); 
     
-    // --- KONSTANTE ZA EMAIL ADRESE ---
-    const ADMIN_MAIL = 'info.pulsgel@gmail.com'; // <--- EMAIL ADRESA ZA PULSGEL!
-    const SENDER_NAME = 'PulsGel Porudžbina';  // <--- NAZIV POŠILJAOCA ZA PULSGEL!
-    // ---------------------------------
-
-    // KONSTANTE ZA PRAG POPUSTA/DOSTAVE
-    const CENA_KURIRSKE_SLUZBE = 400; 
-    const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
-    const PRAG_ZA_POPUST = 9000; 
-    const PROCENT_POPUSTA = 0.10; 
-    // ===================================
-
-    // FUNKCIJA ZA AUTOMATSKI PRERAČUN (Revidirana logika)
+    // === FUNKCIJA ZA AUTOMATSKI PRERAČUN ===
     function updateIznos() {
       
       const kolicinaValue = parseInt(kolicinaEl.value);
@@ -517,16 +507,13 @@ document.addEventListener('DOMContentLoaded', function() {
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
       const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
-      // Iznos samih proizvoda
       let medjuzbirRSD = cenaRsd * kolicina;
-      
       let postarinaRSD = 0;
       let popustIznos = 0;
       let popustPoruka = '';
       
       const dostavaTip = dostavaEl.value;
       
-      // 1. LOGIKA ZA BESPLATNU DOSTAVU (4000 RSD)
       if (dostavaTip === 'Kurirska služba') {
         if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
           postarinaRSD = 0;
@@ -536,56 +523,60 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } 
       
-      // Ukupan iznos pre popusta
       let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
       
-      // 2. LOGIKA ZA POPUST OD 10% (9000 RSD)
       if (iznosPrePopusta >= PRAG_ZA_POPUST) {
           popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
           popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
       }
 
-      // Konačni iznos za plaćanje
       const ukupnoRSD = iznosPrePopusta - popustIznos;
-
 
       // AŽURIRANJE PRIKAZA NA FORMI
       iznosRsdEl.value = medjuzbirRSD + " RSD";
-      
-      if (popustIznos > 0) {
-        popustPrikazPoljeEl.value = `- ${popustIznos} RSD (10%)`;
-      } else {
-        popustPrikazPoljeEl.value = `0 RSD`;
-      }
-      
+      popustPrikazPoljeEl.value = popustIznos > 0 ? `- ${popustIznos} RSD (10%)` : `0 RSD`;
       popustPrikazTekstEl.textContent = popustPoruka;
-      
       ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
       
-      // Ažuriranje globalne finanse varijable
-      finanse = { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip, kolicina, pakovanje: selectedPakovanje.value };
-
-      return finanse;
+      // Vraća kompletan finansijski objekat
+      return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip, kolicina, pakovanje: selectedPakovanje.value };
     }
 
-    // Event listeneri za automatski proračun
+    // === EVENT LISTENERS ZA PRORAČUN ===
     pakovanjeEl.addEventListener('change', updateIznos);
     kolicinaEl.addEventListener('input', updateIznos);
     dostavaEl.addEventListener('change', updateIznos);
 
-    // Inicijalizacija proračuna
-    if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
-        kolicinaEl.value = '1';
+    // === KOD ZA STICKY CTA ===
+    if (stickyCtaButton && formaSekcija) {
+        stickyCtaButton.addEventListener('click', function() {
+            formaSekcija.scrollIntoView({ behavior: 'smooth' });
+        });
     }
-    updateIznos(); 
-    kolicinaEl.dispatchEvent(new Event('input')); // Pokretanje proračuna
 
+    // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA ===
+    function formatPulsGelForEmail(data) {
+        return `
+Proizvod: PULS Gel ${data.pakovanje}
+Cena po komadu: ${data.cena}
+Količina: ${data.kolicina} kom.
+Ukupno za stavku: ${data.medjuzbir}
+--------------------------------
+        `;
+    }
 
-    // **FUNKCIJA ZA KONAČNO SLANJE (AŽURIRANA ZA GA4)**
+    // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4) ===
     function sendMail() {
+        if (!globalFormData || !globalFormData.broj_porudzbine) {
+             alert("Fatalna greška: Podaci o porudžbini nisu pronađeni. Molimo pokušajte ponovo.");
+             return;
+        }
+
         dugmePotvrdi.disabled = true;
         dugmePotvrdi.textContent = 'Šaljem...';
 
+        const finanse = globalFormData.ga4_finanse; 
+        
         // --- GA4 MERENJE KONVERZIJE ---
         if (typeof gtag === 'function' && finanse.ukupnoRSD > 0) {
             gtag('event', 'purchase', {
@@ -595,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 items: [{
                     item_id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
                     item_name: 'PULS Gel ' + finanse.pakovanje,
-                    price: finanse.medjuzbirRSD / finanse.kolicina, // Cena po komadu
+                    price: finanse.medjuzbirRSD / finanse.kolicina, 
                     quantity: finanse.kolicina
                 }]
             });
@@ -608,14 +599,12 @@ document.addEventListener('DOMContentLoaded', function() {
         Promise.all([slanjeVama, slanjeKupcu])
             .then(() => {
                 alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
-                // Resetovanje forme
                 forma.reset();
                 updateIznos(); 
-                pregledModal.style.display = 'none';
             })
             .catch((error) => {
                 console.error("Greška pri slanju jedne ili obe poruke:", error);
-                alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+                alert("Došlo je do greške pri slanju porudžbine. Molimo proverite Vaš EmailJS nalog i konzolu.");
             })
             .finally(() => {
                 dugmePotvrdi.disabled = false;
@@ -624,10 +613,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (lastActiveElement) {
                    lastActiveElement.focus(); 
                 }
+                globalFormData = {}; 
             });
     }
 
-    // **FUNKCIJA ZA PRIKAZ PREGLEDA**
+    // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) ===
     forma.addEventListener('submit', function(e){
         e.preventDefault(); 
         
@@ -638,10 +628,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         lastActiveElement = document.activeElement; 
         
-        // Ponovno računanje iznosa pre slanja (za svaki slučaj)
-        finanse = updateIznos(); 
+        const trenutneFinanse = updateIznos(); 
 
-        // --- PRIPREMA PODATAKA ZA EMAILJS ---
         globalFormData = {
             sender_name: SENDER_NAME, 
             admin_email: ADMIN_MAIL,   
@@ -653,28 +641,28 @@ document.addEventListener('DOMContentLoaded', function() {
             telefon_kupca: this.telefon.value,
             adresa_dostave: `${this.adresa.value}, ${this.postanski_broj.value} ${this.grad.value}`,
             
-            medjuzbir: finanse.medjuzbirRSD + ' RSD',
-            postarina: finanse.postarinaRSD + ' RSD',
-            popust: finanse.popustIznos + ' RSD', 
-            ukupno: finanse.ukupnoRSD + ' RSD', 
+            medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD',
+            postarina: trenutneFinanse.postarinaRSD + ' RSD',
+            popust: trenutneFinanse.popustIznos + ' RSD', 
+            ukupno: trenutneFinanse.ukupnoRSD + ' RSD', 
             
             broj_porudzbine: 'PULS-' + Date.now(), 
             nacin_placanja: this.placanje.value,
             napomena: this.napomena.value || 'Nema napomene',
             brend_naziv: BREND_NAZIV, 
             
-            // Formatiranje liste proizvoda
             lista_proizvoda: formatPulsGelForEmail({
                 pakovanje: this.pakovanje.value,
                 kolicina: this.kolicina.value,
-                cena: (finanse.medjuzbirRSD / parseInt(this.kolicina.value)) + ' RSD',
-                medjuzbir: finanse.medjuzbirRSD + ' RSD'
+                cena: (trenutneFinanse.medjuzbirRSD / parseInt(this.kolicina.value)) + ' RSD',
+                medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD'
             }),
 
-            dostava: finanse.dostavaTip
+            dostava: trenutneFinanse.dostavaTip,
+            ga4_finanse: trenutneFinanse // Ključno za GA4 praćenje
         };
 
-        // --- GENERISANJE HTML prikaza u modalu ---
+        // ... (Generisanje HTML prikaza u modalu) ...
         detaljiIsporuke.innerHTML = `
             <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
             <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -688,21 +676,18 @@ document.addEventListener('DOMContentLoaded', function() {
             <p><strong>Količina:</strong> ${this.kolicina.value}</p>
             <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
             <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
-            <p><strong>Popust (10%):</strong> <span style="color: ${finanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
+            <p><strong>Popust (10%):</strong> <span style="color: ${trenutneFinanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
             <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
             <hr style="border-color:#444;">
             <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
         `;
 
-        // Prikaz Modala
         pregledModal.style.display = 'block';
         document.getElementById('potvrdiPorudzbinu').focus(); 
-
-        // Dodavanje Event listenera za zatvaranje ESC dugmetom
         document.addEventListener('keydown', handleEscKey, { once: true });
     });
 
-    // **FUNKCIJA ZA POTVRDU I IZMENU**
+    // === MODAL EVENT LISTENERS ===
     dugmePotvrdi.addEventListener('click', sendMail);
     
     dugmeIzmeni.addEventListener('click', function() {
@@ -713,31 +698,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Funkcija za zatvaranje modala pritiskom na ESC
     function handleEscKey(e) {
         if (e.key === 'Escape') {
             dugmeIzmeni.click(); 
         }
     }
-    
-    // Funkcija za generisanje TEKSTUALNE liste proizvoda za EmailJS šablon 
-    function formatPulsGelForEmail(data) {
-        const pakovanje = data.pakovanje;
-        const kolicina = data.kolicina;
-        const cena = data.cena;
-        const medjuzbir = data.medjuzbir;
-        
-        return `
-Proizvod: PULS Gel ${pakovanje}
-Cena po komadu: ${cena}
-Količina: ${kolicina} kom.
-Ukupno za stavku: ${medjuzbir}
---------------------------------
-        `;
-    }
 
 }); // Kraj DOMContentLoaded
 </script>
-
 </body>
 </html>
