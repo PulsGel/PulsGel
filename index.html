@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
       const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
       
-            let medjuzbirRSD = cenaRsd * kolicina;
+      let medjuzbirRSD = cenaRsd * kolicina;
       let postarinaRSD = 0;
       let popustIznos = 0;
       let popustPoruka = ''; // Počinjemo sa praznom porukom
@@ -596,7 +596,7 @@ Ukupno za stavku: ${data.medjuzbir}
         `;
     }
 
-    // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4) ===
+    // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
     function sendMail() {
         if (!globalFormData || !globalFormData.broj_porudzbine) {
              alert("Fatalna greška: Podaci o porudžbini nisu pronađeni. Molimo pokušajte ponovo.");
@@ -623,8 +623,19 @@ Ukupno za stavku: ${data.medjuzbir}
             });
         }
         // -----------------------------
-              p
-
+        
+        // --- META PIXEL PURCHASE KONVERZIJA ---
+        if (typeof fbq === 'function') {
+            fbq('track', 'Purchase', {
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                contents: [{ id: 'PULS', quantity: finanse.kolicina }],
+                num_items: finanse.kolicina,
+                content_type: 'product'
+            });
+        }
+        // -------------------------------------
+              
         
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
         const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
@@ -662,6 +673,17 @@ Ukupno za stavku: ${data.medjuzbir}
         lastActiveElement = document.activeElement; 
         
         const trenutneFinanse = updateIznos(); 
+        
+        // --- META PIXEL INITIATE CHECKOUT ---
+        if (typeof fbq === 'function') {
+             fbq('track', 'InitiateCheckout', {
+                value: trenutneFinanse.ukupnoRSD,
+                currency: 'RSD',
+                contents: [{ id: 'PULS', quantity: trenutneFinanse.kolicina }],
+                num_items: trenutneFinanse.kolicina
+            });
+        }
+        // -------------------------------------
 
         globalFormData = {
             sender_name: SENDER_NAME, 
@@ -739,5 +761,6 @@ Ukupno za stavku: ${data.medjuzbir}
 
 }); // Kraj DOMContentLoaded
 </script>
+
 </body>
 </html>
