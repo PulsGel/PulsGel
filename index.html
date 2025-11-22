@@ -2,6 +2,23 @@
 <html lang="sr">
 <head>
 <meta charset="UTF-8">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '826589170344707');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=826589170344707&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <meta name="google-site-verification" content="AbTZDR5hcpu1fcUcq1wsTOXlimqbvy_-tjSh7IVb-GE" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
@@ -606,22 +623,7 @@ Ukupno za stavku: ${data.medjuzbir}
             });
         }
         // -----------------------------
-              // --- META PIXEL MERENJE KONVERZIJE (Purchase) ---
-        // Proverava da li je funkcija Meta Pixela (fbq) definisana i da li je iznos veći od 0
-        if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
-            // Šaljemo Purchase event sa vrednošću i valutom (koristimo UKUPNO RSD iz forme)
-            fbq('track', 'Purchase', {
-                value: finanse.ukupnoRSD,
-                currency: 'RSD',
-                content_name: 'Puls Gel Porudžbina',
-                content_type: 'product',
-                contents: [{ 
-                    id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
-                    quantity: finanse.kolicina 
-                }]
-            });
-        }
-        // ------------------------------------------------
+              p
 
         
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
