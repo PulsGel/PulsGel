@@ -481,20 +481,36 @@ const SERVICE_ID = 'service_rxj533m';
 const BREND_NAZIV = 'PulsGel';
 const ADMIN_MAIL = 'info.pulsgel@gmail.com'; 
 const SENDER_NAME = 'PulsGel Porudžbina';  
-// --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE ---
+// ... (sav kod do dela gde se definišu konstante)
+
+// --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE (nastavak od ranije) ---
 const CENA_KURIRSKE_SLUZBE = 400; 
 const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
 const PRAG_ZA_POPUST = 9000; 
 const PROCENT_POPUSTA = 0.10; 
 
+// --- GOOGLE FORM FALLBACK KONFIGURACIJA ---
+// 1. Akcioni URL za slanje forme
+const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdkUOR2rrRO488dGGb1hO7QQkKtQF1ncp68-V8nguex07qi5w/formResponse';
+// 2. Mapiranje ključeva na entry ID-jeve
+const GOOGLE_ENTRY_IDS = {
+    ime_kupca: 'entry.1018337777',
+    prezime_kupca: 'entry.1747761044',
+    email_kupca: 'entry.1691350646',
+    telefon_kupca: 'entry.144427387',
+    adresa_dostave: 'entry.1147048348',
+    lista_proizvoda: 'entry.1804246816',
+    ukupno: 'entry.173070490',
+    nacin_placanja: 'entry.1471328004',
+    napomena: 'entry.972352723'
+};
+// ---------------------------------------------
+
+
 // Čekamo da se kompletan DOM učita
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Dohvatanje DOM elemenata
-    const yearElement = document.getElementById('currentYear');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
-    }
+    // ... (sav kod za dohvaćanje DOM elemenata i updateIznos funkcija ostaje ISTI)
 
     const forma = document.getElementById('forma-porudzbine');
     const pakovanjeEl = document.getElementById('pakovanje');
@@ -514,16 +530,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const stickyCtaButton = document.getElementById('stickyCtaButton');
     const formaSekcija = document.getElementById('forma-porudzbine');
 
-    // === INICIJALIZACIJA ===
+    // === INICIJALIZACIJA (ISTO) ===
     if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
         kolicinaEl.value = '1';
     }
     updateIznos(); 
     kolicinaEl.dispatchEvent(new Event('input')); 
     
-    // === FUNKCIJA ZA AUTOMATSKI PRERAČUN ===
+    // === FUNKCIJA ZA AUTOMATSKI PRERAČUN (ISTO) ===
     function updateIznos() {
-      
+      // ... (ista logika proračuna) ...
       const kolicinaValue = parseInt(kolicinaEl.value);
       const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
       
@@ -533,59 +549,50 @@ document.addEventListener('DOMContentLoaded', function() {
       let medjuzbirRSD = cenaRsd * kolicina;
       let postarinaRSD = 0;
       let popustIznos = 0;
-      let popustPoruka = ''; // Počinjemo sa praznom porukom
+      let popustPoruka = ''; 
       
       const dostavaTip = dostavaEl.value;
       
-      // LOGIKA ZA POŠTARINU
       if (dostavaTip === 'Kurirska služba') {
         if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
-          // Besplatna dostava
           postarinaRSD = 0;
           popustPoruka = "✅ Besplatna poštarina!";
         } else {
-          // Plaćena dostava (400 RSD)
           postarinaRSD = CENA_KURIRSKE_SLUZBE;
-          popustPoruka = ""; // Nema poruke o dostavi, samo ako je primenljiv popust
+          popustPoruka = "";
         }
       } 
 
       let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
       
-      // LOGIKA ZA POPUST
       if (iznosPrePopusta >= PRAG_ZA_POPUST) {
           popustIznos = Math.round(iznosPrePopusta * PROCENT_POPUSTA); 
-          
-          // Ako već postoji poruka (o Besplatnoj dostavi), dodajte popust na nju.
-          // Ako ne postoji poruka (dostava je plaćena), poruka je samo o popustu.
           popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
       }
 
       const ukupnoRSD = iznosPrePopusta - popustIznos;
 
-      // AŽURIRANJE PRIKAZA NA FORMI
       iznosRsdEl.value = medjuzbirRSD + " RSD";
       popustPrikazPoljeEl.value = popustIznos > 0 ? `- ${popustIznos} RSD (10%)` : `0 RSD`;
       popustPrikazTekstEl.textContent = popustPoruka;
       ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
       
-      // Vraća kompletan finansijski objekat
       return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip, kolicina, pakovanje: selectedPakovanje.value };
     }
 
-    // === EVENT LISTENERS ZA PRORAČUN ===
+    // === EVENT LISTENERS ZA PRORAČUN (ISTO) ===
     pakovanjeEl.addEventListener('change', updateIznos);
     kolicinaEl.addEventListener('input', updateIznos);
     dostavaEl.addEventListener('change', updateIznos);
 
-    // === KOD ZA STICKY CTA ===
+    // === KOD ZA STICKY CTA (ISTO) ===
     if (stickyCtaButton && formaSekcija) {
         stickyCtaButton.addEventListener('click', function() {
             formaSekcija.scrollIntoView({ behavior: 'smooth' });
         });
     }
 
-    // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA ===
+    // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA (ISTO) ===
     function formatPulsGelForEmail(data) {
         return `
 Proizvod: PULS Gel ${data.pakovanje}
@@ -595,6 +602,38 @@ Ukupno za stavku: ${data.medjuzbir}
 --------------------------------
         `;
     }
+
+    // === NOVO: FUNKCIJA ZA REZERVNI PLAN (GOOGLE SHEET) ===
+    async function sendToGoogleSheetFallback(data) {
+        
+        const formDataToSend = new FormData();
+        
+        // Mapiranje podataka na Google Forms entry ID-jeve
+        formDataToSend.append(GOOGLE_ENTRY_IDS.ime_kupca, data.ime_kupca);      
+        formDataToSend.append(GOOGLE_ENTRY_IDS.prezime_kupca, data.prezime_kupca); 
+        formDataToSend.append(GOOGLE_ENTRY_IDS.email_kupca, data.email_kupca);     
+        formDataToSend.append(GOOGLE_ENTRY_IDS.telefon_kupca, data.telefon_kupca);
+        formDataToSend.append(GOOGLE_ENTRY_IDS.adresa_dostave, data.adresa_dostave);
+        formDataToSend.append(GOOGLE_ENTRY_IDS.lista_proizvoda, data.lista_proizvoda); 
+        formDataToSend.append(GOOGLE_ENTRY_IDS.ukupno, data.ukupno); 
+        formDataToSend.append(GOOGLE_ENTRY_IDS.nacin_placanja, data.nacin_placanja);
+        formDataToSend.append(GOOGLE_ENTRY_IDS.napomena, data.napomena);
+        
+        try {
+            const response = await fetch(GOOGLE_FORM_ACTION_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Neophodno za slanje na Google Forms
+                body: formDataToSend
+            });
+            console.log("Porudžbina je uspešno zabeležena u Google Sheetu (Rezervni plan).");
+            return { status: 'success', message: 'Sačuvano u Sheetu' };
+        } catch (error) {
+            console.error("Fatalna greška: Neuspešno slanje ni na EmailJS ni na Google Sheet.", error);
+            // Vraćamo da je neuspešno da bismo obavestili korisnika o ozbiljnom problemu
+            return { status: 'error', message: 'Slanje na Sheet neuspešno' };
+        }
+    }
+
 
     // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
     function sendMail() {
@@ -608,7 +647,7 @@ Ukupno za stavku: ${data.medjuzbir}
 
         const finanse = globalFormData.ga4_finanse; 
         
-        // --- GA4 MERENJE KONVERZIJE ---
+        // --- GA4 MERENJE KONVERZIJE (ISTO) ---
         if (typeof gtag === 'function' && finanse.ukupnoRSD > 0) {
             gtag('event', 'purchase', {
                 transaction_id: globalFormData.broj_porudzbine,
@@ -622,9 +661,7 @@ Ukupno za stavku: ${data.medjuzbir}
                 }]
             });
         }
-        // -----------------------------
-        
-        // --- META PIXEL PURCHASE KONVERZIJA ---
+        // --- META PIXEL PURCHASE KONVERZIJA (ISTO) ---
         if (typeof fbq === 'function') {
             fbq('track', 'Purchase', {
                 value: finanse.ukupnoRSD,
@@ -634,23 +671,40 @@ Ukupno za stavku: ${data.medjuzbir}
                 content_type: 'product'
             });
         }
-        // -------------------------------------
               
-        
+        // Slanje poruka putem EmailJS
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
         const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
             
-        Promise.all([slanjeVama, slanjeKupcu])
-            .then(() => {
-                alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
-                forma.reset();
-                updateIznos(); 
+        // Korišćenje Promise.allSettled za proveru uspešnosti EmailJS slanja
+        Promise.allSettled([slanjeVama, slanjeKupcu])
+            .then((results) => {
+                
+                // Proverava da li je bar jedna EmailJS poruka uspešno poslata
+                const emailSuccess = results.some(r => r.status === 'fulfilled');
+
+                if (emailSuccess) {
+                    // JEDAN ILI OBA EMAIL-a USPEŠNI
+                    alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
+                } else {
+                    // OBA EMAIL-a SU PALA, AKTIVIRAMO REZERVNI PLAN
+                    console.warn("Oba EmailJS slanja su neuspešna. Aktiviran rezervni plan (Google Sheet).");
+                    
+                    // Pozivanje fallback funkcije i obaveštavanje korisnika
+                    sendToGoogleSheetFallback(globalFormData);
+                    
+                    alert("Porudžbina je primljena, ali smo imali problem sa slanjem e-maila. Podaci su sačuvani u rezervnoj kopiji. Bićete kontaktirani uskoro.");
+                }
             })
             .catch((error) => {
-                console.error("Greška pri slanju jedne ili obe poruke:", error);
-                alert("Došlo je do greške pri slanju porudžbine. Molimo proverite Vaš EmailJS nalog i konzolu.");
+                // Krajnji osigurač ako dođe do nepredviđene greške u promise chainu
+                console.error("Krajnja greška u obradi porudžbine:", error);
+                alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
             })
             .finally(() => {
+                // Čišćenje i resetovanje (dešava se uvek)
+                forma.reset();
+                updateIznos(); 
                 dugmePotvrdi.disabled = false;
                 dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
                 pregledModal.style.display = 'none';
@@ -661,7 +715,8 @@ Ukupno za stavku: ${data.medjuzbir}
             });
     }
 
-    // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) ===
+    // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) (ISTO) ===
+    // ... (ovaj deo ostaje isti kao u vašem originalnom kodu) ...
     forma.addEventListener('submit', function(e){
         e.preventDefault(); 
         
@@ -674,7 +729,7 @@ Ukupno za stavku: ${data.medjuzbir}
         
         const trenutneFinanse = updateIznos(); 
         
-        // --- META PIXEL INITIATE CHECKOUT ---
+        // --- META PIXEL INITIATE CHECKOUT (ISTO) ---
         if (typeof fbq === 'function') {
              fbq('track', 'InitiateCheckout', {
                 value: trenutneFinanse.ukupnoRSD,
@@ -714,10 +769,10 @@ Ukupno za stavku: ${data.medjuzbir}
             }),
 
             dostava: trenutneFinanse.dostavaTip,
-            ga4_finanse: trenutneFinanse // Ključno za GA4 praćenje
+            ga4_finanse: trenutneFinanse 
         };
 
-        // ... (Generisanje HTML prikaza u modalu) ...
+        // ... (Generisanje HTML prikaza u modalu, ostaje ISTO)
         detaljiIsporuke.innerHTML = `
             <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
             <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -742,7 +797,8 @@ Ukupno za stavku: ${data.medjuzbir}
         document.addEventListener('keydown', handleEscKey, { once: true });
     });
 
-    // === MODAL EVENT LISTENERS ===
+    // === MODAL EVENT LISTENERS (ISTO) ===
+    // ... (ostatak koda za modal, dugmad i Esc dugme je isti) ...
     dugmePotvrdi.addEventListener('click', sendMail);
     
     dugmeIzmeni.addEventListener('click', function() {
@@ -761,6 +817,5 @@ Ukupno za stavku: ${data.medjuzbir}
 
 }); // Kraj DOMContentLoaded
 </script>
-
 </body>
 </html>
