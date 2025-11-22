@@ -606,6 +606,23 @@ Ukupno za stavku: ${data.medjuzbir}
             });
         }
         // -----------------------------
+              // --- META PIXEL MERENJE KONVERZIJE (Purchase) ---
+        // Proverava da li je funkcija Meta Pixela (fbq) definisana i da li je iznos veći od 0
+        if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
+            // Šaljemo Purchase event sa vrednošću i valutom (koristimo UKUPNO RSD iz forme)
+            fbq('track', 'Purchase', {
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                content_name: 'Puls Gel Porudžbina',
+                content_type: 'product',
+                contents: [{ 
+                    id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+                    quantity: finanse.kolicina 
+                }]
+            });
+        }
+        // ------------------------------------------------
+
         
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
         const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
