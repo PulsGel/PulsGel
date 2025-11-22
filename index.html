@@ -661,17 +661,23 @@ Ukupno za stavku: ${data.medjuzbir}
                 }]
             });
         }
-        // --- META PIXEL PURCHASE KONVERZIJA (ISTO) ---
-        if (typeof fbq === 'function') {
-            fbq('track', 'Purchase', {
-                value: finanse.ukupnoRSD,
-                currency: 'RSD',
-                contents: [{ id: 'PULS', quantity: finanse.kolicina }],
-                num_items: finanse.kolicina,
-                content_type: 'product'
-            });
-        }
-              
+        // NOVA VERZIJA (OPTIIMIZOVANA)
+if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
+    
+    const contentArray = [{
+        id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+        quantity: finanse.kolicina,
+        item_price: finanse.medjuzbirRSD / finanse.kolicina // Ključna promena: dodata cena
+    }];
+    
+    fbq('track', 'Purchase', {
+        value: finanse.ukupnoRSD,
+        currency: 'RSD',
+        content_type: 'product',
+        contents: contentArray, 
+        num_items: finanse.kolicina
+    });
+}         
         // Slanje poruka putem EmailJS
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
         const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
