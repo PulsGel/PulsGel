@@ -22,15 +22,14 @@ src="https://www.facebook.com/tr?id=826589170344707&ev=PageView&noscript=1"
 <meta name="google-site-verification" content="AbTZDR5hcpu1fcUcq1wsTOXlimqbvy_-tjSh7IVb-GE" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow">
-<title>PULS Gel – Prirodni Stimulans za Muškarce i Žene (100% Zadovoljstvo) | Official</title>
-<meta name="description" content="PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak. Poručite danas i osetite razliku!">
+<title>PULS Gel – Prirodna Neguja za Intimno Zdravlje i Osetljivost | Official</title>
+<meta name="description" content="PULS Gel je prirodna formula za poboljšanu osetljivost i cirkulaciju. Bezbedan, efikasan i prijatan za upotrebu. Poručite danas i osetite prirodnu razliku!">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-5E43CB4R42'); 
 </script>
 <style>
@@ -41,17 +40,47 @@ h2 { color: #b22222; margin-top: 40px; }
 h3 { color: #ff4c4c; margin-top: 20px; }
 p, li { margin: 10px 0; }
 ul { margin: 10px 0 20px 20px; }
-.puls-card { border: 1px solid #444; padding: 15px; margin: 15px 0; border-radius: 10px; background-color: #111; }
+.puls-card { 
+    border: 1px solid #444; 
+    padding: 15px; 
+    margin: 15px 0; 
+    border-radius: 10px; 
+    background-color: #111;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.puls-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(178, 34, 34, 0.2);
+}
 form { display: flex; flex-direction: column; max-width: 500px; margin: 20px auto; padding: 20px; background-color: #111; border-radius: 10px; border: 1px solid #444; }
 input, select, textarea, button { margin: 8px 0; padding: 10px; border-radius: 5px; border: 1px solid #444; background-color: #222; color: #fff; font-size: 16px; }
 input[readonly] { background-color: #333; cursor: not-allowed; }
-button { background-color: #b22222; color: #fff; border: none; cursor: pointer; }
+button { background-color: #b22222; color: #fff; border: none; cursor: pointer; transition: background-color 0.3s; }
 button:hover { background-color: #ff4c4c; }
+button:disabled { background-color: #666; cursor: not-allowed; }
 
 /* FOCUS STIL ZA PRISTUPAČNOST */
 :focus-visible {
   outline: 3px solid rgba(255,76,76,0.6);
   outline-offset: 2px;
+}
+
+/* LOADING SPINNER */
+.loading-spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #b22222;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* NOVI STILOVI ZA MODAL */
@@ -132,6 +161,17 @@ button:hover { background-color: #ff4c4c; }
 }
 .info-box span {
     color: #00ff00;
+    font-weight: bold;
+}
+
+/* URGENCY BANNER */
+.urgency-banner {
+    background: linear-gradient(135deg, #b22222 0%, #ff4c4c 100%);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    margin: 15px 0;
+    border-radius: 8px;
     font-weight: bold;
 }
 
@@ -248,13 +288,34 @@ button:hover { background-color: #ff4c4c; }
         font-size: 1rem;
     }
 }
+
+/* SECURE BADGES */
+.secure-badges {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+}
+.secure-badges p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
 </style>
 </head>
+<body>
 <header>
-  <h1>🌙 PULS Gel – Prirodni Stimulans za Muškarce i Žene (100% Zadovoljstvo)</h1>
-  <p>PULS Gel je prirodna formula za pojačanu osetljivost i vitalnost. Efekat uporediv sa tabletama, uz pojačan užitak. Poručite danas i osetite razliku!</p>
+  <h1>🌙 PULS Gel – Prirodna Neguja za Intimno Zdravlje i Osetljivost</h1>
+  <p>PULS Gel je prirodna formula za poboljšanu osetljivost i cirkulaciju. Bezbedan, efikasan i prijatan za upotrebu. Poručite danas i osetite prirodnu razliku!</p>
 </header>
-<!-- AŽURIRANA TRAKA POVERENJA SA VEĆIM FONTOM -->
+
+<!-- URGENCY BANNER -->
+<div class="urgency-banner">
+    🚚 <strong>BESPLATNA DOSTAVA</strong> za porudžbine preko 4.000 RSD • 🎁 <strong>10% POPUSTA</strong> preko 9.000 RSD
+</div>
+
+<!-- AŽURIRANA TRAKA POVERENJA -->
 <div class="trust-bar">
     <div class="trust-item">
         <span>⭐️⭐️⭐️⭐️⭐️</span>
@@ -273,82 +334,123 @@ button:hover { background-color: #ff4c4c; }
         Dostava 24-48h
     </div>
 </div>
-  <section id="proizvod-vizuel" class="product-visuals">
+
+<!-- SECURE BADGES -->
+<div class="secure-badges">
+    <p>🔒 SSL enkripcija • 💳 Sigurna plaćanja • 📊 Podaci zaštićeni</p>
+</div>
+
+<section id="proizvod-vizuel" class="product-visuals">
     <div style="text-align: center; margin-bottom: 30px;">
         <img src="slika1.jpg" 
              alt="Puls Gel pakovanja 30ml i 50ml sa etiketama" 
              style="max-width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
     </div>
 </section>
+
 <main>
+    <!-- NOVA SEKCIJA: Kako deluje -->
+    <section style="margin: 40px 0;">
+        <h2>🔬 Kako Puls Gel deluje?</h2>
+        <div class="puls-card">
+            <p>Naša formula koristi prirodne sastojke koji podstiču:</p>
+            <ul>
+                <li>✅ <strong>Poboljšanu mikrocirkulaciju</strong> u području nanošenja</li>
+                <li>✅ <strong>Prirodnu vlažnost</strong> i elastičnost tkiva</li>
+                <li>✅ <strong>Povećanu osetljivost</strong> kroz blagu, prirodnu stimulaciju</li>
+                <li>✅ <strong>Negujuće dejstvo</strong> na osetljiva područja</li>
+            </ul>
+            <p><em>Sastojci kao što su glicerin i biljni ekstrakti neguju kožu i pomažu u postizanju prijatnog osećaja toplote i opuštanja.</em></p>
+        </div>
+    </section>
+
     <h2>🔥 1. Uvod</h2>
     <p>PulsGel je prirodna, snažna formula koja pomaže u aktiviranju telesnog odgovora, pojačava osetljivost i cirkulaciju u intimnim zonama. Idealan je za parove i pojedince koji žele dublju, intenzivniju vezu i doživljaj.</p>
     
-      <h3>Za muškarce</h3>
-      <p>Brza, snažna i postojana vitalnost — efekat uporediv sa tabletama, uz pojačan užitak i dublji, intenzivniji seksualni doživljaj.</p>
-    </article>
+    <h3>Za muškarce</h3>
+    <p>Podržava prirodnu cirkulaciju i osetljivost — za poboljšano iskustvo i dublji, intenzivniji doživljaj.</p>
 
     <h2>🔥 2. Za žene</h2>
     <article class="puls-card">
       <p>Vidljivo podržava prirodnu vlažnost i punoću, budi želju i oživljava intimne zone.</p>
     </article>
-    <h2>🔥 3. Za oralni sex</h2>
+
+    <h2>🔥 3. Za oralni kontakt</h2>
     <article class="puls-card">
       <p>Prijatan miris i ukus. Nežan, siguran i potpuno prijatan u kontaktu sa usnama i jezikom.</p>
     </article>
 
-    <h2>🔥 4. Za analni sex</h2>
+    <h2>🔥 4. Za partnersku bliskost</h2>
     <article class="puls-card">
-      <p>Omogućava lakšu penetraciju, dugotrajan klizak osećaj i nadražaj koji obuhvata celu zonu užitka.</p>
+      <p>Omogućava prijatniju interakciju, dugotrajan klizak osećaj i nadražaj koji obuhvata celu zonu užitka.</p>
     </article>
 
     <h2>🔥 5. Za solo trenutke</h2>
     <article class="puls-card">
       <p>Savršen saputnik za istraživanje sopstvenih želja. Kompatibilan sa svim seksualnim igračkama — za maksimalan, prirodan užitak.</p>
     </article>
-  <h2>🔥 6. Novi nivo povezanosti</h2>
-    <p>Svaka pora tela se oživljava uz Puls. Dok muški organ postaje čvrst i snažan, ženske intimne zone prirodno se šire i pulsiraju. Toplina se prenosi kroz dodir – partneri postaju jedno telo koje diše, kuca i pulsira u istom ritmu.</p>
+
+    <h2>🔥 6. Novi nivo povezanosti</h2>
+    <p>Svaka pora tela se oživljava uz Puls. Toplina se prenosi kroz dodir – partneri postaju jedno telo koje diše, kuca i pulsira u istom ritmu.</p>
     <p>Svaki sledeći dodir izaziva dublji talas prijatne toplote i prokrvljenosti. To nije mehanički efekat – to je hemija tela koja prepoznaje dodir, toplinu i miris kože.</p>
-    <p>Puls ne samo da pojačava osetljivost, već stvara most između fizičke aktivacije i emotivne povezanosti. Ono što počinje kao fizički osećaj, pretvara se u dublji, zajednički ritam – jedan Puls koji pripada i njoj i njemu.</p>
+    <p>Puls ne samo da pojačava osetljivost, već stvara most između fizičke aktivacije i emotivne povezanosti.</p>
+
+    <!-- NOVA SEKCIJA: FAQ -->
+    <section style="margin: 40px 0;">
+        <h2>❔ Često Postavljana Pitanja</h2>
+        <div class="puls-card">
+            <h3>🔸 Koliko brzo se oseća efekat?</h3>
+            <p>Većina korisnika oseća prijatnu toplotu i poboljšanu osetljivost u roku od nekoliko minuta nakon nanošenja.</p>
+            
+            <h3>🔸 Da li je sigurno za upotrebu?</h3>
+            <p>Da, formulisan je od prirodnih sastojaka i pogodan je za sve tipove kože. Pre upotrebe preporučujemo test na manjoj površini kože.</p>
+            
+            <h3>🔸 Kako se čuva proizvod?</h3>
+            <p>Čuvajte na sobnoj temperaturi, van direktne sunčeve svetlosti. Najbolje performanse su na temperaturi između 15°C i 25°C.</p>
+            
+            <h3>🔸 Da li je pogodan za sve?</h3>
+            <p>Formulisan je za odrasle osobe oba pola. Ne koristiti u slučaju alergije na bilo koji sastojak.</p>
+        </div>
+    </section>
 
     <article class="puls-card">
-    
     <h2>🌿 7. Moć prirode</h2>
-    <p>U srcu PULS formule nalazi se više od 20 prirodnih i biljnih sastojaka – od ekstrakata gvarane, đumbira, ginsenga, cvekle i mace, do prirodnih afrodizijaka poput iikarina i ylang-ylanga. Njihovo dejstvo je pažljivo balansirano: toplina, cirkulacija, miris i dodir se usklađuju tako da telo samo aktivira svoj puni potencijal.</p>
-    <p>💎 Sinergijska snaga 22 aktivne supstance – PULS sadrži 22 bioaktivne supstance koje zajedno stvaraju trofazno dejstvo: trenutnu stimulaciju, produženi vaskularni efekat i dugoročno jačanje vitalnosti i tonusa tkiva.</p>
+    <p>U srcu PULS formule nalazi se više od 20 prirodnih i biljnih sastojaka – od ekstrakata gvarane, đumbira, ginsenga, cvekle i mace, do prirodnih biljnih ekstrakata poput ylang-ylanga. Njihovo dejstvo je pažljivo balansirano: toplina, cirkulacija, miris i dodir se usklađuju tako da telo samo aktivira svoj puni potencijal.</p>
+    <p>💎 <strong>Sinergijska snaga prirodnih sastojaka</strong> – PULS sadrži više od 20 bioaktivnih supstanci koje zajedno stvaraju trofazno dejstvo: trenutnu stimulaciju, produženi efekat i dugoročno jačanje vitalnosti i tonusa tkiva.</p>
+    </article>
 
     <h2>💫 8. Efekti i stimulacija</h2>
-    <p>Penis postaje čvrst, debeo i spreman za penetraciju. Vagina i usmine postaju prokrvljene, uvećane i izuzetno osetljive. Puls je prijatan, nežan, ukusan i bezbedan – idealan i za oralnu igru.</p>
-    <p>Senzacije postaju intenzivne i dugotrajne. Vagina postaje vlažna, prokrvljena i spremna za penetraciju. Penetracija samo produžava ono što je Puls započeo. Puls vodi do vrhunca, ali zadržava osećaj punine i zadovoljstva.</p>
+    <p>Osetljiva područja postaju prokrvljena, uvećana i izuzetno osetljiva. Puls je prijatan, nežan, ukusan i bezbedan – idealan i za oralnu igru.</p>
+    <p>Senzacije postaju intenzivne i dugotrajne. Puls vodi do vrhunca, ali zadržava osećaj punine i zadovoljstva.</p>
 
     <h2>🔹 9. Dugoročni efekat redovne upotrebe</h2>
     <ul>
-      <li>Veći tonus penisa u opuštenom stanju</li>
-      <li>Održana kontrola i čvrstina erekcije</li>
-      <li>Poboljšana vlažnost vagine i tonus usmina i klitorisa</li>
+      <li>Bolji tonus i elastičnost osetljivih područja</li>
+      <li>Održana prirodna vlažnost i osetljivost</li>
+      <li>Poboljšana cirkulacija u intimnim zonama</li>
     </ul>
 
     <h2>💎 10. Za koga je</h2>
     <ul>
-      <li>Muškarcima sa erektilnom disfunkcijom ili skraćenim trajanjem erekcije</li>
-      <li>Ženama sa suvoćom ili smanjenom osetljivošću</li>
+      <li>Muškarcima koji žele poboljšanu cirkulaciju i osetljivost</li>
+      <li>Ženama sa potrebom za poboljšanom vlažnošću ili osetljivošću</li>
       <li>Svima koji žele da probude izgubljenu želju i užitak</li>
       <li>Onima koji žele stimulaciju i solo i partnerski</li>
     </ul>
 
     <h2>💎 11. Prednosti formule</h2>
     <ul>
-      <li>Deluje lokalno na erogene zone i genitalne organe, bez uticaja na ceo organizam</li>
-      <li>Potpuno prirodan sastav, bez rizika i nuspojava, i najvažnije bez opasnih lekova</li>
+      <li>Deluje lokalno na erogene zone, bez uticaja na ceo organizam</li>
+      <li>Potpuno prirodan sastav, bez rizika i nuspojava</li>
       <li>Pogodan za oba pola i sve tipove kože</li>
       <li>Brz i dugotrajan efekat</li>
       <li>Povećava cirkulaciju i osetljivost</li>
       <li>Obnavlja prirodnu vlažnost i pojačava užitak</li>
-      <li>Ugrađeni penetratori i sonifikatori poslednje generacije, aktivnne sastojake dovode duboko u penis ili vaginu čime pojačavaju dejstvo i ovu formulu čine jedinstvenom na tržištu</li>
+      <li>Ugrađeni penetratori i sonifikatori poslednje generacije, aktivne sastojke dovode duboko u tkivo čime pojačavaju dejstvo i ovu formulu čine jedinstvenom na tržištu</li>
     </ul>
 
     <h2>❤️ 12. Upotreba</h2>
-    <p>Nanesite malu količinu (1–2 ml / dva stiska pumpice) i lagano utrljajte. Efekat se javlja u roku od nekoliko minuta. Sigurno za kontakt sa sluzokožom: penis, vagina, usmine, klitoris, bradavice, usne, jezik, analni otvor. Prijatan miris i ukus – oralno sigurno i ukusno.</p>
+    <p>Nanesite malu količinu (1–2 ml / dva stiska pumpice) i lagano utrljajte. Efekat se javlja u roku od nekoliko minuta. Sigurno za kontakt sa osetljivim područjima. Prijatan miris i ukus – oralno sigurno i ukusno.</p>
 
     <h2>💧 13. Pakovanja i cena</h2>
     <ul>
@@ -376,6 +478,7 @@ button:hover { background-color: #ff4c4c; }
             </a>
         </p>
     </div>
+
 <section style="background: #111; padding: 20px; border-radius: 10px; margin: 25px 0; border: 1px solid #b22222;">
     <h2 style="color: #ff4c4c; text-align: center; margin-bottom: 20px;">🏢 Kontakt i Podrška</h2>
     
@@ -526,13 +629,13 @@ button:hover { background-color: #ff4c4c; }
             <a href="blog/prirodni-sastojci.html" style="color: #00ff00; text-decoration: none; font-weight: bold;">Pročitaj više →</a>
         </div>
         
-        <!-- POST 3: Coming Soon -->
-        <div style="background: #111; padding: 25px; border-radius: 10px; border: 1px dashed #444; opacity: 0.8;">
-            <h3 style="color: #666; margin-bottom: 15px;">📝 U Pripremi...</h3>
-            <p style="color: #666; margin-bottom: 20px; line-height: 1.6;">
-                Novi članak o pH vrednosti i intimnom zdravlju uskoro stiže.
+        <!-- POST 3: Novi članak -->
+        <div style="background: #111; padding: 25px; border-radius: 10px; border: 1px solid #333;">
+            <h3 style="color: #fff; margin-bottom: 15px;">💧 pH Vrednost i Zdravlje Kože</h3>
+            <p style="color: #ccc; margin-bottom: 20px; line-height: 1.6;">
+                Zašto je pH 5.0 idealan za negu osetljivih područja i kako to utiče na efikasnost.
             </p>
-            <span style="color: #666; font-weight: bold;">Dolazi uskoro</span>
+            <a href="blog/ph-vrednost.html" style="color: #00ff00; text-decoration: none; font-weight: bold;">Pročitaj više →</a>
         </div>
     </div>
 </section>
@@ -559,16 +662,14 @@ button:hover { background-color: #ff4c4c; }
     <p class="copyright">&copy; <span id="currentYear"></span> PulsGel Shop. Sva prava zadržana.</p>
 </footer>
 
-<button class="sticky-cta" id="stickyCtaButton" aria-label="Naručite Puls Gel odmah">
-    Naručite odmah
+<button class="sticky-cta" id="stickyCtaButton" aria-label="Osetite razliku večeras">
+    🚀 Osetite razliku večeras!
 </button>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
-
 // Inicijalizacija EmailJS 
 (function(){
-  // PAŽNJA: Proverite da li je ovaj ID Vaš pravi Public Key za EmailJS
   emailjs.init("WKV419-gz6OQWSgRJ"); 
 })();
 
@@ -583,18 +684,15 @@ const SERVICE_ID = 'service_rxj533m';
 const BREND_NAZIV = 'PulsGel';
 const ADMIN_MAIL = 'info.pulsgel@gmail.com'; 
 const SENDER_NAME = 'PulsGel Porudžbina';  
-// ... (sav kod do dela gde se definišu konstante)
 
-// --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE (nastavak od ranije) ---
+// --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE ---
 const CENA_KURIRSKE_SLUZBE = 400; 
 const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
 const PRAG_ZA_POPUST = 9000; 
 const PROCENT_POPUSTA = 0.10; 
 
 // --- GOOGLE FORM FALLBACK KONFIGURACIJA ---
-// 1. Akcioni URL za slanje forme
 const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdkUOR2rrRO488dGGb1hO7QQkKtQF1ncp68-V8nguex07qi5w/formResponse';
-// 2. Mapiranje ključeva na entry ID-jeve
 const GOOGLE_ENTRY_IDS = {
     ime_kupca: 'entry.1018337777',
     prezime_kupca: 'entry.1747761044',
@@ -606,42 +704,51 @@ const GOOGLE_ENTRY_IDS = {
     nacin_placanja: 'entry.1471328004',
     napomena: 'entry.972352723'
 };
-// ---------------------------------------------
 
+// FUNKCIJE ZA LOADING STATE
+function showLoadingState() {
+    const dugme = document.getElementById('potvrdiPorudzbinu');
+    dugme.innerHTML = '<div class="loading-spinner"></div>Šaljem...';
+    dugme.disabled = true;
+}
+
+function hideLoadingState() {
+    const dugme = document.getElementById('potvrdiPorudzbinu');
+    dugme.innerHTML = 'Potvrdi Porudžbinu';
+    dugme.disabled = false;
+}
 
 // Čekamo da se kompletan DOM učita
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ... (sav kod za dohvaćanje DOM elemenata i updateIznos funkcija ostaje ISTI)
-
+    // Dohvaćanje DOM elemenata
     const forma = document.getElementById('forma-porudzbine');
     const pakovanjeEl = document.getElementById('pakovanje');
     const kolicinaEl = document.getElementById('kolicina');
     const dostavaEl = document.getElementById('dostava');
-
     const iznosRsdEl = document.getElementById('iznos_rsd');
     const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
     const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
     const popustPrikazTekstEl = document.getElementById('popust_prikaz');
-
     const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
     const dugmeIzmeni = document.getElementById('izmijeniPodatke');
     const pregledModal = document.getElementById('pregledModal');
     const detaljiIsporuke = document.getElementById('detaljiIsporuke');
-
     const stickyCtaButton = document.getElementById('stickyCtaButton');
     const formaSekcija = document.getElementById('forma-porudzbine');
 
-    // === INICIJALIZACIJA (ISTO) ===
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // === INICIJALIZACIJA ===
     if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
         kolicinaEl.value = '1';
     }
     updateIznos(); 
     kolicinaEl.dispatchEvent(new Event('input')); 
     
-    // === FUNKCIJA ZA AUTOMATSKI PRERAČUN (ISTO) ===
+    // === FUNKCIJA ZA AUTOMATSKI PRERAČUN ===
     function updateIznos() {
-      // ... (ista logika proračuna) ...
       const kolicinaValue = parseInt(kolicinaEl.value);
       const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
       
@@ -682,19 +789,19 @@ document.addEventListener('DOMContentLoaded', function() {
       return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip, kolicina, pakovanje: selectedPakovanje.value };
     }
 
-    // === EVENT LISTENERS ZA PRORAČUN (ISTO) ===
+    // === EVENT LISTENERS ZA PRORAČUN ===
     pakovanjeEl.addEventListener('change', updateIznos);
     kolicinaEl.addEventListener('input', updateIznos);
     dostavaEl.addEventListener('change', updateIznos);
 
-    // === KOD ZA STICKY CTA (ISTO) ===
+    // === KOD ZA STICKY CTA ===
     if (stickyCtaButton && formaSekcija) {
         stickyCtaButton.addEventListener('click', function() {
             formaSekcija.scrollIntoView({ behavior: 'smooth' });
         });
     }
 
-    // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA (ISTO) ===
+    // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA ===
     function formatPulsGelForEmail(data) {
         return `
 Proizvod: PULS Gel ${data.pakovanje}
@@ -705,12 +812,10 @@ Ukupno za stavku: ${data.medjuzbir}
         `;
     }
 
-    // === NOVO: FUNKCIJA ZA REZERVNI PLAN (GOOGLE SHEET) ===
+    // === FUNKCIJA ZA REZERVNI PLAN (GOOGLE SHEET) ===
     async function sendToGoogleSheetFallback(data) {
-        
         const formDataToSend = new FormData();
         
-        // Mapiranje podataka na Google Forms entry ID-jeve
         formDataToSend.append(GOOGLE_ENTRY_IDS.ime_kupca, data.ime_kupca);      
         formDataToSend.append(GOOGLE_ENTRY_IDS.prezime_kupca, data.prezime_kupca); 
         formDataToSend.append(GOOGLE_ENTRY_IDS.email_kupca, data.email_kupca);     
@@ -724,18 +829,16 @@ Ukupno za stavku: ${data.medjuzbir}
         try {
             const response = await fetch(GOOGLE_FORM_ACTION_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Neophodno za slanje na Google Forms
+                mode: 'no-cors',
                 body: formDataToSend
             });
             console.log("Porudžbina je uspešno zabeležena u Google Sheetu (Rezervni plan).");
             return { status: 'success', message: 'Sačuvano u Sheetu' };
         } catch (error) {
             console.error("Fatalna greška: Neuspešno slanje ni na EmailJS ni na Google Sheet.", error);
-            // Vraćamo da je neuspešno da bismo obavestili korisnika o ozbiljnom problemu
             return { status: 'error', message: 'Slanje na Sheet neuspešno' };
         }
     }
-
 
     // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
     function sendMail() {
@@ -744,12 +847,11 @@ Ukupno za stavku: ${data.medjuzbir}
              return;
         }
 
-        dugmePotvrdi.disabled = true;
-        dugmePotvrdi.textContent = 'Šaljem...';
+        showLoadingState();
 
         const finanse = globalFormData.ga4_finanse; 
         
-        // --- GA4 MERENJE KONVERZIJE (ISTO) ---
+        // --- GA4 MERENJE KONVERZIJE ---
         if (typeof gtag === 'function' && finanse.ukupnoRSD > 0) {
             gtag('event', 'purchase', {
                 transaction_id: globalFormData.broj_porudzbine,
@@ -763,58 +865,48 @@ Ukupno za stavku: ${data.medjuzbir}
                 }]
             });
         }
-        // NOVA VERZIJA (OPTIIMIZOVANA)
-if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
-    
-    const contentArray = [{
-        id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
-        quantity: finanse.kolicina,
-        item_price: finanse.medjuzbirRSD / finanse.kolicina // Ključna promena: dodata cena
-    }];
-    
-    fbq('track', 'Purchase', {
-        value: finanse.ukupnoRSD,
-        currency: 'RSD',
-        content_type: 'product',
-        contents: contentArray, 
-        num_items: finanse.kolicina
-    });
-}         
+
+        // --- META PIXEL PURCHASE ---
+        if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
+            const contentArray = [{
+                id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+                quantity: finanse.kolicina,
+                item_price: finanse.medjuzbirRSD / finanse.kolicina
+            }];
+            
+            fbq('track', 'Purchase', {
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                content_type: 'product',
+                contents: contentArray, 
+                num_items: finanse.kolicina
+            });
+        }         
+        
         // Slanje poruka putem EmailJS
         const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
         const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
             
-        // Korišćenje Promise.allSettled za proveru uspešnosti EmailJS slanja
         Promise.allSettled([slanjeVama, slanjeKupcu])
             .then((results) => {
-                
-                // Proverava da li je bar jedna EmailJS poruka uspešno poslata
                 const emailSuccess = results.some(r => r.status === 'fulfilled');
 
                 if (emailSuccess) {
-                    // JEDAN ILI OBA EMAIL-a USPEŠNI
                     alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
                 } else {
-                    // OBA EMAIL-a SU PALA, AKTIVIRAMO REZERVNI PLAN
                     console.warn("Oba EmailJS slanja su neuspešna. Aktiviran rezervni plan (Google Sheet).");
-                    
-                    // Pozivanje fallback funkcije i obaveštavanje korisnika
                     sendToGoogleSheetFallback(globalFormData);
-                    
                     alert("Porudžbina je primljena, ali smo imali problem sa slanjem e-maila. Podaci su sačuvani u rezervnoj kopiji. Bićete kontaktirani uskoro.");
                 }
             })
             .catch((error) => {
-                // Krajnji osigurač ako dođe do nepredviđene greške u promise chainu
                 console.error("Krajnja greška u obradi porudžbine:", error);
                 alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
             })
             .finally(() => {
-                // Čišćenje i resetovanje (dešava se uvek)
+                hideLoadingState();
                 forma.reset();
                 updateIznos(); 
-                dugmePotvrdi.disabled = false;
-                dugmePotvrdi.textContent = 'Potvrdi Porudžbinu';
                 pregledModal.style.display = 'none';
                 if (lastActiveElement) {
                    lastActiveElement.focus(); 
@@ -823,8 +915,7 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
             });
     }
 
-    // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) (ISTO) ===
-    // ... (ovaj deo ostaje isti kao u vašem originalnom kodu) ...
+    // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) ===
     forma.addEventListener('submit', function(e){
         e.preventDefault(); 
         
@@ -837,7 +928,7 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
         
         const trenutneFinanse = updateIznos(); 
         
-        // --- META PIXEL INITIATE CHECKOUT (ISTO) ---
+        // --- META PIXEL INITIATE CHECKOUT ---
         if (typeof fbq === 'function') {
              fbq('track', 'InitiateCheckout', {
                 value: trenutneFinanse.ukupnoRSD,
@@ -846,7 +937,6 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
                 num_items: trenutneFinanse.kolicina
             });
         }
-        // -------------------------------------
 
         globalFormData = {
             sender_name: SENDER_NAME, 
@@ -880,7 +970,6 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
             ga4_finanse: trenutneFinanse 
         };
 
-        // ... (Generisanje HTML prikaza u modalu, ostaje ISTO)
         detaljiIsporuke.innerHTML = `
             <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
             <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
@@ -905,8 +994,7 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
         document.addEventListener('keydown', handleEscKey, { once: true });
     });
 
-    // === MODAL EVENT LISTENERS (ISTO) ===
-    // ... (ostatak koda za modal, dugmad i Esc dugme je isti) ...
+    // === MODAL EVENT LISTENERS ===
     dugmePotvrdi.addEventListener('click', sendMail);
     
     dugmeIzmeni.addEventListener('click', function() {
@@ -926,4 +1014,4 @@ if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
 }); // Kraj DOMContentLoaded
 </script>
 </body>
-</html>
+        </html>
