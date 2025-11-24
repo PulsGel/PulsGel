@@ -964,15 +964,28 @@ Ukupno za stavku: ${data.medjuzbir}
             const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
             const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
                 
-            try {
-                // Čekamo da se oba EmailJS poziva završe
+                        try {
+                // ... (Postojeći kod za slanje slanjeVama i slanjeKupcu)
+
                 const results = await Promise.allSettled([slanjeVama, slanjeKupcu]);
+                
+                // --- NOVO: Provera statusa slanja i logovanje greške ---
+                let failedReason = '';
+                results.forEach((result, index) => {
+                    if (result.status === 'rejected') {
+                        const templateName = index === 0 ? 'Admin (Vama)' : 'Kupcu';
+                        console.error(`Greska pri slanju e-maila (${templateName}):`, result.reason);
+                        failedReason += ` | ${templateName} odbijen: ${result.reason}`;
+                    }
+                });
+                // --- KRAJ NOVE PROVERE ---
+
                 const emailSuccess = results.some(r => r.status === 'fulfilled');
 
                 if (emailSuccess) {
                     alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
                 } else {
-                    console.warn("Oba EmailJS slanja su neuspešna. Aktiviran rezervni plan (Google Sheet).");
+                    console.warn(`Oba EmailJS slanja su neuspešna: ${failedReason}. Aktiviran rezervni plan (Google Sheet).`);
                     
                     // Pokrećemo i čekamo rezervni plan
                     const fallbackResult = await sendToGoogleSheetFallback(globalFormData); 
@@ -980,11 +993,14 @@ Ukupno za stavku: ${data.medjuzbir}
                     if (fallbackResult.status === 'success') {
                         alert("Porudžbina je primljena, ali smo imali problem sa slanjem e-maila. Podaci su sačuvani u rezervnoj kopiji. Bićete kontaktirani uskoro.");
                     } else {
-                        // Ako ni fallback nije uspeo, prikazujemo kritičnu grešku
                         alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
                     }
                 }
             } catch (error) {
+                console.error("Krajnja greška u obradi porudžbine:", error);
+                alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
+            }
+
                 console.error("Krajnja greška u obradi porudžbine:", error);
                 alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
             }
