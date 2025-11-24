@@ -913,7 +913,8 @@ Ukupno za stavku: ${data.medjuzbir}
             }
         }
 
-        // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
+        
+            // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
         async function sendMail() { // Dodato 'async'
             if (typeof emailjs === 'undefined') {
                 alert("Greška: Sistem za slanje porudžbina nije dostupan. Molimo pokušajte kasnije.");
@@ -964,12 +965,10 @@ Ukupno za stavku: ${data.medjuzbir}
             const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
             const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
                 
-                        try {
-                // ... (Postojeći kod za slanje slanjeVama i slanjeKupcu)
-
+            try {
                 const results = await Promise.allSettled([slanjeVama, slanjeKupcu]);
                 
-                // --- NOVO: Provera statusa slanja i logovanje greške ---
+                // --- PROVERA STATUSA SLANJA I LOGOVANJE GREŠKE ---
                 let failedReason = '';
                 results.forEach((result, index) => {
                     if (result.status === 'rejected') {
@@ -978,7 +977,6 @@ Ukupno za stavku: ${data.medjuzbir}
                         failedReason += ` | ${templateName} odbijen: ${result.reason}`;
                     }
                 });
-                // --- KRAJ NOVE PROVERE ---
 
                 const emailSuccess = results.some(r => r.status === 'fulfilled');
 
@@ -993,14 +991,10 @@ Ukupno za stavku: ${data.medjuzbir}
                     if (fallbackResult.status === 'success') {
                         alert("Porudžbina je primljena, ali smo imali problem sa slanjem e-maila. Podaci su sačuvani u rezervnoj kopiji. Bićete kontaktirani uskoro.");
                     } else {
-                        alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
+                        alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo. Ni EmailJS ni rezervni plan nisu uspeli.");
                     }
                 }
             } catch (error) {
-                console.error("Krajnja greška u obradi porudžbine:", error);
-                alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
-            }
-
                 console.error("Krajnja greška u obradi porudžbine:", error);
                 alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
             }
@@ -1015,6 +1009,7 @@ Ukupno za stavku: ${data.medjuzbir}
                 globalFormData = {}; 
             }
         }
+
 
         // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) ===
         forma.addEventListener('submit', function(e){
