@@ -686,7 +686,7 @@
     <button class="sticky-cta" id="stickyCtaButton" aria-label="Osetite razliku večeras">
         🚀 Osetite razliku večeras!
     </button>
-    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
     // KONFIGURACIJA
@@ -766,123 +766,394 @@
 
     // Glavna funkcija za slanje mailova
     async function sendMail() {
-    console.log("🔄 Pokrećem slanje mailova...");
-    
-    if (typeof emailjs === 'undefined') {
-        alert("Greška: Sistem za slanje porudžbina nije dostupan. Molimo pokušajte kasnije.");
-        return;
-    }
-
-    if (!globalFormData || !globalFormData.broj_porudzbine) {
-        alert("Fatalna greška: Podaci o porudžbini nisu pronađeni. Molimo pokušajte ponovo.");
-        return;
-    }
-
-    showLoadingState();
-
-    const finanse = globalFormData.ga4_finanse; 
-    
-    // GA4 Purchase event
-    if (typeof gtag === 'function' && finanse && finanse.ukupnoRSD > 0) {
-        gtag('event', 'purchase', {
-            transaction_id: globalFormData.broj_porudzbine,
-            value: finanse.ukupnoRSD,
-            currency: 'RSD',
-            items: [{
-                item_id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
-                item_name: 'PULS Gel ' + finanse.pakovanje,
-                price: finanse.cena,
-                quantity: finanse.kolicina
-            }]
-        });
-    }
-
-    // Meta Pixel Purchase event
-    if (typeof fbq === 'function' && finanse && finanse.ukupnoRSD > 0) {
-        fbq('track', 'Purchase', {
-            value: finanse.ukupnoRSD,
-            currency: 'RSD',
-            content_type: 'product',
-            contents: [{
-                id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
-                quantity: finanse.kolicina,
-                item_price: finanse.cena
-            }]
-        });
-    }
-
-    try {
-        // Slanje emailova
-        console.log("📧 Šaljem emailove...");
-        const [adminResult, kupacResult] = await Promise.allSettled([
-            emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData),
-            emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData)
-        ]);
-
-        const adminSuccess = adminResult.status === 'fulfilled';
-        const kupacSuccess = kupacResult.status === 'fulfilled';
-
-        console.log("Admin email success:", adminSuccess);
-        console.log("Kupac email success:", kupacSuccess);
-
-        if (adminSuccess || kupacSuccess) {
-            if (adminSuccess && kupacSuccess) {
-                alert("✅ Porudžbina uspešno potvrđena! Potvrda je poslata na Vaš email.");
-            } else if (adminSuccess) {
-                alert("✅ Porudžbina uspešno potvrđena! (Problem sa slanjem potvrde na email)");
-            } else {
-                alert("✅ Porudžbina uspešno potvrđena! (Problem sa obaveštenjem prodavca)");
-            }
-        } else {
-            console.warn("❌ Oba EmailJS slanja su neuspešna");
-            
-            // Fallback na Google Sheets
-            const fallbackResult = await sendToGoogleSheetFallback(globalFormData);
-            if (fallbackResult.status === 'success') {
-                alert("📦 Porudžbina je primljena, ali imamo problem sa email sistemom. Bićete kontaktirani uskoro.");
-            } else {
-                alert("❌ Došlo je do greške. Molimo pokušajte ponovo ili nas kontaktirajte direktno.");
-            }
-        }
-    } catch (error) {
-        console.error("❌ Greška pri slanju:", error);
-        alert("❌ Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
-    } finally {
-        hideLoadingState();
-        const pregledModal = document.getElementById('pregledModal');
-        if (pregledModal) pregledModal.style.display = 'none';
+        console.log("🔄 Pokrećem slanje mailova...");
         
-        // RESETUJ FORMU NA PODRAZEVANE VREDNOSTI
-        const forma = document.getElementById('forma-porudzbine');
-        if (forma) {
-            forma.reset();
-            
-            // EKSPLICITNO POSTAVI PODRAZEVANE VREDNOSTI
-            const kolicinaEl = document.getElementById('kolicina');
-            const pakovanjeEl = document.getElementById('pakovanje');
-            const dostavaEl = document.getElementById('dostava');
-            const placanjeEl = document.getElementById('placanje');
-            
-            if (kolicinaEl) kolicinaEl.value = '1';
-            if (pakovanjeEl) pakovanjeEl.selectedIndex = 0; // 30ml
-            if (dostavaEl) dostavaEl.selectedIndex = 0; // Lično preuzimanje
-            if (placanjeEl) placanjeEl.selectedIndex = 0; // Pouzećem
-            
-            // FORSIRAJ PRORAČUN SA NOVIM VREDNOSTIMA
-            setTimeout(() => {
-                if (typeof updateIznos === 'function') {
-                    updateIznos();
+        if (typeof emailjs === 'undefined') {
+            alert("Greška: Sistem za slanje porudžbina nije dostupan. Molimo pokušajte kasnije.");
+            return;
+        }
+
+        if (!globalFormData || !globalFormData.broj_porudzbine) {
+            alert("Fatalna greška: Podaci o porudžbini nisu pronađeni. Molimo pokušajte ponovo.");
+            return;
+        }
+
+        showLoadingState();
+
+        const finanse = globalFormData.ga4_finanse; 
+        
+        // GA4 Purchase event
+        if (typeof gtag === 'function' && finanse && finanse.ukupnoRSD > 0) {
+            gtag('event', 'purchase', {
+                transaction_id: globalFormData.broj_porudzbine,
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                items: [{
+                    item_id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+                    item_name: 'PULS Gel ' + finanse.pakovanje,
+                    price: finanse.cena,
+                    quantity: finanse.kolicina
+                }]
+            });
+        }
+
+        // Meta Pixel Purchase event
+        if (typeof fbq === 'function' && finanse && finanse.ukupnoRSD > 0) {
+            fbq('track', 'Purchase', {
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                content_type: 'product',
+                contents: [{
+                    id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+                    quantity: finanse.kolicina,
+                    item_price: finanse.cena
+                }]
+            });
+        }
+
+        try {
+            // Slanje emailova
+            console.log("📧 Šaljem emailove...");
+            const [adminResult, kupacResult] = await Promise.allSettled([
+                emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData),
+                emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData)
+            ]);
+
+            const adminSuccess = adminResult.status === 'fulfilled';
+            const kupacSuccess = kupacResult.status === 'fulfilled';
+
+            console.log("Admin email success:", adminSuccess);
+            console.log("Kupac email success:", kupacSuccess);
+
+            if (adminSuccess || kupacSuccess) {
+                if (adminSuccess && kupacSuccess) {
+                    alert("✅ Porudžbina uspešno potvrđena! Potvrda je poslata na Vaš email.");
+                } else if (adminSuccess) {
+                    alert("✅ Porudžbina uspešno potvrđena! (Problem sa slanjem potvrde na email)");
+                } else {
+                    alert("✅ Porudžbina uspešno potvrđena! (Problem sa obaveštenjem prodavca)");
                 }
-            }, 100);
+            } else {
+                console.warn("❌ Oba EmailJS slanja su neuspešna");
+                
+                // Fallback na Google Sheets
+                const fallbackResult = await sendToGoogleSheetFallback(globalFormData);
+                if (fallbackResult.status === 'success') {
+                    alert("📦 Porudžbina je primljena, ali imamo problem sa email sistemom. Bićete kontaktirani uskoro.");
+                } else {
+                    alert("❌ Došlo je do greške. Molimo pokušajte ponovo ili nas kontaktirajte direktno.");
+                }
+            }
+        } catch (error) {
+            console.error("❌ Greška pri slanju:", error);
+            alert("❌ Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+        } finally {
+            hideLoadingState();
+            const pregledModal = document.getElementById('pregledModal');
+            if (pregledModal) pregledModal.style.display = 'none';
+            
+            // RESETUJ FORMU NA PODRAZEVANE VREDNOSTI
+            const forma = document.getElementById('forma-porudzbine');
+            if (forma) {
+                forma.reset();
+                
+                // EKSPLICITNO POSTAVI PODRAZEVANE VREDNOSTI
+                const kolicinaEl = document.getElementById('kolicina');
+                const pakovanjeEl = document.getElementById('pakovanje');
+                const dostavaEl = document.getElementById('dostava');
+                const placanjeEl = document.getElementById('placanje');
+                
+                if (kolicinaEl) kolicinaEl.value = '1';
+                if (pakovanjeEl) pakovanjeEl.selectedIndex = 0; // 30ml
+                if (dostavaEl) dostavaEl.selectedIndex = 0; // Lično preuzimanje
+                if (placanjeEl) placanjeEl.selectedIndex = 0; // Pouzećem
+                
+                // FORSIRAJ PRORAČUN SA NOVIM VREDNOSTIMA
+                setTimeout(() => {
+                    if (typeof updateIznos === 'function') {
+                        updateIznos();
+                    }
+                }, 100);
+            }
+            
+            if (lastActiveElement) {
+                lastActiveElement.focus();
+            }
+            
+            globalFormData = {};
+        }
+    }
+
+    // Inicijalizacija kada se stranica učita
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🔄 Inicijalizacija forme...");
+        
+        // Inicijalizacija EmailJS
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init("WKV419-gz6OQWSgRJ");
+            console.log("✅ EmailJS inicijalizovan");
+        } else {
+            console.error("❌ EmailJS nije dostupan");
+        }
+
+        // Postavi trenutnu godinu
+        const currentYearEl = document.getElementById('currentYear');
+        if (currentYearEl) {
+            currentYearEl.textContent = new Date().getFullYear();
+        }
+
+        // Dohvati elemente
+        const forma = document.getElementById('forma-porudzbine');
+        const pakovanjeEl = document.getElementById('pakovanje');
+        const kolicinaEl = document.getElementById('kolicina');
+        const dostavaEl = document.getElementById('dostava');
+        const iznosRsdEl = document.getElementById('iznos_rsd');
+        const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje');
+        const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
+        const popustPrikazTekstEl = document.getElementById('popust_prikaz');
+        const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
+        const dugmeIzmeni = document.getElementById('izmijeniPodatke');
+        const pregledModal = document.getElementById('pregledModal');
+        const detaljiIsporuke = document.getElementById('detaljiIsporuke');
+        const stickyCtaButton = document.getElementById('stickyCtaButton');
+
+        // Proveri da li svi elementi postoje
+        if (!forma) console.error("❌ Forma nije pronađena");
+        if (!pakovanjeEl) console.error("❌ Pakovanje element nije pronađen");
+        if (!kolicinaEl) console.error("❌ Količina element nije pronađen");
+
+        // Funkcija za proračun cene
+        function updateIznos() {
+            if (!pakovanjeEl || !kolicinaEl || !dostavaEl || !iznosRsdEl || !ukupnoZaPlacanjeEl) {
+                console.error("❌ Nedostaju elementi za proračun");
+                return;
+            }
+
+            const kolicinaValue = parseInt(kolicinaEl.value);
+            const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
+            
+            const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
+            const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0;
+            
+            let medjuzbirRSD = cenaRsd * kolicina;
+            let postarinaRSD = 0;
+            let popustIznos = 0;
+            let popustPoruka = '';
+            
+            const dostavaTip = dostavaEl.value;
+            
+            // Proračun poštarine
+            if (dostavaTip === 'Kurirska služba') {
+                if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
+                    postarinaRSD = 0;
+                    popustPoruka = "✅ Besplatna poštarina!";
+                } else {
+                    postarinaRSD = CENA_KURIRSKE_SLUZBE;
+                }
+            }
+
+            // Proračun popusta
+            if (medjuzbirRSD >= PRAG_ZA_POPUST) {
+                popustIznos = Math.round(medjuzbirRSD * PROCENT_POPUSTA);
+                popustPoruka += (popustPoruka ? ' & ' : '') + "🎁 Popust 10% uključen!";
+            }
+
+            const ukupnoRSD = medjuzbirRSD + postarinaRSD - popustIznos;
+
+            // Ažuriranje prikaza
+            iznosRsdEl.value = medjuzbirRSD + " RSD";
+            
+            if (popustPrikazPoljeEl) {
+                popustPrikazPoljeEl.value = popustIznos > 0 ? `- ${popustIznos} RSD (10%)` : `0 RSD`;
+            }
+            
+            if (popustPrikazTekstEl) {
+                popustPrikazTekstEl.textContent = popustPoruka;
+                popustPrikazTekstEl.style.display = popustPoruka ? 'block' : 'none';
+            }
+            
+            if (ukupnoZaPlacanjeEl) {
+                ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
+            }
+
+            return {
+                medjuzbirRSD,
+                postarinaRSD,
+                popustIznos,
+                ukupnoRSD,
+                dostavaTip,
+                kolicina,
+                pakovanje: selectedPakovanje.value,
+                cena: cenaRsd
+            };
+        }
+
+        // Inicijalni proračun
+        updateIznos();
+
+        // Event listeneri za proračun
+        if (pakovanjeEl) {
+            pakovanjeEl.addEventListener('change', updateIznos);
+        }
+        if (kolicinaEl) {
+            kolicinaEl.addEventListener('input', updateIznos);
+        }
+        if (dostavaEl) {
+            dostavaEl.addEventListener('change', updateIznos);
+        }
+
+        // Sticky CTA button
+        if (stickyCtaButton && forma) {
+            stickyCtaButton.addEventListener('click', function() {
+                console.log("Sticky CTA kliknut");
+                forma.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Submit forme
+        if (forma) {
+            forma.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log("🔄 Submit forme...");
+                
+                if (!forma.checkValidity()) {
+                    forma.reportValidity();
+                    return;
+                }
+
+                lastActiveElement = document.activeElement;
+                const trenutneFinanse = updateIznos();
+
+                // Meta Pixel Initiate Checkout
+                if (typeof fbq === 'function') {
+                    fbq('track', 'InitiateCheckout', {
+                        value: trenutneFinanse.ukupnoRSD,
+                        currency: 'RSD',
+                        contents: [{ id: 'PULS', quantity: trenutneFinanse.kolicina }],
+                        num_items: trenutneFinanse.kolicina
+                    });
+                }
+
+                // Priprema podataka za slanje
+                globalFormData = {
+                    sender_name: SENDER_NAME,
+                    admin_email: ADMIN_MAIL,
+                    ime_kupca: this.ime.value,
+                    prezime_kupca: this.prezime.value,
+                    email_kupca: this.email.value,
+                    poslati_kupcu: this.email.value,
+                    telefon_kupca: this.telefon.value,
+                    adresa_dostave: `${this.adresa.value.trim()}, ${this.postanski_broj.value.trim()} ${this.grad.value.trim()}`,
+                    medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD',
+                    postarina: trenutneFinanse.postarinaRSD + ' RSD',
+                    popust: trenutneFinanse.popustIznos + ' RSD',
+                    ukupno: trenutneFinanse.ukupnoRSD + ' RSD',
+                    broj_porudzbine: 'PULS-' + Date.now(),
+                    nacin_placanja: this.placanje.value,
+                    napomena: this.napomena.value || 'Nema napomene',
+                    brend_naziv: BREND_NAZIV,
+                    dostava: trenutneFinanse.dostavaTip,
+                    lista_proizvoda: `PULS Gel ${this.pakovanje.value} x ${this.kolicina.value}`,
+                    ga4_finanse: trenutneFinanse
+                };
+
+                console.log("📦 Podaci za slanje:", globalFormData);
+
+                // Prikaz pregleda u modalu
+                if (detaljiIsporuke) {
+                    detaljiIsporuke.innerHTML = `
+                        <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
+                        <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
+                        <p><strong>Telefon:</strong> ${globalFormData.telefon_kupca || 'Nije navedeno'}</p>
+                        <hr style="border-color:#444;">
+                        <p><strong>Adresa:</strong> ${globalFormData.adresa_dostave}</p>
+                        <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
+                        <p><strong>Plaćanje:</strong> ${globalFormData.nacin_placanja}</p>
+                        <hr style="border-color:#444;">
+                        <p><strong>Proizvod:</strong> PULS Gel ${this.pakovanje.value}</p>
+                        <p><strong>Količina:</strong> ${this.kolicina.value}</p>
+                        <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
+                        <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
+                        <p><strong>Popust (10%):</strong> <span style="color: ${trenutneFinanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
+                        <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
+                        <hr style="border-color:#444;">
+                        <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
+                    `;
+                }
+
+                if (pregledModal) {
+                    pregledModal.style.display = 'block';
+                }
+
+                // ESC key za zatvaranje modala
+                function handleEscKey(e) {
+                    if (e.key === 'Escape' && pregledModal.style.display === 'block') {
+                        pregledModal.style.display = 'none';
+                        document.removeEventListener('keydown', handleEscKey);
+                    }
+                }
+                
+                document.addEventListener('keydown', handleEscKey);
+            });
+        }
+
+        // Modal event listeneri
+        if (dugmePotvrdi) {
+            dugmePotvrdi.addEventListener('click', sendMail);
         }
         
-        if (lastActiveElement) {
-            lastActiveElement.focus();
+        if (dugmeIzmeni && pregledModal) {
+            dugmeIzmeni.addEventListener('click', function() {
+                pregledModal.style.display = 'none';
+            });
         }
+
+        console.log("✅ Forma inicijalizovana uspešno");
+    });
+
+    // Tracking skripte
+    let trackingScriptsLoaded = false;
+    
+    function loadTrackingScripts() {
+        if (trackingScriptsLoaded) return;
+
+        // Google Analytics (GA4)
+        var gaScript = document.createElement('script');
+        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42";
+        gaScript.async = true;
+        document.body.appendChild(gaScript);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-5E43CB4R42'); 
         
-        globalFormData = {};
+        // Facebook Pixel (Meta)
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '826589170344707');
+        fbq('track', 'PageView');
+        
+        trackingScriptsLoaded = true;
+        console.log("✅ Tracking skripte učitane");
     }
+    
+    function loadTrackingScriptsDelayed() {
+        setTimeout(loadTrackingScripts, 2000);
+        
+        ['scroll', 'mousemove', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, loadTrackingScripts, { once: true });
+        });
     }
-                            
-    </body>
+
+    // Pokreni tracking
+    loadTrackingScriptsDelayed();
+</script>
+</body>
 </html>
