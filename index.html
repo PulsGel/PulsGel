@@ -682,85 +682,24 @@
     <button class="sticky-cta" id="stickyCtaButton" aria-label="Osetite razliku večeras">
         🚀 Osetite razliku večeras!
     </button>
-    
-    <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    <script type="text/javascript">
-    
-    // --- SKRIPTE ZA PRAĆENJE (Google Analytics i Meta Pixel) - ODLOŽENO UCITAVANJE ---
-    let trackingScriptsLoaded = false;
-    
-    function loadTrackingScripts() {
-        if (trackingScriptsLoaded) return;
-
-        // 1. Google Analytics (GA4)
-        var gaScript = document.createElement('script');
-        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42";
-        gaScript.async = true;
-        document.body.appendChild(gaScript);
-
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-5E43CB4R42'); 
-        
-        // 2. Facebook Pixel (Meta)
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '826589170344707');
-        // Napomena: PageView se šalje tek kada se skripta učita
-        fbq('track', 'PageView'); 
-        
-        trackingScriptsLoaded = true;
-        console.log("Tracking skripte učitane.");
-    }
-    
-    // Funkcija koja pokreće učitavanje skripti sa odloženim vremenom
-    function loadTrackingScriptsDelayed() {
-        // Opcija A: Odmah (npr. nakon 2 sekunde)
-        setTimeout(loadTrackingScripts, 2000); 
-        
-        // Opcija B: Na prvu interakciju korisnika (npr. skrol, klik, pomeranje miša)
-        ['scroll', 'mousemove', 'touchstart', 'click'].forEach(event => {
-            document.addEventListener(event, loadTrackingScripts, { once: true });
-        });
-        
-        // Uklanjamo listener za PageView (koji se sada šalje unutar loadTrackingScripts)
-    }
-
-    // Inicijalizacija EmailJS 
-    (function(){
-      // Proveriti da li je EmailJS već definisan pre inicijalizacije
-      if (typeof emailjs !== 'undefined') {
-        emailjs.init("WKV419-gz6OQWSgRJ"); 
-      }
-    })();
-
-    // Deklaracija varijabli
-    let globalFormData = {}; 
-    let lastActiveElement = null; 
-
-    // --- KONFIGURACIJA PULSGEL I EMAILJS ---
-    const ADMIN_TEMPLATE_ID = 'template_5o6etkn'; 
-    const KUPAC_TEMPLATE_ID = 'template_u8dh76a'; 
-    const SERVICE_ID = 'service_rxj533m';      
+<script type="text/javascript">
+    // KONFIGURACIJA
+    const ADMIN_TEMPLATE_ID = 'template_5o6etkn';
+    const KUPAC_TEMPLATE_ID = 'template_u8dh76a';
+    const SERVICE_ID = 'service_rxj533m';
+    const ADMIN_MAIL = 'info.pulsgel@gmail.com';
     const BREND_NAZIV = 'PulsGel';
-    const ADMIN_MAIL = 'info.pulsgel@gmail.com'; 
-    const SENDER_NAME = 'PulsGel Porudžbina';  
+    const SENDER_NAME = 'PulsGel Porudžbina';
 
-    // --- KONSTANTE ZA PRAG POPUSTA/DOSTAVE ---
-    const CENA_KURIRSKE_SLUZBE = 400; 
-    const PRAG_ZA_BESPLATNU_DOSTAVU = 4000; 
-    const PRAG_ZA_POPUST = 9000; 
-    const PROCENT_POPUSTA = 0.10; 
+    // KONSTANTE
+    const CENA_KURIRSKE_SLUZBE = 400;
+    const PRAG_ZA_BESPLATNU_DOSTAVU = 4000;
+    const PRAG_ZA_POPUST = 9000;
+    const PROCENT_POPUSTA = 0.10;
 
-    // --- GOOGLE FORM FALLBACK KONFIGURACIJA (GET metod za bolju pouzdanost) ---
+    // Google Forms fallback
     const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdkUOR2rrRO488dGGb1hO7QQkKtQF1ncp68-V8nguex07qi5w/formResponse';
     const GOOGLE_ENTRY_IDS = {
         ime_kupca: 'entry.1018337777',
@@ -774,7 +713,194 @@
         napomena: 'entry.972352723'
     };
 
-    // FUNKCIJE ZA LOADING STATE
+    // Globalne varijable
+    let globalFormData = {};
+    let lastActiveElement = null;
+
+    // Inicijalizacija EmailJS
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init("WKV419-gz6OQWSgRJ");
+            console.log("EmailJS inicijalizovan");
+        }
+
+        // Postavi trenutnu godinu
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Inicijalizacija form elemenata
+        const forma = document.getElementById('forma-porudzbine');
+        const pakovanjeEl = document.getElementById('pakovanje');
+        const kolicinaEl = document.getElementById('kolicina');
+        const dostavaEl = document.getElementById('dostava');
+        const iznosRsdEl = document.getElementById('iznos_rsd');
+        const postarinaPrikazEl = document.getElementById('postarina_prikaz');
+        const popustPrikazEl = document.getElementById('popust_prikaz');
+        const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje');
+        const popustPorukaEl = document.getElementById('popust_prikaz');
+        const pregledModal = document.getElementById('pregledModal');
+        const detaljiIsporuke = document.getElementById('detaljiIsporuke');
+
+        // Inicijalni proračun
+        updateIznos();
+
+        // Event listeneri za proračun
+        pakovanjeEl.addEventListener('change', updateIznos);
+        kolicinaEl.addEventListener('input', updateIznos);
+        dostavaEl.addEventListener('change', updateIznos);
+
+        // Funkcija za proračun
+        function updateIznos() {
+            const kolicina = parseInt(kolicinaEl.value) || 1;
+            const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
+            const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0;
+            
+            let medjuzbirRSD = cenaRsd * kolicina;
+            let postarinaRSD = 0;
+            let popustIznos = 0;
+            let popustPoruka = '';
+
+            // Proračun poštarine
+            if (dostavaEl.value === 'Kurirska služba') {
+                if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
+                    popustPoruka = "✅ Besplatna poštarina!";
+                } else {
+                    postarinaRSD = CENA_KURIRSKE_SLUZBE;
+                }
+            }
+
+            // Proračun popusta
+            if (medjuzbirRSD >= PRAG_ZA_POPUST) {
+                popustIznos = Math.round(medjuzbirRSD * PROCENT_POPUSTA);
+                popustPoruka += (popustPoruka ? ' & ' : '') + "🎁 Popust 10% uključen!";
+            }
+
+            const ukupnoRSD = medjuzbirRSD + postarinaRSD - popustIznos;
+
+            // Ažuriranje prikaza
+            iznosRsdEl.value = medjuzbirRSD + " RSD";
+            postarinaPrikazEl.textContent = postarinaRSD + " RSD";
+            popustPrikazEl.textContent = "- " + popustIznos + " RSD";
+            ukupnoZaPlacanjeEl.textContent = "Ukupno za plaćanje: " + ukupnoRSD + " RSD";
+            
+            if (popustPoruka) {
+                popustPorukaEl.textContent = popustPoruka;
+                popustPorukaEl.style.display = 'block';
+            } else {
+                popustPorukaEl.style.display = 'none';
+            }
+
+            return {
+                medjuzbirRSD,
+                postarinaRSD,
+                popustIznos,
+                ukupnoRSD,
+                dostavaTip: dostavaEl.value,
+                kolicina,
+                pakovanje: selectedPakovanje.value,
+                cena: cenaRsd
+            };
+        }
+
+        // Submit forme
+        forma.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!forma.checkValidity()) {
+                forma.reportValidity();
+                return;
+            }
+
+            lastActiveElement = document.activeElement;
+            const trenutneFinanse = updateIznos();
+
+            // GA4 Initiate Checkout
+            if (typeof gtag === 'function') {
+                gtag('event', 'begin_checkout', {
+                    currency: 'RSD',
+                    value: trenutneFinanse.ukupnoRSD,
+                    items: [{
+                        item_id: 'PULS-' + trenutneFinanse.pakovanje.replace(/\s/g, ''),
+                        item_name: 'PULS Gel ' + trenutneFinanse.pakovanje,
+                        price: trenutneFinanse.cena,
+                        quantity: trenutneFinanse.kolicina
+                    }]
+                });
+            }
+
+            // Meta Pixel Initiate Checkout
+            if (typeof fbq === 'function') {
+                fbq('track', 'InitiateCheckout', {
+                    value: trenutneFinanse.ukupnoRSD,
+                    currency: 'RSD',
+                    content_type: 'product',
+                    contents: [{
+                        id: 'PULS-' + trenutneFinanse.pakovanje.replace(/\s/g, ''),
+                        quantity: trenutneFinanse.kolicina
+                    }]
+                });
+            }
+
+            // Priprema podataka
+            globalFormData = {
+                sender_name: SENDER_NAME,
+                admin_email: ADMIN_MAIL,
+                ime_kupca: this.ime.value,
+                prezime_kupca: this.prezime.value,
+                email_kupca: this.email.value,
+                poslati_kupcu: this.email.value,
+                telefon_kupca: this.telefon.value,
+                adresa_dostave: `${this.adresa.value.trim()}, ${this.postanski_broj.value.trim()} ${this.grad.value.trim()}`,
+                medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD',
+                postarina: trenutneFinanse.postarinaRSD + ' RSD',
+                popust: trenutneFinanse.popustIznos + ' RSD',
+                ukupno: trenutneFinanse.ukupnoRSD + ' RSD',
+                broj_porudzbine: 'PULS-' + Date.now(),
+                nacin_placanja: this.placanje.value,
+                napomena: this.napomena.value || 'Nema napomene',
+                brend_naziv: BREND_NAZIV,
+                dostava: trenutneFinanse.dostavaTip,
+                lista_proizvoda: `PULS Gel ${this.pakovanje.value} x ${this.kolicina.value}`,
+                ga4_finanse: trenutneFinanse
+            };
+
+            // Prikaz pregleda
+            detaljiIsporuke.innerHTML = `
+                <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
+                <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
+                <p><strong>Telefon:</strong> ${globalFormData.telefon_kupca || 'Nije navedeno'}</p>
+                <hr>
+                <p><strong>Adresa:</strong> ${globalFormData.adresa_dostave}</p>
+                <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
+                <p><strong>Plaćanje:</strong> ${globalFormData.nacin_placanja}</p>
+                <hr>
+                <p><strong>Proizvod:</strong> PULS Gel ${this.pakovanje.value}</p>
+                <p><strong>Količina:</strong> ${this.kolicina.value}</p>
+                <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
+                <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
+                <p><strong>Popust:</strong> -${globalFormData.popust}</p>
+                <p><strong>Ukupno za Plaćanje:</strong> <strong style="color: #e74c3c;">${globalFormData.ukupno}</strong></p>
+                <hr>
+                <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
+            `;
+
+            pregledModal.style.display = 'block';
+        });
+
+        // Modal event listeneri
+        document.getElementById('potvrdiPorudzbinu').addEventListener('click', sendMail);
+        document.getElementById('izmijeniPodatke').addEventListener('click', function() {
+            pregledModal.style.display = 'none';
+        });
+
+        // ESC key za modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && pregledModal.style.display === 'block') {
+                pregledModal.style.display = 'none';
+            }
+        });
+    });
+
+    // Funkcije za loading state
     function showLoadingState() {
         const dugme = document.getElementById('potvrdiPorudzbinu');
         dugme.innerHTML = '<div class="loading-spinner"></div>Šaljem...';
@@ -787,328 +913,113 @@
         dugme.disabled = false;
     }
 
-    // Čekamo da se kompletan DOM učita
-    document.addEventListener('DOMContentLoaded', function() {
-        
-        // Dohvaćanje DOM elemenata
-        const forma = document.getElementById('forma-porudzbine');
-        const pakovanjeEl = document.getElementById('pakovanje');
-        const kolicinaEl = document.getElementById('kolicina');
-        const dostavaEl = document.getElementById('dostava');
-        const iznosRsdEl = document.getElementById('iznos_rsd');
-        const ukupnoZaPlacanjeEl = document.getElementById('ukupno_za_placanje'); 
-        const popustPrikazPoljeEl = document.getElementById('popust_prikaz_polje');
-        const popustPrikazTekstEl = document.getElementById('popust_prikaz');
-        const dugmePotvrdi = document.getElementById('potvrdiPorudzbinu');
-        const dugmeIzmeni = document.getElementById('izmijeniPodatke');
-        const pregledModal = document.getElementById('pregledModal');
-        const detaljiIsporuke = document.getElementById('detaljiIsporuke');
-        const stickyCtaButton = document.getElementById('stickyCtaButton');
-        const formaSekcija = document.getElementById('forma-porudzbine');
-
-        // Set current year in footer
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // === INICIJALIZACIJA ===
-        loadTrackingScriptsDelayed(); // Pozivanje odloženog učitavanja
-        if (parseInt(kolicinaEl.value) < 1 || isNaN(parseInt(kolicinaEl.value))) {
-            kolicinaEl.value = '1';
-        }
-        updateIznos(); 
-        // Okidanje change eventa na početku da se ispravno postavi stanje
-        dostavaEl.dispatchEvent(new Event('change')); 
-        
-        // === FUNKCIJA ZA AUTOMATSKI PRERAČUN ===
-        function updateIznos() {
-          const kolicinaValue = parseInt(kolicinaEl.value);
-          const kolicina = (kolicinaValue >= 1 && !isNaN(kolicinaValue)) ? kolicinaValue : 1;
-          
-          const selectedPakovanje = pakovanjeEl.options[pakovanjeEl.selectedIndex];
-          const cenaRsd = parseInt(selectedPakovanje.getAttribute('data-cena-rsd')) || 0; 
-          
-          let medjuzbirRSD = cenaRsd * kolicina;
-          let postarinaRSD = 0;
-          let popustIznos = 0;
-          let popustPoruka = ''; 
-          
-          const dostavaTip = dostavaEl.value;
-          
-          if (dostavaTip === 'Kurirska služba') {
-            if (medjuzbirRSD >= PRAG_ZA_BESPLATNU_DOSTAVU) {
-              postarinaRSD = 0;
-              popustPoruka = "✅ Besplatna poštarina!";
-            } else {
-              postarinaRSD = CENA_KURIRSKE_SLUZBE;
-              popustPoruka = "";
-            }
-          } 
-
-          let iznosPrePopusta = medjuzbirRSD + postarinaRSD;
-          
-          if (medjuzbirRSD >= PRAG_ZA_POPUST) { // Popust samo na cenu proizvoda, ne na celu cenu (iznosPrePopusta)
-              popustIznos = Math.round(medjuzbirRSD * PROCENT_POPUSTA); 
-              popustPoruka += (popustPoruka ? ' & ' : '') + `🎁 Popust 10% uključen!`;
-          }
-
-          const ukupnoRSD = iznosPrePopusta - popustIznos;
-
-          iznosRsdEl.value = medjuzbirRSD + " RSD";
-          popustPrikazPoljeEl.value = popustIznos > 0 ? `- ${popustIznos} RSD (10%)` : `0 RSD`;
-          popustPrikazTekstEl.textContent = popustPoruka;
-          ukupnoZaPlacanjeEl.textContent = `Ukupno za plaćanje: ${ukupnoRSD} RSD`;
-          
-          return { medjuzbirRSD, postarinaRSD, popustIznos, ukupnoRSD, dostavaTip, kolicina, pakovanje: selectedPakovanje.value, cena: cenaRsd };
+    // Glavna funkcija za slanje mailova
+    async function sendMail() {
+        if (typeof emailjs === 'undefined') {
+            alert("Greška: Sistem za slanje porudžbina nije dostupan. Molimo pokušajte kasnije.");
+            return;
         }
 
-        // === EVENT LISTENERS ZA PRORAČUN ===
-        pakovanjeEl.addEventListener('change', updateIznos);
-        kolicinaEl.addEventListener('input', updateIznos);
-        dostavaEl.addEventListener('change', updateIznos);
+        showLoadingState();
 
-        // === KOD ZA STICKY CTA ===
-        if (stickyCtaButton && formaSekcija) {
-            stickyCtaButton.addEventListener('click', function() {
-                formaSekcija.scrollIntoView({ behavior: 'smooth' });
+        // GA4 Purchase event
+        const finanse = globalFormData.ga4_finanse;
+        if (typeof gtag === 'function' && finanse.ukupnoRSD > 0) {
+            gtag('event', 'purchase', {
+                transaction_id: globalFormData.broj_porudzbine,
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                items: [{
+                    item_id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
+                    item_name: 'PULS Gel ' + finanse.pakovanje,
+                    price: finanse.cena,
+                    quantity: finanse.kolicina
+                }]
             });
         }
 
-        // === POMOĆNA FUNKCIJA ZA FORMATIRANJE EMAILA ===
-        function formatPulsGelForEmail(data) {
-            return `
-Proizvod: PULS Gel ${data.pakovanje}
-Cena po komadu: ${data.cena} RSD
-Količina: ${data.kolicina} kom.
-Ukupno za stavku: ${data.medjuzbir}
---------------------------------
-            `;
-        }
-
-        // === FUNKCIJA ZA REZERVNI PLAN (GOOGLE SHEET) - Koristi URLSearchParams (GET) ===
-        async function sendToGoogleSheetFallback(data) {
-            const params = new URLSearchParams();
-            
-            params.append(GOOGLE_ENTRY_IDS.ime_kupca, data.ime_kupca);      
-            params.append(GOOGLE_ENTRY_IDS.prezime_kupca, data.prezime_kupca); 
-            params.append(GOOGLE_ENTRY_IDS.email_kupca, data.email_kupca);     
-            params.append(GOOGLE_ENTRY_IDS.telefon_kupca, data.telefon_kupca);
-            params.append(GOOGLE_ENTRY_IDS.adresa_dostave, data.adresa_dostave);
-            params.append(GOOGLE_ENTRY_IDS.lista_proizvoda, `PULS Gel ${data.ga4_finanse.pakovanje} x ${data.ga4_finanse.kolicina}`); 
-            params.append(GOOGLE_ENTRY_IDS.ukupno, data.ukupno); 
-            params.append(GOOGLE_ENTRY_IDS.nacin_placanja, data.nacin_placanja);
-            params.append(GOOGLE_ENTRY_IDS.napomena, data.napomena);
-            
-            const url = GOOGLE_FORM_ACTION_URL + '?' + params.toString();
-
-            try {
-                // Slanje sa 'no-cors' ne daje garanciju uspeha, ali je najbolji način za Google Forms
-                await fetch(url, {
-                    method: 'GET', // Koristimo GET za Google Forms fallback
-                    mode: 'no-cors'
-                });
-                console.log("Porudžbina je uspešno zabeležena u Google Sheetu (Rezervni plan).");
-                return { status: 'success', message: 'Sačuvano u Sheetu' };
-            } catch (error) {
-                console.error("Fatalna greška: Neuspešno slanje ni na EmailJS ni na Google Sheet.", error);
-                return { status: 'error', message: 'Slanje na Sheet neuspešno' };
-            }
-        }
-
-        
-            // === FUNKCIJA ZA KONAČNO SLANJE (EmailJS + GA4 + Meta) ===
-        async function sendMail() { // Dodato 'async'
-            if (typeof emailjs === 'undefined') {
-                alert("Greška: Sistem za slanje porudžbina nije dostupan. Molimo pokušajte kasnije.");
-                return;
-            }
-            if (!globalFormData || !globalFormData.broj_porudzbine) {
-                 alert("Fatalna greška: Podaci o porudžbini nisu pronađeni. Molimo pokušajte ponovo.");
-                 return;
-            }
-
-            showLoadingState();
-
-            const finanse = globalFormData.ga4_finanse; 
-            
-            // --- GA4 MERENJE KONVERZIJE (sa proverom) ---
-            if (typeof gtag === 'function' && finanse.ukupnoRSD > 0) {
-                gtag('event', 'purchase', {
-                    transaction_id: globalFormData.broj_porudzbine,
-                    value: finanse.ukupnoRSD,
-                    currency: 'RSD',
-                    items: [{
-                        item_id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
-                        item_name: 'PULS Gel ' + finanse.pakovanje,
-                        price: finanse.medjuzbirRSD / finanse.kolicina, 
-                        quantity: finanse.kolicina
-                    }]
-                });
-            }
-
-            // --- META PIXEL PURCHASE (sa proverom) ---
-            if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
-                const contentArray = [{
+        // Meta Pixel Purchase event
+        if (typeof fbq === 'function' && finanse.ukupnoRSD > 0) {
+            fbq('track', 'Purchase', {
+                value: finanse.ukupnoRSD,
+                currency: 'RSD',
+                content_type: 'product',
+                contents: [{
                     id: 'PULS-' + finanse.pakovanje.replace(/\s/g, ''),
                     quantity: finanse.kolicina,
-                    item_price: finanse.medjuzbirRSD / finanse.kolicina
-                }];
-                
-                fbq('track', 'Purchase', {
-                    value: finanse.ukupnoRSD,
-                    currency: 'RSD',
-                    content_type: 'product',
-                    contents: contentArray, 
-                    num_items: finanse.kolicina
-                });
-            }         
-            
-            // Slanje poruka putem EmailJS
-            const slanjeVama = emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData);
-            const slanjeKupcu = emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData);
-                
-            try {
-                const results = await Promise.allSettled([slanjeVama, slanjeKupcu]);
-                
-                // --- PROVERA STATUSA SLANJA I LOGOVANJE GREŠKE ---
-                let failedReason = '';
-                results.forEach((result, index) => {
-                    if (result.status === 'rejected') {
-                        const templateName = index === 0 ? 'Admin (Vama)' : 'Kupcu';
-                        console.error(`Greska pri slanju e-maila (${templateName}):`, result.reason);
-                        failedReason += ` | ${templateName} odbijen: ${result.reason}`;
-                    }
-                });
+                    item_price: finanse.cena
+                }]
+            });
+        }
 
-                const emailSuccess = results.some(r => r.status === 'fulfilled');
+        try {
+            // Slanje emailova
+            const [adminResult, kupacResult] = await Promise.allSettled([
+                emailjs.send(SERVICE_ID, ADMIN_TEMPLATE_ID, globalFormData),
+                emailjs.send(SERVICE_ID, KUPAC_TEMPLATE_ID, globalFormData)
+            ]);
 
-                if (emailSuccess) {
-                    alert("Porudžbina uspešno potvrđena! Proverite Vaš e-mail za potvrdu.");
+            const adminSuccess = adminResult.status === 'fulfilled';
+            const kupacSuccess = kupacResult.status === 'fulfilled';
+
+            if (adminSuccess || kupacSuccess) {
+                if (adminSuccess && kupacSuccess) {
+                    alert("Porudžbina uspešno potvrđena! Potvrda je poslata na Vaš email.");
+                } else if (adminSuccess) {
+                    alert("Porudžbina uspešno potvrđena! (Problem sa slanjem potvrde na email)");
                 } else {
-                    console.warn(`Oba EmailJS slanja su neuspešna: ${failedReason}. Aktiviran rezervni plan (Google Sheet).`);
-                    
-                    // Pokrećemo i čekamo rezervni plan
-                    const fallbackResult = await sendToGoogleSheetFallback(globalFormData); 
-                    
-                    if (fallbackResult.status === 'success') {
-                        alert("Porudžbina je primljena, ali smo imali problem sa slanjem e-maila. Podaci su sačuvani u rezervnoj kopiji. Bićete kontaktirani uskoro.");
-                    } else {
-                        alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo. Ni EmailJS ni rezervni plan nisu uspeli.");
-                    }
+                    alert("Porudžbina uspešno potvrđena! (Problem sa obaveštenjem prodavca)");
                 }
-            } catch (error) {
-                console.error("Krajnja greška u obradi porudžbine:", error);
-                alert("Došlo je do kritične greške pri obradi porudžbine. Molimo pokušajte ponovo.");
-            }
-            finally {
-                hideLoadingState();
-                forma.reset();
-                updateIznos(); 
-                pregledModal.style.display = 'none';
-                if (lastActiveElement) {
-                   lastActiveElement.focus(); 
+            } else {
+                // Fallback na Google Sheets
+                const fallbackResult = await sendToGoogleSheetFallback(globalFormData);
+                if (fallbackResult.status === 'success') {
+                    alert("Porudžbina je primljena, ali imamo problem sa email sistemom. Bićete kontaktirani uskoro.");
+                } else {
+                    alert("Došlo je do greške. Molimo pokušajte ponovo ili nas kontaktirajte direktno.");
                 }
-                globalFormData = {}; 
             }
+        } catch (error) {
+            console.error("Greška pri slanju:", error);
+            alert("Došlo je do greške pri slanju porudžbine. Molimo pokušajte ponovo.");
+        } finally {
+            hideLoadingState();
+            document.getElementById('pregledModal').style.display = 'none';
+            document.getElementById('forma-porudzbine').reset();
+            updateIznos();
+            if (lastActiveElement) lastActiveElement.focus();
         }
+    }
 
+    // Google Sheets fallback funkcija
+    async function sendToGoogleSheetFallback(data) {
+        const params = new URLSearchParams();
+        params.append(GOOGLE_ENTRY_IDS.ime_kupca, data.ime_kupca);
+        params.append(GOOGLE_ENTRY_IDS.prezime_kupca, data.prezime_kupca);
+        params.append(GOOGLE_ENTRY_IDS.email_kupca, data.email_kupca);
+        params.append(GOOGLE_ENTRY_IDS.telefon_kupca, data.telefon_kupca);
+        params.append(GOOGLE_ENTRY_IDS.adresa_dostave, data.adresa_dostave);
+        params.append(GOOGLE_ENTRY_IDS.lista_proizvoda, data.lista_proizvoda);
+        params.append(GOOGLE_ENTRY_IDS.ukupno, data.ukupno);
+        params.append(GOOGLE_ENTRY_IDS.nacin_placanja, data.nacin_placanja);
+        params.append(GOOGLE_ENTRY_IDS.napomena, data.napomena);
 
-        // === GLAVNI EVENT LISTENER ZA FORMU (SUBMIT) ===
-        forma.addEventListener('submit', function(e){
-            e.preventDefault(); 
-            
-            if (!forma.checkValidity()) {
-                forma.reportValidity(); 
-                return; 
-            }
-
-            lastActiveElement = document.activeElement; 
-            
-            const trenutneFinanse = updateIznos(); 
-            
-            // --- META PIXEL INITIATE CHECKOUT (sa proverom) ---
-            if (typeof fbq === 'function') {
-                 fbq('track', 'InitiateCheckout', {
-                    value: trenutneFinanse.ukupnoRSD,
-                    currency: 'RSD',
-                    contents: [{ id: 'PULS', quantity: trenutneFinanse.kolicina }],
-                    num_items: trenutneFinanse.kolicina
-                });
-            }
-
-            globalFormData = {
-                sender_name: SENDER_NAME, 
-                admin_email: ADMIN_MAIL,   
-                
-                ime_kupca: this.ime.value,
-                prezime_kupca: this.prezime.value,
-                email_kupca: this.email.value,
-                poslati_kupcu: this.email.value, 
-                telefon_kupca: this.telefon.value,
-                // Napraviti kompletnu adresu sa svim poljima
-                adresa_dostave: `${this.adresa.value.trim()}, ${this.postanski_broj.value.trim()} ${this.grad.value.trim()}`,
-                
-                medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD',
-                postarina: trenutneFinanse.postarinaRSD + ' RSD',
-                popust: trenutneFinanse.popustIznos + ' RSD', 
-                ukupno: trenutneFinanse.ukupnoRSD + ' RSD', 
-                
-                broj_porudzbine: 'PULS-' + Date.now(), 
-                nacin_placanja: this.placanje.value,
-                napomena: this.napomena.value || 'Nema napomene',
-                brend_naziv: BREND_NAZIV, 
-                
-                lista_proizvoda: formatPulsGelForEmail({
-                    pakovanje: this.pakovanje.value,
-                    kolicina: this.kolicina.value,
-                    cena: trenutneFinanse.cena,
-                    medjuzbir: trenutneFinanse.medjuzbirRSD + ' RSD'
-                }),
-
-                dostava: trenutneFinanse.dostavaTip,
-                ga4_finanse: trenutneFinanse 
-            };
-
-            detaljiIsporuke.innerHTML = `
-                <p><strong>Ime i Prezime:</strong> ${globalFormData.ime_kupca} ${globalFormData.prezime_kupca}</p>
-                <p><strong>Email:</strong> ${globalFormData.email_kupca}</p>
-                <p><strong>Telefon:</strong> ${globalFormData.telefon_kupca || 'Nije navedeno'}</p>
-                <hr style="border-color:#444;">
-                <p><strong>Adresa:</strong> ${globalFormData.adresa_dostave}</p>
-                <p><strong>Isporuka:</strong> ${globalFormData.dostava}</p>
-                <p><strong>Plaćanje:</strong> ${globalFormData.nacin_placanja}</p>
-                <hr style="border-color:#444;">
-                <p><strong>Proizvod:</strong> PULS Gel ${this.pakovanje.value}</p>
-                <p><strong>Količina:</strong> ${this.kolicina.value}</p>
-                <p><strong>Iznos Proizvoda:</strong> ${globalFormData.medjuzbir}</p>
-                <p><strong>Poštarina:</strong> ${globalFormData.postarina}</p>
-                <p><strong>Popust (10%):</strong> <span style="color: ${trenutneFinanse.popustIznos > 0 ? '#00ff00' : '#ccc'};">- ${globalFormData.popust}</span></p>
-                <p><strong>Ukupno za Plaćanje:</strong> <span style="color: #b22222; font-weight: bold;">${globalFormData.ukupno}</span></p>
-                <hr style="border-color:#444;">
-                <p><strong>Napomena:</strong> ${globalFormData.napomena}</p>
-            `;
-
-            pregledModal.style.display = 'block';
-            document.getElementById('potvrdiPorudzbinu').focus(); 
-            document.addEventListener('keydown', handleEscKey, { once: true });
-        });
-
-        // === MODAL EVENT LISTENERS ===
-        dugmePotvrdi.addEventListener('click', sendMail);
-        
-        dugmeIzmeni.addEventListener('click', function() {
-            pregledModal.style.display = 'none';
-            document.removeEventListener('keydown', handleEscKey);
-            if (lastActiveElement) {
-               lastActiveElement.focus(); 
-            }
-        });
-        
-        function handleEscKey(e) {
-            if (e.key === 'Escape') {
-                dugmeIzmeni.click(); 
-            }
+        try {
+            await fetch(GOOGLE_FORM_ACTION_URL + '?' + params.toString(), {
+                method: 'GET',
+                mode: 'no-cors'
+            });
+            return { status: 'success', message: 'Sačuvano u Sheetu' };
+        } catch (error) {
+            return { status: 'error', message: 'Slanje na Sheet neuspešno' };
         }
+    }
 
-    }); // Kraj DOMContentLoaded
-    </script>
-</body>
+    // Pomocna funkcija za update iznosa (zbog resetovanja forme)
+    function updateIznos() {
+        // Ova funkcija će biti redefinisana u DOMContentLoaded
+    }
+</script>
+
+    </body>
 </html>
