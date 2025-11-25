@@ -64,6 +64,42 @@
 
         .info-box { background:#220000; border:2px solid var(--crvena); padding:15px; border-radius:8px; text-align:center; max-width:800px; margin:30px auto; }
     </style>
+ <style>
+/* FIX ZA MOBILNU FORMU – 100% radi */
+#forma-porudzbine,
+#forma-porudzbine * {
+    box-sizing: border-box !important;
+}
+#forma-porudzbine input,
+#forma-porudzbine select,
+#forma-porudzbine textarea,
+#forma-porudzbine button {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 8px 0 !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    border: 1px solid #444 !important;
+    background: #222 !important;
+    color: #fff !important;
+    font-size: 1rem !important;
+}
+#forma-porudzbine label {
+    margin-top: 12px !important;
+    display: block !important;
+    font-size: 0.95rem !important;
+}
+#forma-porudzbine .info-box {
+    width: 100% !important;
+    margin: 15px 0 !important;
+}
+@media (max-width:600px) {
+    #forma-porudzbine {
+        padding: 15px !important;
+        margin: 20px auto !important;
+    }
+}
+ </style>
 </head>
 <body>
 
