@@ -919,9 +919,64 @@
         
         <p class="copyright">© <span id="currentYear">2025</span> PulsGel Shop. Sva prava zadržana.</p>
     </footer>
-<button class="sticky-cta" style="background:#b22222; box-shadow:0 0 20px rgba(178,34,34,0.8); animation:pulse 2s infinite;">
-  ⚡ PORUČI ODMAH – AKCIJA TRAJE JOŠ 11:34
+<!-- STICKY CTA – SKROLA DO FORME -->
+<button class="sticky-cta" id="stickyCtaButton">
+  <span id="ctaText">PORUČI ODMAH – AKCIJA TRAJE JOŠ <span id="countdown">11:34</span></span>
 </button>
+
+<style>
+.sticky-cta {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #b22222;
+    color: #fff;
+    padding: 16px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 0 30px rgba(178,34,34,0.9);
+    animation: pulse 2s infinite;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: all 0.3s;
+}
+.sticky-cta:hover { transform: scale(1.08); background:#ff4444; }
+
+@media (max-width: 600px) {
+    .sticky-cta { bottom: 15px; right: 15px; padding: 14px 24px; font-size: 1.1rem; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+#countdown { color: #00ff00; font-weight: bold; }
+</style>
+
+<script>
+// Random countdown
+const vremena = ['11:34','09:12','07:55','14:21','06:08','05:47','12:19','08:41','04:55'];
+const randomVreme = vremena[Math.floor(Math.random() * vremena.length)];
+document.getElementById('countdown').textContent = randomVreme;
+
+// Skrol do forme
+document.getElementById('stickyCtaButton').addEventListener('click', function() {
+    const forma = document.getElementById('forma-porudzbine');
+    if (forma) {
+        forma.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'center'   // ovde je fora – centriraj formu na ekran
+        });
+        // bonus: blago trese dugme kad se skroluje
+        forma.querySelector('input:first-of-type').focus();
+    }
+});
+</script>
 
 <style>
 @keyframes pulse {
