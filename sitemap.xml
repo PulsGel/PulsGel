@@ -4,40 +4,30 @@
 
   <url>
     <loc>https://pulsgel.github.io/PulsGel/</loc>
-    <lastmod>2025-01-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2025-11-26</lastmod> <changefreq>weekly</changefreq> <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/"/>
   </url>
   
-  <!-- Blog stranice -->
   <url>
     <loc>https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci.html</loc>
-    <lastmod>2025-01-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci.html"/>
+    <lastmod>2025-11-26</lastmod> <changefreq>monthly</changefreq>
+    <priority>0.9</priority> <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci.html"/>
   </url>
 
   <url>
     <loc>https://pulsgel.github.io/PulsGel/blog/ph-vrednost.html</loc>
-    <lastmod>2025-01-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/blog/ph-vrednost.html"/>
+    <lastmod>2025-11-26</lastmod> <changefreq>monthly</changefreq>
+    <priority>0.9</priority> <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/blog/ph-vrednost.html"/>
   </url>
 
   <url>
     <loc>https://pulsgel.github.io/PulsGel/nauka.html</loc>
-    <lastmod>2025-11-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/nauka.html"/>
+    <lastmod>2025-11-26</lastmod> <changefreq>monthly</changefreq> <priority>0.9</priority> <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/nauka.html"/>
   </url>
 
   <url>
     <loc>https://pulsgel.github.io/PulsGel/reklamacije.html</loc>
-    <lastmod>2025-11-07</lastmod>
+    <lastmod>2025-11-07</lastmod> 
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="sr" href="https://pulsgel.github.io/PulsGel/reklamacije.html"/>
