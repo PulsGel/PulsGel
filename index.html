@@ -16,27 +16,63 @@
     <meta property="og:image" content="https://pulsgel.github.io/PulsGel/slika1.webp" />
     
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "PULS Gel",
-        "description": "Prirodna formula za poboljšan osećaj topline i negu kože",
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "PULS Gel",
+    "description": "Prirodna formula za poboljšan osećaj topline i negu kože",
+    "url": "https://pulsgel.github.io/PulsGel/",
+    "image": "https://pulsgel.github.io/PulsGel/slika1.webp",
+    "brand": {
+        "@type": "Brand",
+        "name": "PULS"
+    },
+    "offers": {
+        "@type": "Offer",
+        "priceCurrency": "RSD",
+        "price": "1500",
+        "itemCondition": "http://schema.org/NewCondition",
+        "availability": "http://schema.org/InStock",
         "url": "https://pulsgel.github.io/PulsGel/",
-        "image": "https://pulsgel.github.io/PulsGel/slika1.webp",
-        "brand": {
-            "@type": "Brand",
-            "name": "PULS"
+        "priceValidUntil": "2025-12-31",
+        
+        "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 30,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/ReturnFeesCustomerResponsibility"
         },
-        "offers": {
-            "@type": "Offer",
-            "priceCurrency": "RSD",
-            "price": "1500",
-            "itemCondition": "http://schema.org/NewCondition",
-            "availability": "http://schema.org/InStock",
-            "url": "https://pulsgel.github.io/PulsGel/",
-            "priceValidUntil": "2025-12-31"
+        "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            // PROMENA: Poštarina je 400 RSD
+            "shippingRate": {
+                "@type": "MonetaryAmount",
+                "value": "400",
+                "currency": "RSD"
+            },
+            "shippingDestination": {
+                "@type": "DefinedRegion",
+                "addressCountry": "RS"
+            },
+            "deliveryTime": {
+                "@type": "ShippingDeliveryTime",
+                "handlingTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 1,
+                    "maxValue": 2,
+                    "unitCode": "DAY"
+                },
+                "transitTime": {
+                    "@type": "QuantitativeValue",
+                    "minValue": 1,
+                    "maxValue": 3,
+                    "unitCode": "DAY"
+                }
+            }
         }
     }
+}
     </script>
     <link rel="canonical" href="https://pulsgel.github.io/PulsGel/" />
     
