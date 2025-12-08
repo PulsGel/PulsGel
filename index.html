@@ -1580,23 +1580,56 @@
         console.log("✅ Forma inicijalizovana uspešno");
     });
 
-    // Tracking skripte
-    let trackingScriptsLoaded = false;
+    // Skripte za praćenje
+let skripteZaPraćenjeUčitane = false;
+
+function učitajSkripteZaPraćenje() {
+    if (skripteZaPraćenjeUčitane) return;
     
-    function loadTrackingScripts() {
-        if (trackingScriptsLoaded) return;
+    // Inicijalizacija dataLayer
+    window.dataLayer = window.dataLayer || [];
+    
+    // Definicija gtag funkcije
+    window.gtag = function() {
+        dataLayer.push(arguments);
+    };
+    
+    gtag('js', new Date());
+    
+    // Google Analytics 4 (GA4)
+    var gaSkripta = document.createElement('script');
+    gaSkripta.src = "https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42";
+    gaSkripta.async = true;
+    gaSkripta.defer = true; // Dodajemo defer za bolje performanse
+    document.head.appendChild(gaSkripta);
+    
+    // Konfiguracija GA4
+    gtag('config', 'G-5E43CB4R42', {
+        'cookie_flags': 'SameSite=None;Secure',
+        'anonymize_ip': true // Anonimizacija IP adresa
+    });
+    
+    skripteZaPraćenjeUčitane = true;
+    console.log('GA4 skripte su uspešno učitane');
+}
 
-        // Google Analytics (GA4)
-        var gaScript = document.createElement('script');
-        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42";
-        gaScript.async = true;
-        document.body.appendChild(gaScript);
+// Automatsko učitavanje kada se stranica potpuno učita
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', učitajSkripteZaPraćenje);
+} else {
+    učitajSkripteZaPraćenje();
+}
 
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-5E43CB4R42'); 
-        
+// Opciono: učitavanje na osnovu korisničke saglasnosti
+function učitajPraćenjeNaOsnovuSaglasnosti() {
+    // Provera da li korisnik dao saglasnost za kolačiće
+    if (localStorage.getItem('cookieSaglasnost') === 'prihvaćeno') {
+        učitajSkripteZaPraćenje();
+    }
+}
+
+// Pozivanje funkcije za saglasnost (ako postoji)
+učitajPraćenjeNaOsnovuSaglasnosti();
         
 </script>
 </body>
