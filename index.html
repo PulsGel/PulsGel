@@ -1,43 +1,6 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-    <!-- FIXED META PIXEL FOR GITHUB PAGES -->
-<script>
-(function() {
-    // Wait for page to load
-    function loadFBPixel() {
-        // Basic Facebook Pixel implementation
-        var fbScript = document.createElement('script');
-        fbScript.textContent = `
-            !function(f,b,e,v,n,t,s){
-                if(f.fbq)return;
-                n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
-                t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)
-            }(window,document,'script','//connect.facebook.net/en_US/fbevents.js');
-            
-            try {
-                fbq('init', '826589170344707');
-                fbq('track', 'PageView');
-                console.log('Facebook Pixel loaded successfully');
-            } catch(e) {
-                console.log('Facebook Pixel error:', e);
-            }
-        `;
-        
-        document.head.appendChild(fbScript);
-    }
-    
-    // Load after slight delay to avoid blocking
-    setTimeout(loadFBPixel, 500);
-    
-    // Add noscript fallback
-    var noscript = document.createElement('noscript');
-    noscript.innerHTML = '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=826589170344707&ev=PageView&noscript=1">';
-    document.head.appendChild(noscript);
-})();
-</script>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="AD7208bKpmlfdkqiwsf0k1bmWv2...tj3b7f0c-d8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
