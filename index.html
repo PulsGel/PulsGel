@@ -1077,9 +1077,34 @@
         
         <p class="copyright">© <span id="currentYear">2025</span> PulsGel Shop. Sva prava zadržana.</p>
     </footer>
-<button class="sticky-cta" id="stickyCtaButton">
-  <span id="ctaText">PORUČI ODMAH – AKCIJA TRAJE JOŠ <span id="countdown">11:34</span></span>
-</button>
+<style>
+.chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #b22222;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s;
+}
+.chat-bubble:hover {
+    background: #ff4c4c;
+    transform: scale(1.1);
+}
+</style>
+
+<div class="chat-bubble" onclick="window.location.href='#kontakt'">
+    💬
+</div>
 
 <script>
 // Random countdown
@@ -1098,13 +1123,6 @@ document.getElementById('stickyCtaButton').addEventListener('click', function() 
         forma.querySelector('input:first-of-type').focus();
     }
 });
-</script>
-
-<script>
-// Countdown u sticky dugmetu
-const vremena_cta = ['11:34', '09:12', '07:55', '14:21', '06:08'];
-const randomVreme_cta = vremena_cta[Math.floor(Math.random() * vremena_cta.length)];
-document.querySelector('.sticky-cta').innerHTML = `⚡ PORUČI ODMAH – AKCIJA TRAJE JOŠ ${randomVreme_cta}`;
 </script>
         <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
