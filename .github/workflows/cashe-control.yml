@@ -1,0 +1,33 @@
+name: Deploy with Cache Headers
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create _headers file
+        run: |
+          cat > _headers << EOF
+          /*
+            Cache-Control: public, max-age=3600
+          
+          /*.webp
+            Cache-Control: public, max-age=31536000, immutable
+          
+          /*.css
+            Cache-Control: public, max-age=2592000
+          
+          /*.js
+            Cache-Control: public, max-age=2592000
+          EOF
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
