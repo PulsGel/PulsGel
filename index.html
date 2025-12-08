@@ -5,10 +5,12 @@
     <meta name="google-site-verification" content="AD7208bKpmlfdkqiwsf0k1bmWv2...tj3b7f0c-d8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="index, follow" />
+    <!-- ДОДАТИ У <head> ПРЕД </title> -->
+<link rel="preload" href="slika1.webp" as="image" type="image/webp" crossorigin="anonymous">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://pulsgel.github.io">
     <title>PULS Gel – Prirodni gel za intimnu negu i toplotu | Formulisano na naučnim principima</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
     <meta name="description" content="PULS Gel je prirodna formula sa liposomalnom tehnologijom za poboljšanje senzualnog doživljaja. Formulisan sa pH 5.0 kompatibilnim sastojcima (Ginseng, Maca, Glicerin) za bezbednu negu osetljivih područja." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pulsgel.github.io/PulsGel/" />
@@ -1576,24 +1578,83 @@ function učitajSkripteZaPraćenje() {
     console.log('GA4 skripte su uspešno učitane');
 }
 
-// Automatsko učitavanje kada se stranica potpuno učita
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', učitajSkripteZaPraćenje);
-} else {
-    učitajSkripteZaPraćenje();
+// Оптимизовани код за праћење
+(function() {
+    // Чекај да се страница потпуно учита
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTracking);
+    } else {
+        setTimeout(initTracking, 2000); // Чекај 2 секунде за слику
+    }
+    
+    function initTracking() {
+        // Провери да ли је слика већ учитана
+        const img = document.querySelector('img[src*="slika1.webp"]');
+        if (img && !img.complete) {
+            // Чекај да се слика учита
+            img.addEventListener('load', loadTrackingScripts);
+        } else {
+            loadTrackingScripts();
+        }
+    }
+    
+    function loadTrackingScripts() {
+        // GA4
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-5E43CB4R42', {
+            'anonymize_ip': true,
+            'cookie_flags': 'SameSite=None;Secure'
+        });
+        
+        // Асинхроно учитавање скрипти
+        const gaScript = document.createElement('script');
+        gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-5E43CB4R42";
+        gaScript.async = true;
+        gaScript.defer = true;
+        document.head.appendChild(gaScript);
+    }
+})();
+        
+</script>
+        <!-- ДОДАТИ ИСПРЕД ЗАТВАРАЈУЋЕГ </body> -->
+<script>
+// Service Worker регистрација
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(registration => {
+                console.log('Service Worker регистрован: ', registration.scope);
+            })
+            .catch(err => {
+                console.log('Service Worker регистрација није успела: ', err);
+            });
+    });
 }
 
-// Opciono: učitavanje na osnovu korisničke saglasnosti
-function učitajPraćenjeNaOsnovuSaglasnosti() {
-    // Provera da li korisnik dao saglasnost za kolačiće
-    if (localStorage.getItem('cookieSaglasnost') === 'prihvaćeno') {
-        učitajSkripteZaPraćenje();
+// Принудно кеширање слике
+function preCacheImage() {
+    const img = new Image();
+    img.src = '/PulsGel/slika1.webp';
+    img.crossOrigin = 'anonymous';
+    
+    if ('caches' in window) {
+        fetch('/PulsGel/slika1.webp', {
+            mode: 'cors',
+            credentials: 'omit'
+        }).then(response => {
+            if (response.ok) {
+                caches.open('image-cache-v1').then(cache => {
+                    cache.put('/PulsGel/slika1.webp', response);
+                    console.log('Слика принудно кеширана');
+                });
+            }
+        });
     }
 }
 
-// Pozivanje funkcije za saglasnost (ako postoji)
-učitajPraćenjeNaOsnovuSaglasnosti();
-        
+document.addEventListener('DOMContentLoaded', preCacheImage);
 </script>
 </body>
     </html>
