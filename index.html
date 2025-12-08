@@ -1,6 +1,83 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
+    <!-- ===== OPTIMIZED META PIXEL ===== -->
+<script>
+// Optimized Meta Pixel with modern APIs
+(function() {
+    // Load only after user interaction or timeout
+    function loadMetaPixel() {
+        if (window.fbq && window.fbq.loaded) return;
+        
+        // Modern Meta Pixel implementation
+        !function(f,b,e,v,n,t,s) {
+            if(f.fbq)return;
+            n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;
+            n.push=n;
+            n.loaded=!0;
+            n.version='2.0'; // Standard version
+            n.queue=[];
+            
+            // Create script with modern attributes
+            t=b.createElement(e);
+            t.async=true;
+            t.defer=true;
+            t.crossOrigin='anonymous';
+            t.src='https://connect.facebook.net/en_US/fbevents.js';  <!-- ОВО ПРОМЕНИ -->
+            
+            // Insert before first script
+            s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s);
+        }(window, document, 'script');
+        
+        // Initialize with modern config
+        fbq('init', '826589170344707');
+        
+        // Track pageview
+        fbq('track', 'PageView');
+        
+        console.log('✅ Meta Pixel loaded');
+    }
+    
+    // Load on user interaction (optimized for Lighthouse)
+    function initPixelLoading() {
+        const interactions = ['scroll', 'mousemove', 'touchstart', 'keydown'];
+        let pixelLoaded = false;
+        
+        const loadPixel = () => {
+            if (!pixelLoaded) {
+                pixelLoaded = true;
+                loadMetaPixel();
+                // Clean up listeners
+                interactions.forEach(event => {
+                    document.removeEventListener(event, loadPixel);
+                });
+            }
+        };
+        
+        // Add listeners for user interactions
+        interactions.forEach(event => {
+            document.addEventListener(event, loadPixel, { 
+                passive: true, 
+                once: false 
+            });
+        });
+        
+        // Fallback: load after 1.5s if no interaction
+        setTimeout(() => {
+            if (!pixelLoaded) loadPixel();
+        }, 1500);
+    }
+    
+    // Start when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPixelLoading);
+    } else {
+        initPixelLoading();
+    }
+})();
+</script>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="AD7208bKpmlfdkqiwsf0k1bmWv2...tj3b7f0c-d8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -444,7 +521,9 @@
      alt="Puls Gel pakovanja 30ml i 50ml sa etiketama"
      width="721" height="681"
      style="max-width: 100%; height: auto; border-radius: 10px;"
-     loading="lazy">
+     loading="eager"
+     fetchpriority="high"
+     decoding="async">
         </div>
     </section>
 
@@ -1558,32 +1637,7 @@
         gtag('js', new Date());
         gtag('config', 'G-5E43CB4R42'); 
         
-        // Facebook Pixel (Meta)
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '826589170344707');
-        fbq('track', 'PageView');
         
-        trackingScriptsLoaded = true;
-        console.log("✅ Tracking skripte učitane");
-    }
-    
-    function loadTrackingScriptsDelayed() {
-        setTimeout(loadTrackingScripts, 2000);
-        
-        ['scroll', 'mousemove', 'touchstart', 'click'].forEach(event => {
-            document.addEventListener(event, loadTrackingScripts, { once: true });
-        });
-    }
-
-    // Pokreni tracking
-    loadTrackingScriptsDelayed();
 </script>
 </body>
     </html>
