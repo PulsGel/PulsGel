@@ -1,0 +1,21 @@
+{
+  "name": "PULS Gel",
+  "short_name": "PULS Gel",
+  "description": "Prirodni gel za intimnu negu i toplotu",
+  "start_url": "/PulsGel/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#b22222",
+  "icons": [
+    {
+      "src": "/PulsGel/icon-192.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "/PulsGel/icon-512.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}
