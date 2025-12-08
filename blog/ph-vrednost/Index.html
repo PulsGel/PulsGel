@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pH Vrednost i Zdravlje Kože: Vodič za Kiseli Omotač</title>
+    <meta name="description" content="Saznajte zašto je pH vrednost 5.0 do 5.5 ključna za zdravlje osetljivih područja i kako utiče na efikasnost negujućih preparata. Stručni vodič o kiselom omotaču.">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            margin: 0; 
+            padding: 20px; 
+            background-color: #000;
+            color: #fff;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: #111; 
+            padding: 30px; 
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        h1 { color: #b22222; text-align: center; }
+        h2 { color: #ff4c4c; margin-top: 30px; }
+        h3 { color: #ff7b7b; margin-top: 20px; }
+        .puls-card { 
+            background: #222; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px;
+            border-left: 4px solid #b22222;
+        }
+        .ph-scale { 
+            background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
+            height: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+        .ph-marker { 
+            position: absolute;
+            top: -10px;
+            width: 3px;
+            height: 50px;
+            background: #fff;
+        }
+        .reference-section {
+            padding: 20px;
+            background-color: #0d0d0d;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        .reference-section a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== SEO NAVIGACIJA ===== -->
+    <nav style="
+        background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+        padding: 15px 20px;
+        text-align: center;
+        border-bottom: 2px solid #b22222;
+        font-family: Arial, sans-serif;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    ">
+        <div style="
+            display: inline-flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        ">
+            <a href="https://pulsgel.github.io/PulsGel/" 
+               style="
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    padding: 10px 18px;
+                    border-radius: 6px;
+                    transition: all 0.3s;
+                    background: rgba(178, 34, 34, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+               "
+               onmouseover="this.style.background='rgba(178, 34, 34, 0.6)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.background='rgba(178, 34, 34, 0.3)'; this.style.transform='translateY(0)';">
+                🏠 Početna
+            </a>
+            
+            <a href="https://pulsgel.github.io/PulsGel/nauka/"
+               style="
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    padding: 10px 18px;
+                    border-radius: 6px;
+                    transition: all 0.3s;
+                    background: rgba(0, 128, 0, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+               "
+               onmouseover="this.style.background='rgba(0, 128, 0, 0.6)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.background='rgba(0, 128, 0, 0.3)'; this.style.transform='translateY(0)';">
+                🔬 Liposomi
+            </a>
+            
+            <a href="https://pulsgel.github.io/PulsGel/blog/ph-vrednost/"
+               style="
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    padding: 10px 18px;
+                    border-radius: 6px;
+                    transition: all 0.3s;
+                    background: rgba(0, 150, 255, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+               "
+               onmouseover="this.style.background='rgba(0, 150, 255, 0.6)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.background='rgba(0, 150, 255, 0.3)'; this.style.transform='translateY(0)';">
+                💧 pH Vrednost
+            </a>
+            
+            <a href="https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci/"
+               style="
+                    color: #fff;
+                    text-decoration: none;
+                    font-weight: bold;
+                    padding: 10px 18px;
+                    border-radius: 6px;
+                    transition: all 0.3s;
+                    background: rgba(255, 165, 0, 0.3);
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+               "
+               onmouseover="this.style.background='rgba(255, 165, 0, 0.6)'; this.style.transform='translateY(-2px)';"
+               onmouseout="this.style.background='rgba(255, 165, 0, 0.3)'; this.style.transform='translateY(0)';">
+                🌿 Sastojci
+            </a>
+        </div>
+        
+        <div style="
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: #aaa;
+            font-style: italic;
+        ">
+            <em>Edukativni resursi o intimnom zdravlju i kozmetici</em>
+        </div>
+    </nav>
+    <!-- ===== KRAJ NAVIGACIJE ===== -->
 
+    <div class="container">
+        <h1>💧 pH Balans i Kožna Barijera: Ključ za Zdravlje Osetljive Kože</h1>
+        <p><em>Zašto je pH 5.0 do 5.5 idealan za negu osetljivih područja i kako utiče na efikasnost preparata.</em></p>
+
+        <div class="puls-card">
+            <h2>🔍 Šta je pH i zašto je važan?</h2>
+            <p>pH skala meri kiselost ili alkalnost rastvora na skali od 0 do 14:</p>
+            
+            <div class="ph-scale">
+                <div class="ph-marker" style="left: 0%;"></div>
+                <div class="ph-marker" style="left: 50%;"></div>
+                <div class="ph-marker" style="left: 100%;"></div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span>0 - Jako kiselo</span>
+                <span>7 - Neutralno</span>
+                <span>14 - Jako alkalno</span>
+            </div>
+            
+            <p>Zdrava koža ima prirodni pH koji se kreće između <strong>4.5 i 5.5</strong>, što je blago kisela sredina.</p>
+        </div>
+
+        <div class="puls-card">
+            <h2>🛡️ Zaštitni "Kiseli Omotač" (Acid Mantle)</h2>
+            <p>Površina naše kože prekrivena je zaštitnim slojem koji se zove <strong>"acid mantle"</strong> (kiseli omotač). Ovaj sloj (vidi Referencu 1):</p>
+            <ul>
+                <li>Štiti kožu od štetnih bakterija i gljivica</li>
+                <li>Sprečava gubitak vlage (TEWL)</li>
+                <li>Održava integritet kožne barijere</li>
+                <li>Podstiče prirodne zaštitne mehanizme kože</li>
+            </ul>
+            <p>Korišćenje proizvoda sa neodgovarajućim pH može narušiti ovaj vitalni zaštitni sloj, što je posebno opasno za osetljiva područja (vidi Referencu 2).</p>
+        </div>
+
+        <div class="puls-card">
+            <h2>🎯 Zašto je pH 5.0 Optimalan?</h2>
+            <p>Formule namenjene osetljivim područjima se formulišu sa pH 5.0 do 5.5 iz nekoliko ključnih razloga:</p>
+            
+            <h3>1. Podudaranje sa prirodnim pH</h3>
+            <p>pH 5.0 se nalazi u sredini optimalnog opsega za zdravu kožu (4.5-5.5), što minimizira rizik od iritacije.</p>
+            
+            <h3>2. Očuvanje mikrobioma</h3>
+            <p>Blago kisela sredina podržava rast korisnih bakterija koje prirodno naseljavaju kožu.</p>
+            
+            <h3>3. Poboljšana apsorpcija</h3>
+            <p>Pri optimalnom pH aktivni sastojci bolje prodiru kroz kožnu barijeru, povećavajući efikasnost formulacije.</p>
+        </div>
+
+        <div class="puls-card">
+            <h2>⚠️ Opasnost alkalnih proizvoda</h2>
+            <p>Proizvodi sa visokim pH (iznad 7) mogu uzrokovati:</p>
+            <ul>
+                <li>Narušavanje prirodne zaštitne barijere (vidi Referencu 3)</li>
+                <li>Povećanu osjetljivost na iritanse</li>
+                <li>Suvoću i napetost kože</li>
+                <li>Poremećaj prirodnog mikrobioma</li>
+                <li>Produženo vreme oporavka kožne barijere</li>
+            </ul>
+            <p>Ovo je posebno važno za osetljiva područja gde je koža tanja i osetljivija.</p>
+        </div>
+
+        <div class="puls-card">
+            <h2>🔬 pH i Napredna Tehnologija Isporuke</h2>
+            <p>Kombinacija optimalnog pH 5.0 sa naprednim tehnologijama isporuke sastojaka (poput liposoma) pruža:</p>
+            <ul>
+                <li><strong>Optimalni pH</strong> obezbeđuje prijateljsku sredinu za kožu</li>
+                <li><strong>Liposomi</strong> omogućavaju duboku isporuku aktivnih sastojaka</li>
+                <li><strong>Sinergija</strong> ova dva faktora maksimizira efikasnost i bezbednost.</li>
+            </ul>
+            <p>Ova kombinacija je posebno važna za postizanje željenog efekta bez kompromitovanja zdravlja kože, što je cilj svake moderne kozmetičke formulacije.</p>
+        </div>
+
+        <div class="puls-card" style="background: #330000; border-left-color: #00ff00;">
+            <h2>💡 Praktični Saveti</h2>
+            <p>Kada birate proizvode za negu osetljive kože, obratite pažnju na:</p>
+            <ul>
+                <li><strong>pH vrednost</strong> - treba da bude u opsegu 4.5-5.5</li>
+                <li><strong>Sastav</strong> - izbegavajte agresivne surfaktante</li>
+                <li><strong>Bezbednost</strong> - proizvodi testirani na osetljivoj koži</li>
+                <li><strong>Transparentnost</strong> - proverite da li proizvođač navodi pH vrednost</li>
+            </ul>
+        </div>
+
+        <!-- ===== POVEZANI ČLANCI ===== -->
+        <div style="
+            margin: 60px 0 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(178, 34, 34, 0.3);
+        ">
+            <h3 style="
+                color: #ff4c4c; 
+                text-align: center; 
+                margin-bottom: 30px;
+                font-size: 1.6rem;
+            ">
+                📖 Povezani Članci
+            </h3>
+            
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+            ">
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-left: 4px solid #b22222;
+                    transition: transform 0.3s;
+                " onmouseover="this.style.transform='translateY(-5px)';" 
+                   onmouseout="this.style.transform='translateY(0)';">
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Liposomalna Tehnologija</h4>
+                    <p style="color: #ccc; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">
+                        Kako nano-kapsule poboljšavaju apsorpciju aktivnih sastojaka do 300%.
+                    </p>
+                    <a href="https://pulsgel.github.io/PulsGel/nauka/" 
+                       style="color: #00ff00; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                        Pročitaj članak →
+                    </a>
+                </div>
+                
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 20px;
+                    border-radius: 8px;
+                    border-left: 4px solid #ffaa00;
+                    transition: transform 0.3s;
+                " onmouseover="this.style.transform='translateY(-5px)';" 
+                   onmouseout="this.style.transform='translateY(0)';">
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 1.2rem;">Prirodni Sastojci</h4>
+                    <p style="color: #ccc; font-size: 0.95rem; margin-bottom: 15px; line-height: 1.5;">
+                        Glicerin, Ginseng, Maca - kako prirodni sastojci podržavaju intimno zdravlje.
+                    </p>
+                    <a href="https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci/" 
+                       style="color: #00ff00; text-decoration: none; font-weight: bold; font-size: 0.95rem;">
+                        Pročitaj članak →
+                    </a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="https://pulsgel.github.io/PulsGel/" 
+                   style="color: #ff4c4c; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 1px solid #ff4c4c; border-radius: 6px;">
+                    ← Nazad na početnu stranicu
+                </a>
+            </div>
+        </div>
+        
+        <section class="reference-section">
+            <h3 style="color: #ff4c4c;">Naučne Reference i Stručni Izvori</h3>
+            <ol style="font-size: 0.95rem; color: #ccc; padding-left: 20px;">
+                <li><p>Lambers, H., Piessens, S., Bloem, A., Pronk, H., & Finkel, M. (2006). Natural skin surface pH is on average below 5.0, in contrast to the current notion of 5.5. <em>International Journal of Cosmetic Science</em>, 28(5), 359-370. <a href="https://pubmed.ncbi.nlm.nih.gov/16914417/" target="_blank" style="color: #00ff00;">(Link ka PubMed)</a></p></li>
+                <li><p>Filipović M., A. (2018). Uticaj surfaktanata na vrednost pH kozmetičkih proizvoda i kožu. <em>Zbornik radova Tehnološkog fakulteta, Novi Sad.</em></p></li>
+                <li><p>Štajner, M., B., (2015). Kozmetička hemija i formulacije. <em>Izvor: Ključna literatura za kozmetologiju u regionu.</em></p></li>
+            </ol>
+        </section>
+        
+        <p style="text-align: center; margin-top: 40px; color: #ccc;">
+            <em>"Zdravlje kože počinje od njenog prirodnog pH balansa."</em>
+        </p>
+    </div>
+</body>
+</html>
