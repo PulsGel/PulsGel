@@ -1,3 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /tmp/
+Disallow: /private/
+
 Sitemap: https://pulsgel.github.io/PulsGel/sitemap.xml
