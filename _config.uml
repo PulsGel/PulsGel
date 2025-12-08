@@ -1,0 +1,11 @@
+# GitHub Pages конфигурација
+title: PULS Gel
+description: Prirodni gel za intimnu negu i toplotu
+baseurl: "/PulsGel"
+url: "https://pulsgel.github.io"
+
+plugins: []
+
+cache_control:
+  images: max-age=31536000, public, immutable
+  assets: max-age=2592000, public
