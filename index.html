@@ -1077,53 +1077,10 @@
         
         <p class="copyright">© <span id="currentYear">2025</span> PulsGel Shop. Sva prava zadržana.</p>
     </footer>
-<style>
-.chat-bubble {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #b22222;
-    color: white;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(178, 34, 34, 0.4);
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s;
-}
-.chat-bubble:hover {
-    background: #ff4c4c;
-    transform: scale(1.1);
-}
-</style>
 
 <div class="chat-bubble" onclick="window.location.href='#kontakt'">
     💬
 </div>
-
-<script>
-// Random countdown
-const vremena = ['11:34','09:12','07:55','14:21','06:08','05:47','12:19','08:41','04:55'];
-const randomVreme = vremena[Math.floor(Math.random() * vremena.length)];
-document.getElementById('countdown').textContent = randomVreme;
-
-// Skrol do forme
-document.getElementById('stickyCtaButton').addEventListener('click', function() {
-    const forma = document.getElementById('forma-porudzbine');
-    if (forma) {
-        forma.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'center'
-        });
-        forma.querySelector('input:first-of-type').focus();
-    }
-});
-</script>
         <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script type="text/javascript">
