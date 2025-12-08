@@ -1,81 +1,41 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
-    <!-- ===== OPTIMIZED META PIXEL ===== -->
+    <!-- FIXED META PIXEL FOR GITHUB PAGES -->
 <script>
-// Optimized Meta Pixel with modern APIs
 (function() {
-    // Load only after user interaction or timeout
-    function loadMetaPixel() {
-        if (window.fbq && window.fbq.loaded) return;
-        
-        // Modern Meta Pixel implementation
-        !function(f,b,e,v,n,t,s) {
-            if(f.fbq)return;
-            n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-            if(!f._fbq)f._fbq=n;
-            n.push=n;
-            n.loaded=!0;
-            n.version='2.0'; // Standard version
-            n.queue=[];
+    // Wait for page to load
+    function loadFBPixel() {
+        // Basic Facebook Pixel implementation
+        var fbScript = document.createElement('script');
+        fbScript.textContent = `
+            !function(f,b,e,v,n,t,s){
+                if(f.fbq)return;
+                n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];
+                t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t,s)
+            }(window,document,'script','//connect.facebook.net/en_US/fbevents.js');
             
-            // Create script with modern attributes
-            t=b.createElement(e);
-            t.async=true;
-            t.defer=true;
-            t.crossOrigin='anonymous';
-            t.src='https://connect.facebook.net/en_US/fbevents.js';  <!-- ОВО ПРОМЕНИ -->
-            
-            // Insert before first script
-            s=b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t,s);
-        }(window, document, 'script');
-        
-        // Initialize with modern config
-        fbq('init', '826589170344707');
-        
-        // Track pageview
-        fbq('track', 'PageView');
-        
-        console.log('✅ Meta Pixel loaded');
-    }
-    
-    // Load on user interaction (optimized for Lighthouse)
-    function initPixelLoading() {
-        const interactions = ['scroll', 'mousemove', 'touchstart', 'keydown'];
-        let pixelLoaded = false;
-        
-        const loadPixel = () => {
-            if (!pixelLoaded) {
-                pixelLoaded = true;
-                loadMetaPixel();
-                // Clean up listeners
-                interactions.forEach(event => {
-                    document.removeEventListener(event, loadPixel);
-                });
+            try {
+                fbq('init', '826589170344707');
+                fbq('track', 'PageView');
+                console.log('Facebook Pixel loaded successfully');
+            } catch(e) {
+                console.log('Facebook Pixel error:', e);
             }
-        };
+        `;
         
-        // Add listeners for user interactions
-        interactions.forEach(event => {
-            document.addEventListener(event, loadPixel, { 
-                passive: true, 
-                once: false 
-            });
-        });
-        
-        // Fallback: load after 1.5s if no interaction
-        setTimeout(() => {
-            if (!pixelLoaded) loadPixel();
-        }, 1500);
+        document.head.appendChild(fbScript);
     }
     
-    // Start when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPixelLoading);
-    } else {
-        initPixelLoading();
-    }
+    // Load after slight delay to avoid blocking
+    setTimeout(loadFBPixel, 500);
+    
+    // Add noscript fallback
+    var noscript = document.createElement('noscript');
+    noscript.innerHTML = '<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=826589170344707&ev=PageView&noscript=1">';
+    document.head.appendChild(noscript);
 })();
 </script>
     <meta charset="UTF-8">
