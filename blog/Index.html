@@ -1,1 +1,105 @@
-
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Edukativni Sadržaj | PulsGel</title>
+    <!-- Kopiraj style iz index.html -->
+    <style>
+        .blog-listing {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .blog-card {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            height: 100%;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+            border-color: #b22222;
+            box-shadow: 0 10px 25px rgba(178, 34, 34, 0.2);
+        }
+        .blog-card h3 {
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .blog-card p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .read-more {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigacija -->
+    
+    <main style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <header style="text-align: center; margin-bottom: 50px;">
+            <h1 style="color: #ff4c4c; font-size: 2.5rem;">📚 Edukativni Blog</h1>
+            <p style="color: #ccc; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                Naučno potkrepljeni članci o intimnom zdravlju, kozmetici i wellness-u
+            </p>
+        </header>
+        
+        <div class="blog-listing">
+            
+            <!-- ČLANAK 1 -->
+            <article class="blog-card">
+                <div style="
+                    background: #0088ff;
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    border-radius: 50%;
+                    margin-bottom: 15px;
+                    font-size: 1.5rem;
+                ">
+                    💧
+                </div>
+                <h3>pH Vrednost Kože: Zašto je 5.0 Idealno?</h3>
+                <p>Kako prirodni pH kože utiče na zdravlje osetljivih područja i zašto je kompatibilnost ključna za bezbednu negu i očuvanje prirodne mikroflore.</p>
+                <a href="ph-vrednost/" class="read-more">Pročitaj članak →</a>
+            </article>
+            
+            <!-- ČLANAK 2 -->
+            <article class="blog-card">
+                <div style="
+                    background: #ffaa00;
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
+                    border-radius: 50%;
+                    margin-bottom: 15px;
+                    font-size: 1.5rem;
+                ">
+                    🌿
+                </div>
+                <h3>Prirodni Sastojci u Kozmetici</h3>
+                <p>Ginseng, Maca, Glicerin - kako prirodni sastojci podržavaju intimno zdravlje kroz bezbednu negu i sinergijsko delovanje biljnih ekstrakata.</p>
+                <a href="prirodni-sastojci/" class="read-more">Pročitaj članak →</a>
+            </article>
+            
+        </div>
+    </main>
+    
+    <!-- Footer -->
+</body>
+</html>
