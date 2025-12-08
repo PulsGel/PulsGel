@@ -1,1 +1,99 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pravni Dokumenti - PulsGel</title>
+    <style>
+        body {
+            background: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            border-bottom: 2px solid #b22222;
+        }
+        h1 {
+            color: #ff4444;
+        }
+        .doc-grid {
+            display: grid;
+            gap: 20px;
+            margin: 40px 0;
+        }
+        .doc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            transition: 0.3s;
+        }
+        .doc-card:hover {
+            border-color: #b22222;
+            transform: translateY(-3px);
+        }
+        .doc-card h3 {
+            color: #ff4c4c;
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #b22222;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #ff4c4c;
+        }
+        .back-link {
+            color: #00ff00;
+            text-decoration: none;
+            margin-top: 30px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚖️ Pravni Dokumenti</h1>
+            <p>Svi važni dokumenti i politike PulsGel proizvoda</p>
+        </header>
 
+        <div class="doc-grid">
+            <div class="doc-card">
+                <h3>🔒 Politika Privatnosti</h3>
+                <p>Kako prikupljamo, koristimo i štitimo vaše lične podatke.</p>
+                <a href="privatnost/" class="btn">Pročitaj →</a>
+            </div>
+
+            <div class="doc-card">
+                <h3>📄 Uslovi Korišćenja</h3>
+                <p>Pravila i uslovi pod kojima se koriste PulsGel proizvodi.</p>
+                <a href="uslovi/" class="btn">Pročitaj →</a>
+            </div>
+
+            <div class="doc-card">
+                <h3>🔄 Politika Reklamacija</h3>
+                <p>Proces povraćaja, zamene i rešavanja problema.</p>
+                <a href="reklamacije/" class="btn">Pročitaj →</a>
+            </div>
+        </div>
+
+        <a href="../" class="back-link">← Nazad na početnu stranicu</a>
+    </div>
+</body>
+</html>
