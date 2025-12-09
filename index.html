@@ -825,133 +825,9 @@
 
     </section>
 </header>
-<!-- ISPRAVLJENO: Header zatvoren, main počinje izvan -->
-
-
-      <!-- ... остатак HTML-a пре main секције ... -->
+<!-- ISPRAVLJENO: Header zatvoren, main počinje izvan --
 
 <main>
-
-const IMAGE_CACHE = {
-    version: '1.2',
-    expiryDays: 30,
-    
-    // Листа слика за кеширање
-    images: [
-        { url: 'slika1-opt.webp', key: 'main_product_image' },
-        // Додајте друге слике када их имате
-    ],
-    
-    // Функција за кеширање слике у localStorage
-    cacheImage: function(imageUrl, cacheKey) {
-        if (!('localStorage' in window)) return;
-        
-        const now = Date.now();
-        const expiry = now + (this.expiryDays * 24 * 60 * 60 * 1000);
-        
-        fetch(imageUrl + '?v=' + this.version)
-            .then(response => response.blob())
-            .then(blob => {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    const cacheData = {
-                        data: reader.result,
-                        expiry: expiry,
-                        version: this.version
-                    };
-                    localStorage.setItem(cacheKey, JSON.stringify(cacheData));
-                    console.log('✅ Слика кеширана:', cacheKey);
-                };
-                reader.readAsDataURL(blob);
-            })
-            .catch(error => {
-                console.warn('❌ Грешка при кеширању слике:', error);
-            });
-    },
-    
-    // Добиј кеширану слику
-    getCachedImage: function(cacheKey) {
-        if (!('localStorage' in window)) return null;
-        
-        const cached = localStorage.getItem(cacheKey);
-        if (!cached) return null;
-        
-        try {
-            const cacheData = JSON.parse(cached);
-            const now = Date.now();
-            
-            // Провери да ли је истекао
-            if (now > cacheData.expiry) {
-                localStorage.removeItem(cacheKey);
-                return null;
-            }
-            
-            // Провери верзију
-            if (cacheData.version !== this.version) {
-                localStorage.removeItem(cacheKey);
-                return null;
-            }
-            
-            return cacheData.data;
-        } catch (e) {
-            localStorage.removeItem(cacheKey);
-            return null;
-        }
-    },
-    
-    // Иницијализуј кеширање
-    init: function() {
-        if (!('localStorage' in window)) {
-            console.log('localStorage није подржан');
-            return;
-        }
-        
-        this.images.forEach(img => {
-            const cached = this.getCachedImage(img.key);
-            
-            if (!cached) {
-                // Нема кеша - кеширај
-                this.cacheImage(img.url, img.key);
-            } else {
-                // Има кеш - користи га за брже учитавање
-                console.log('🔄 Слика већ у кешу:', img.key);
-                
-                // Прикажи кеширану слику док се не учита нова
-                const imgElements = document.querySelectorAll(`img[src*="${img.url}"]`);
-                imgElements.forEach(imgEl => {
-                    // Постави data-src за лази лоадинг
-                    if (!imgEl.hasAttribute('data-src')) {
-                        imgEl.setAttribute('data-src', imgEl.src);
-                        imgEl.src = cached;
-                        
-                        // Када се учита страница, врати оригинални src
-                        window.addEventListener('load', () => {
-                            setTimeout(() => {
-                                const originalSrc = imgEl.getAttribute('data-src');
-                                if (originalSrc) {
-                                    imgEl.src = originalSrc;
-                                }
-                            }, 100);
-                        });
-                    }
-                });
-            }
-        });
-    }
-};
-
-// Покрени кеширање када се страница учита
-document.addEventListener('DOMContentLoaded', function() {
-    IMAGE_CACHE.init();
-    
-    // Додатно: верзионирање свих слика
-    document.querySelectorAll('img').forEach(img => {
-        const src = img.getAttribute('src');
-        if (src && src.includes('.webp') && !src.includes('?')) {
-            img.src = src + '?v=' + IMAGE_CACHE.version;
-        }
-    });
-});
     <section style="margin: 40px 0;">
         <div style="
             background: rgba(255, 255, 255, 0.05);
@@ -1857,6 +1733,183 @@ document.addEventListener('DOMContentLoaded', function() {
             }, index * 100);
         });
     });
+           
+// ===== КЕШИРАЊЕ СЛИКА =====
+const IMAGE_CACHE = {
+    version: '1.2',
+    expiryDays: 30,
+    
+    images: [
+        { url: 'slika1.webp', key: 'main_product_image' }
+    ],
+    
+    cacheImage: function(imageUrl, cacheKey) {
+        if (!('localStorage' in window)) return;
+        
+        const now = Date.now();
+        const expiry = now + (this.expiryDays * 24 * 60 * 60 * 1000);
+        
+        fetch(imageUrl + '?v=' + this.version)
+            .then(response => response.blob())
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const cacheData = {
+                        data: reader.result,
+                        expiry: expiry,
+                        version: this.version
+                    };
+                    localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+                };
+                reader.readAsDataURL(blob);
+            });
+    },
+    
+    getCachedImage: function(cacheKey) {
+        if (!('localStorage' in window)) return null;
+        
+        const cached = localStorage.getItem(cacheKey);
+        if (!cached) return null;
+        
+        try {
+            const cacheData = JSON.parse(cached);
+            const now = Date.now();
+            
+            if (now > cacheData.expiry || cacheData.version !== this.version) {
+                localStorage.removeItem(cacheKey);
+                return null;
+            }
+            
+            return cacheData.data;
+        } catch (e) {
+            return null;
+        }
+    },
+    
+    init: function() {
+        if (!('localStorage' in window)) return;
+        
+        this.images.forEach(img => {
+            if (!this.getCachedImage(img.key)) {
+                this.cacheImage(img.url, img.key);
+            }
+        });
+    }
+};
+
+// Покрени када се страница учита
+document.addEventListener('DOMContentLoaded', function() {
+    IMAGE_CACHE.init();
+    
+    // Додај верзију свим сликама
+    document.querySelectorAll('img').forEach(img => {
+        const src = img.getAttribute('src');
+        if (src && !src.includes('?')) {
+            img.src = src + '?v=' + IMAGE_CACHE.version;
+        }
+    });
+});
+    
+    <!-- Додатни JavaScript за CTA дугме -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stickyBtn = document.getElementById('stickyPoruciBtn');
+            const forma = document.getElementById('forma-porudzbine');
+            const imePolje = document.getElementById('ime');
+            
+            if (stickyBtn && forma) {
+                stickyBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    forma.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    setTimeout(() => {
+                        if (imePolje) {
+                            imePolje.focus();
+                            imePolje.select();
+                        }
+                    }, 700);
+                });
+            }
+        });
+// ===== КЕШИРАЊЕ СЛИКА =====
+const IMAGE_CACHE = {
+    version: '1.2',
+    expiryDays: 30,
+    
+    images: [
+        { url: 'slika1.webp', key: 'main_product_image' }
+    ],
+    
+    cacheImage: function(imageUrl, cacheKey) {
+        if (!('localStorage' in window)) return;
+        
+        const now = Date.now();
+        const expiry = now + (this.expiryDays * 24 * 60 * 60 * 1000);
+        
+        fetch(imageUrl + '?v=' + this.version)
+            .then(response => response.blob())
+            .then(blob => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const cacheData = {
+                        data: reader.result,
+                        expiry: expiry,
+                        version: this.version
+                    };
+                    localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+                };
+                reader.readAsDataURL(blob);
+            });
+    },
+    
+    getCachedImage: function(cacheKey) {
+        if (!('localStorage' in window)) return null;
+        
+        const cached = localStorage.getItem(cacheKey);
+        if (!cached) return null;
+        
+        try {
+            const cacheData = JSON.parse(cached);
+            const now = Date.now();
+            
+            if (now > cacheData.expiry || cacheData.version !== this.version) {
+                localStorage.removeItem(cacheKey);
+                return null;
+            }
+            
+            return cacheData.data;
+        } catch (e) {
+            return null;
+        }
+    },
+    
+    init: function() {
+        if (!('localStorage' in window)) return;
+        
+        this.images.forEach(img => {
+            if (!this.getCachedImage(img.key)) {
+                this.cacheImage(img.url, img.key);
+            }
+        });
+    }
+};
+
+// Покрени када се страница учита
+document.addEventListener('DOMContentLoaded', function() {
+    IMAGE_CACHE.init();
+    
+    // Додај верзију свим сликама
+    document.querySelectorAll('img').forEach(img => {
+        const src = img.getAttribute('src');
+        if (src && !src.includes('?')) {
+            img.src = src + '?v=' + IMAGE_CACHE.version;
+        }
+    });
+});
           </script>
   <!-- Sticky CTA dugme -->
     <button class="sticky-cta" id="stickyPoruciBtn" aria-label="Poruči Puls Gel odmah">PORUČI</button>
