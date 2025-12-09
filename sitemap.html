@@ -5,59 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa Sajta - PulsGel</title>
     <style>
-        body { background: #000; color: #fff; font-family: Arial; padding: 20px; }
-        h1 { color: #ff4c4c; }
-        .sitemap-container { max-width: 800px; margin: 0 auto; }
-        .section { margin: 30px 0; }
-        .section h2 { color: #00ff00; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        ul { list-style: none; padding-left: 20px; }
-        li { margin: 10px 0; }
-        a { color: #fff; text-decoration: none; padding: 8px 15px; display: block; background: rgba(255,255,255,0.05); border-radius: 5px; transition: background 0.3s; }
-        a:hover { background: rgba(178, 34, 34, 0.3); color: #ff4c4c; }
-        .back-link { display: inline-block; margin-top: 40px; color: #00ff00; text-decoration: none; font-weight: bold; }
+        body { 
+            background: #000; 
+            color: #fff; 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(178, 34, 34, 0.3);
+        }
+        h1 { 
+            color: #ff4c4c; 
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 76, 76, 0.3);
+        }
+        .subtitle {
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+        .section { 
+            margin: 40px 0; 
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border-left: 4px solid #b22222;
+        }
+        h2 { 
+            color: #00ff00; 
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 0, 0.2);
+        }
+        ul { 
+            list-style: none; 
+            padding: 0;
+            margin: 0;
+        }
+        li { 
+            margin: 12px 0;
+            padding: 0;
+        }
+        a { 
+            color: #fff; 
+            text-decoration: none; 
+            padding: 12px 20px;
+            display: block;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        a:hover { 
+            background: rgba(178, 34, 34, 0.3); 
+            color: #ff4c4c;
+            transform: translateX(5px);
+            border-color: rgba(178, 34, 34, 0.5);
+            box-shadow: 0 5px 15px rgba(178, 34, 34, 0.2);
+        }
+        .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .back-link { 
+            display: inline-block; 
+            margin-top: 40px; 
+            color: #00ff00; 
+            text-decoration: none; 
+            font-weight: bold;
+            padding: 12px 25px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: rgba(0, 255, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .note {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 5px;
+            border-left: 3px solid #ffaa00;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            a { padding: 15px; }
+            h1 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="sitemap-container">
-        <h1>🗺️ Mapa Sajta - PulsGel</h1>
-        <p style="color: #ccc;">Pregled svih stranica na našem sajtu</p>
+    <div class="container">
+        <h1>🗺️ Mapa Sajta - PULS Gel</h1>
+        <p class="subtitle">Pregled svih stranica na našem sajtu</p>
         
         <div class="section">
             <h2>🏠 Glavne Stranice</h2>
             <ul>
-                <li><a href="https://pulsgel.github.io/PulsGel/">Početna Stranica</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/nauka/">Naučni Članak o Liposomalnoj Tehnologiji</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/faq/">Često Postavljana Pitanja (FAQ)</a></li>
+                <li>
+                    <a href="./">
+                        <span class="icon">🏠</span>
+                        Početna Stranica
+                        <br>
+                        <small style="color: #aaa; font-size: 0.9rem;">Sve o PULS Gel proizvodu, formulaciji i naručivanju</small>
+                    </a>
+                </li>
+                <li>
+                    <a href="./nauka/">
+                        <span class="icon">🔬</span>
+                        Nauka o Liposomalnoj Tehnologiji
+                        <br>
+                        <small style="color: #aaa; font-size: 0.9rem;">Detaljno objašnjenje naučne osnove PULS Gel formulacije</small>
+                    </a>
+                </li>
             </ul>
         </div>
         
         <div class="section">
-            <h2>📚 Blog Članci</h2>
+            <h2>📚 Edukativni Blog</h2>
             <ul>
-                <li><a href="https://pulsgel.github.io/PulsGel/blog/">Svi Blog Članci</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/blog/ph-vrednost/">pH Vrednost Kože</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/blog/prirodni-sastojci/">Prirodni Sastojci u Kozmetici</a></li>
+                <li>
+                    <a href="./blog/ph-vrednost/">
+                        <span class="icon">💧</span>
+                        pH Vrednost Kože i Intimno Zdravlje
+                        <br>
+                        <small style="color: #aaa; font-size: 0.9rem;">Zašto je pH 5.0 idealan za negu osetljivih područja</small>
+                    </a>
+                </li>
+                <li>
+                    <a href="./blog/prirodni-sastojci/">
+                        <span class="icon">🌿</span>
+                        Prirodni Sastojci u PULS Gel Formulaciji
+                        <br>
+                        <small style="color: #aaa; font-size: 0.9rem;">Ginseng, Maca, Glicerin i drugi prirodni ekstrakti</small>
+                    </a>
+                </li>
             </ul>
         </div>
         
-        <div class="section">
-            <h2>⚖️ Pravni Dokumenti</h2>
-            <ul>
-                <li><a href="https://pulsgel.github.io/PulsGel/legal/privatnost/">Politika Privatnosti</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/legal/uslovi/">Uslovi Korišćenja</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/legal/reklamacije/">Politika Reklamacija</a></li>
-            </ul>
+        <div class="note">
+            💡 <strong>Napomena:</strong> Ova mapa sajta sadrži samo aktivne i postojeće stranice. 
+            Nove edukativne stranice će biti dodavane redovno.
         </div>
         
-        <div class="section">
-            <h2>🔍 Korisni Linkovi</h2>
-            <ul>
-                <li><a href="https://pulsgel.github.io/PulsGel/sitemap.xml">XML Sitemap (za pretraživače)</a></li>
-                <li><a href="https://pulsgel.github.io/PulsGel/robots.txt">Robots.txt Konfiguracija</a></li>
-            </ul>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="./" class="back-link">
+                <span style="font-size: 1.2em;">←</span> 
+                Vratite se na početnu stranicu
+            </a>
         </div>
-        
-        <a href="https://pulsgel.github.io/PulsGel/" class="back-link">← Nazad na početnu stranicu</a>
     </div>
 </body>
 </html>
