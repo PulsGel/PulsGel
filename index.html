@@ -1166,9 +1166,7 @@
     <!-- Sticky CTA dugme -->
     <button class="sticky-cta" id="stickyPoruciBtn" aria-label="Poruči Puls Gel odmah">PORUČI</button>
 
-    <!-- СКРИПТЕ НА КРАЈУ -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
+ 
     <script>
         // Иницијализација EmailJS
         (function() {
@@ -1295,6 +1293,26 @@
             IMAGE_CACHE.init();
         });
     </script>
+<script>
+  // Асинхроно учитај EmailJS
+  function loadEmailJS() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+    script.async = true;
+    script.onload = function() {
+      // Иницијализуј када се скрипта учита
+      emailjs.init("WKV419-gz6OQWSgRJ");
+    };
+    document.head.appendChild(script);
+  }
+  
+  // Учитај када је DOM спреман
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadEmailJS);
+  } else {
+    loadEmailJS();
+  }
+</script>
     
 </body>
     </html>
