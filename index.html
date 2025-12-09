@@ -1,109 +1,102 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
+    <!-- SAMO JEDAN <head> TAG! -->
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="AD7208bKpmlfdkqiwsf0k1bmWv2...tj3b7f0c-d8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
-    <!-- ISPRAVLJENO: Dodat > na kraju -->
-    <head>
-    <!-- Cache Control Meta Tags -->
-    <meta http-equiv="Cache-Control" content="public, max-age=31536000">
     
-    <!-- Preload оптимизоване слике -->
-    <link rel="preload" href="slika1-opt.webp?v=1.2" as="image" type="image/webp" crossorigin="anonymous">
+    <!-- ISPRAVLJENO: NIKAKVI http-equiv Cache-Control - to je POGREŠNO! -->
+    <!-- OBRISATI OVO: <meta http-equiv="Cache-Control" content="public, max-age=31536000"> -->
     
-    <!-- Preconnect за CDN -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <!-- Umesto toga koristite pravilne meta tagove: -->
+    <meta http-equiv="expires" content="Mon, 01 Jan 2026 00:00:00 GMT">
+    <meta http-equiv="pragma" content="cache">
     
-    <!-- DNS prefetch -->
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-    </head>
     <link rel="preload" href="slika1.webp" as="image" type="image/webp" crossorigin="anonymous">
     <link rel="preconnect" href="https://pulsgel.github.io">
+    
+    <!-- OBAVEZAN title TAG! -->
     <title>PULS Gel – Prirodni gel za intimnu negu i toplotu | Formulisano na naučnim principima</title>
     
-    <!-- OBRISANO: Nepotrebni meta tagovi -->
-    <!-- <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable"> -->
-    
-    <meta name="description" content="PULS Gel je prirodna formula sa liposomalnom tehnologijom za poboljšanje senzualnog doživljaja. Formulisan sa pH 5.0 kompatibilnim sastojcima (Ginseng, Maca, Glicerin) za bezbednu negu osetljivih područja.">
+    <meta name="description" content="PULS Gel je prirodna formula sa liposomalnom tehnologijom za poboljšanje senzualnog doživljaja. Formulisan sa pH 5.0 kompatibilnim sastojcima za bezbednu negu osetljivih područja.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://pulsgel.github.io/PulsGel/">
     <meta property="og:title" content="PULS Gel – Prirodni gel za intimnu negu formulisano na naučnim principima">
     <meta property="og:description" content="Liposomalna tehnologija, pH 5.0 kompatibilnost i prirodni sastojci za bezbednu negu osetljivih područja.">
     <meta property="og:image" content="https://pulsgel.github.io/PulsGel/slika1.webp">
     
-    <!-- ISPRAVLJENO: Obrisan as="document" -->
     <link rel="prefetch" href="./nauka/">
     <link rel="prefetch" href="./blog/ph-vrednost/">
     <link rel="prefetch" href="./blog/prirodni-sastojci/">
     
-    
- <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "PULS Gel",
-    "description": "Kozmetički gel za intimnu negu sa prirodnim sastojcima",
-    "url": "https://pulsgel.github.io/PulsGel/",
-    "image": "https://pulsgel.github.io/PulsGel/slika1.webp",
-    "brand": {
-        "@type": "Brand",
-        "name": "PULS"
-    },
-    "offers": {
-        "@type": "Offer",
-        "priceCurrency": "RSD",
-        "price": "1500",
-        "priceValidUntil": "2026-12-31",
-        "itemCondition": "https://schema.org/NewCondition",
-        "availability": "https://schema.org/InStock",
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "PULS Gel",
+        "description": "Kozmetički gel za intimnu negu sa prirodnim sastojcima",
         "url": "https://pulsgel.github.io/PulsGel/",
-        "shippingDetails": {
-            "@type": "OfferShippingDetails",
-            "shippingRate": {
-                "@type": "MonetaryAmount",
-                "value": "400",
-                "currency": "RSD"
-            },
-            "shippingDestination": {
-                "@type": "DefinedRegion",
-                "addressCountry": "RS"
-            },
-            "deliveryTime": {
-                "@type": "ShippingDeliveryTime",
-                "handlingTime": {
-                    "@type": "QuantitativeValue",
-                    "minValue": 1,
-                    "maxValue": 2,
-                    "unitCode": "DAY"
+        "image": "https://pulsgel.github.io/PulsGel/slika1.webp",
+        "brand": {
+            "@type": "Brand",
+            "name": "PULS"
+        },
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "RSD",
+            "price": "1500",
+            "priceValidUntil": "2026-12-31",
+            "itemCondition": "https://schema.org/NewCondition",
+            "availability": "https://schema.org/InStock",
+            "url": "https://pulsgel.github.io/PulsGel/",
+            "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "value": "400",
+                    "currency": "RSD"
                 },
-                "transitTime": {
-                    "@type": "QuantitativeValue",
-                    "minValue": 1,
-                    "maxValue": 3,
-                    "unitCode": "DAY"
+                "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": "RS"
+                },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 1,
+                        "maxValue": 2,
+                        "unitCode": "DAY"
+                    },
+                    "transitTime": {
+                        "@type": "QuantitativeValue",
+                        minValue: 1,
+                        maxValue: 3,
+                        unitCode: "DAY"
+                    }
                 }
             }
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "24",
+            "bestRating": "5",
+            worstRating: "1"
         }
-    },
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "24",
-        "bestRating": "5",
-        "worstRating": "1"
     }
-}
- </script>
-    <!-- ISPRAVLJENO: Obrisan / na kraju -->
+    </script>
+    
     <link rel="canonical" href="https://pulsgel.github.io/PulsGel/">
     
     <style>
         body { background-color: #000; color: #fff; font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
         h1 { color: #fff; text-align: center; margin-top: 20px; }
         h2 { color: #ff5252; margin-top: 40px; text-shadow: 0 0 10px rgba(255, 82, 82, 0.3); }
-        h3 { color: #ff7b7b; margin-top: 20px; }
+        h3 { color: #ff7b7b; margin-top: 30px; }
+        h4 { color: #ff9b9b; margin-top: 20px; }
         p, li { margin: 10px 0; }
         ul { margin: 10px 0 20px 20px; }
         .puls-card { 
@@ -312,36 +305,56 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #b22222;
+            background: #4a7c59;
             color: #fff;
-            padding: 16px 30px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 0 30px rgba(178,34,34,0.9);
-            animation: pulse 2s infinite;
+            box-shadow: 0 4px 12px rgba(74, 124, 89, 0.6);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-family: Arial, sans-serif;
+            outline: none;
         }
-        .sticky-cta:hover { transform: scale(1.08); background:#ff4444; }
+        
+        .sticky-cta:hover { 
+            transform: scale(1.05); 
+            background: #5a8c69;
+            box-shadow: 0 6px 16px rgba(74, 124, 89, 0.8);
+        }
+        
+        .sticky-cta:active {
+            transform: scale(0.98);
+        }
 
         @media (max-width: 600px) {
-            .sticky-cta { bottom: 15px; right: 15px; padding: 14px 24px; font-size: 1.1rem; }
+            .sticky-cta { 
+                bottom: 15px; 
+                right: 15px; 
+                padding: 10px 20px; 
+                font-size: 0.9rem; 
+                border-radius: 6px;
+            }
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.06); }
-            100% { transform: scale(1); }
+            0% { box-shadow: 0 4px 12px rgba(74, 124, 89, 0.6); }
+            50% { box-shadow: 0 4px 18px rgba(74, 124, 89, 0.9); }
+            100% { box-shadow: 0 4px 12px rgba(74, 124, 89, 0.6); }
+        }
+        
+        .sticky-cta {
+            animation: pulse 3s infinite;
         }
     </style>
 </head>
 <body>
-    <!-- ===== SEO NAVIGACIJA ===== -->
+        <!-- ===== SEO NAVIGACIJA ===== -->
     <nav style="
         background: linear-gradient(135deg, #1a0000 0%, #330000 100%);
         padding: 15px 20px;
@@ -1785,6 +1798,32 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("✅ Forma uspešno inicijalizovana");
 
         // Sticky CTA button funkcionalnost
+        
+    <!-- Додатни JavaScript за CTA дугме -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stickyBtn = document.getElementById('stickyPoruciBtn');
+            const forma = document.getElementById('forma-porudzbine');
+            const imePolje = document.getElementById('ime');
+            
+            if (stickyBtn && forma) {
+                stickyBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    forma.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    
+                    setTimeout(() => {
+                        if (imePolje) {
+                            imePolje.focus();
+                            imePolje.select();
+                        }
+                    }, 700);
+                });
+            }
+        });
         const stickyCtaBtn = document.querySelector('.sticky-cta');
         
         if (stickyCtaBtn) {
@@ -1819,8 +1858,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
           </script>
-
-<button class="sticky-cta">PORUČI SADA</button>
+  <!-- Sticky CTA dugme -->
+    <button class="sticky-cta" id="stickyPoruciBtn" aria-label="Poruči Puls Gel odmah">PORUČI</button>
 
 </body>
 </html>
